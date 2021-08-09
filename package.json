@@ -8,7 +8,8 @@
     "pegjs": "pegjs -o src/ts/generated_code/compiler.js --format commonjs src/peg/compiler.pegjs && pegjs -o src/ts/generated_code/decompiler.js --format commonjs src/peg/decompiler.pegjs",
     "typescript": "tsc --build tsconfig.json",
     "rollup": "rollup -c",
-    "build": "npm run clean && npm run pegjs && npm run typescript && npm run rollup",
+    "report": "node ./src/build_js/record_stats_for_version.js",
+    "build": "npm run clean && npm run pegjs && npm run typescript && npm run rollup && npm run report",
     "test": "jest"
   },
   "repository": {
