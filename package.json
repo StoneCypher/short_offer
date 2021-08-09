@@ -1,0 +1,42 @@
+{
+  "name": "short_offer",
+  "version": "0.1.0",
+  "description": "Present a shortened WebRTC offer.  Fully tested, typescript double-parser.",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf -f docs && mkdir docs && cd docs && mkdir docs && cd .. && rimraf -f build && mkdir build && cd build && mkdir pegjs && mkdir typescript && mkdir rollup && mkdir terser && cd ../src/ts && rimraf -f generated_code && mkdir generated_code && cd ../..",
+    "pegjs": "pegjs -o src/ts/generated_code/compiler.js --format commonjs src/peg/compiler.pegjs && pegjs -o src/ts/generated_code/decompiler.js --format commonjs src/peg/decompiler.pegjs",
+    "typescript": "tsc --build tsconfig.json",
+    "rollup": "rollup -c",
+    "build": "npm run clean && npm run pegjs && npm run typescript && npm run rollup",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StoneCypher/short_offer.git"
+  },
+  "keywords": [
+    "WebRTC",
+    "offer",
+    "compress",
+    "represent",
+    "stonecypher"
+  ],
+  "author": "John Haugeland <stonecypher@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/StoneCypher/short_offer/issues"
+  },
+  "homepage": "https://github.com/StoneCypher/short_offer#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@types/jest": "^26.0.24",
+    "fast-check": "^2.17.0",
+    "jest": "^27.0.6",
+    "pegjs": "^0.10.0",
+    "rollup": "^2.56.1",
+    "ts-jest": "^27.0.4",
+    "typescript": "^4.3.5"
+  }
+}
