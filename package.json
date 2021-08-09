@@ -9,8 +9,8 @@
     "typescript": "tsc --build tsconfig.json",
     "rollup": "rollup -c",
     "report": "node ./src/build_js/record_stats_for_version.js",
-    "build": "npm run clean && npm run pegjs && npm run typescript && npm run rollup && npm run report",
-    "test": "jest"
+    "build": "npm run clean && npm run pegjs && npm run test && npm run typescript && npm run rollup && npm run report",
+    "test": "jest --verbose"
   },
   "repository": {
     "type": "git",

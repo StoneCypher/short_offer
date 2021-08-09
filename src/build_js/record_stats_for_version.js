@@ -17,6 +17,8 @@ const so = require('../../build/rollup/index.cjs.js');
 
 function generate_test_log() {
 
+  console.log(`Running test log results`);
+
   const ret = {};
 
   let orig   = 0,
