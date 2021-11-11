@@ -10,5 +10,20 @@ declare class peg$SyntaxError {
 declare namespace peg$SyntaxError {
     function buildMessage(expected: any, found: any): string;
 }
-declare function peg$parse(input: any, options: any): {};
+declare function peg$parse(input: any, options: any): any[] | {
+    kind: any;
+    value: any;
+    loc: {
+        start: {
+            offset: any;
+            line: number;
+            column: number;
+        };
+        end: {
+            offset: any;
+            line: number;
+            column: number;
+        };
+    };
+};
 export { peg$SyntaxError as SyntaxError, peg$parse as parse };
