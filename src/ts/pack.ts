@@ -1,5 +1,5 @@
 
-import { parse }    from './generated_code/sdp_parser';
+import { parse }    from './parsers';
 import * as symbols from './symbols';
 
 
@@ -17,6 +17,7 @@ import {
 
 
 const nl_or_cr_nl = (pl: ParsedLine): string =>
+
   pl.uses_short_nl
     ? symbols.short_separator_follows
     : '';
