@@ -1,5 +1,5 @@
 
-import { parse as compile }   from "./generated_code/compiler";
-import { parse as decompile } from "./generated_code/compiler";
+import { parse }              from "./generated_code/sdp_parser";
+import { parse as decompile } from "./generated_code/decompiler";
 
-export { compile, decompile };
+export { parse, decompile };

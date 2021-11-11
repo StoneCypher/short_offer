@@ -1,15 +1,15 @@
 {
   "name": "short_offer",
-  "version": "0.1.0",
+  "version": "0.0.6",
   "description": "Present a shortened WebRTC offer.  Fully tested, typescript double-parser.",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf -f docs && mkdir docs && cd docs && mkdir docs && cd .. && rimraf -f build && mkdir build && cd build && mkdir pegjs && mkdir typescript && mkdir rollup && mkdir terser && cd ../src/ts && rimraf -f generated_code && mkdir generated_code && cd ../..",
-    "pegjs": "pegjs -o src/ts/generated_code/compiler.js --format commonjs src/peg/compiler.pegjs && pegjs -o src/ts/generated_code/decompiler.js --format commonjs src/peg/decompiler.pegjs",
+    "pegjs": "pegjs -o src/ts/generated_code/sdp_parser.js --format commonjs src/peg/sdp_parser.pegjs && pegjs -o src/ts/generated_code/decompiler.js --format commonjs src/peg/decompiler.pegjs",
     "typescript": "tsc --build tsconfig.json",
     "rollup": "rollup -c",
-    "report": "node ./src/build_js/record_stats_for_version.js",
-    "build": "npm run clean && npm run pegjs && npm run test && npm run typescript && npm run rollup && npm run report",
+    "report": "node ./src/build_js/record_stats_for_version.js && node ./src/build_js/record_stats_image_for_version.js",
+    "build": "npm run clean && npm run pegjs && npm run typescript && npm run rollup && npm run test && npm run report",
     "test": "jest --verbose"
   },
   "repository": {
@@ -33,11 +33,13 @@
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@types/jest": "^26.0.24",
+    "chart.js-image": "^5.6.0",
     "fast-check": "^2.17.0",
     "jest": "^27.0.6",
     "pegjs": "^0.10.0",
     "rollup": "^2.56.1",
     "ts-jest": "^27.0.4",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "unreasonable_phi": "^0.9.1"
   }
 }

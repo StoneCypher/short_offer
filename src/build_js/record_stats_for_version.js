@@ -15,6 +15,14 @@ const so = require('../../build/rollup/index.cjs.js');
 
 
 
+function count_unknowns_in_parse(le_parse) {
+  return le_parse.value.filter(v => v.kind === 'unknown-line').length;
+}
+
+
+
+
+
 function generate_test_log() {
 
   console.log(`Running test log results`);
@@ -28,11 +36,14 @@ function generate_test_log() {
 
   styles.map( s => {
 
+    const start_time      = new Date().getTime(),
+          le_parse        = so.parse(full_set[s]),
+          le_pack         = so.pack(le_parse),
+          end_time        = new Date().getTime();
+
     const original_length = full_set[s].length,
-          start_time      = new Date().getTime(),
-          final_length    = so.compile(full_set[s]).length,
-          end_time        = new Date().getTime(),
-          failed_claims   = 0,
+          final_length    = le_pack.length,
+          failed_claims   = count_unknowns_in_parse(le_parse),
           ltime           = end_time - start_time;
 
     ret[s] = {

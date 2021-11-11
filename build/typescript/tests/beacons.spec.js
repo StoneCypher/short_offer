@@ -1,9 +1,4 @@
-import { compile, decompile } from './index';
-import * as beacons from './example_beacons';
-import * as fc from 'fast-check';
-test('Round trip of random strings is always byte-accurate', () => {
-    fc.assert(fc.property(fc.string(), (anyString) => decompile(compile(anyString)) === anyString));
-});
+import * as beacons from '../example_beacons';
 describe('All beacons are strings', () => {
     const labels = ['win_10_chrome_92_host', 'win_10_chrome_92_client',
         'win_10_edge_92_client', 'win_10_edge_92_host', 'win_10_ff_90_client',
@@ -32,5 +27,5 @@ describe('All beacons are strings', () => {
         beacons.and_chr_92_client,
         beacons.ubu_ff_90_host,
         beacons.ubu_ff_90_client
-    ].forEach((s, i) => test.skip(`Beacon style ${labels[i]} is string`, () => expect(typeof s).toBe('string')));
+    ].forEach((s, i) => test(`Beacon style ${labels[i]} is string`, () => expect(typeof s).toBe('string')));
 });
