@@ -13,6 +13,7 @@ declare namespace peg$SyntaxError {
 declare function peg$parse(input: any, options: any): any[] | {
     kind: any;
     value: any;
+    uses_short_nl: boolean;
     loc: {
         start: {
             offset: any;

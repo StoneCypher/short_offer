@@ -1,14 +1,15 @@
 
-type UnknownLine = { value: string };
-type VLine       = { value: string };
+type VLine            = { kind: 'vline',             value: string, uses_short_nl: boolean };
+type UnknownLine      = { kind: 'unknown_line',      value: string, uses_short_nl: boolean };
+type UnknownTerminate = { kind: 'unknown_terminate', value: string, uses_short_nl: boolean };
 
-type PegCoord    = { offset: number; line: number; column: number; };
-type PegLocation = { start: PegCoord; end: PegCoord };
+type PegCoord         = { offset: number; line: number; column: number; };
+type PegLocation      = { start: PegCoord; end: PegCoord };
 
-type ParsedLine = UnknownLine | VLine;
+type ParsedLine       = UnknownLine | VLine | UnknownTerminate;
 
 type ParsedSdp = {
-  kind  : 'offer' | 'answer',
+  kind  : 'offer' | 'answer' | 'unknown' | 'unknown_terminate',
   value : ParsedLine[],
   loc   : PegLocation
 };
