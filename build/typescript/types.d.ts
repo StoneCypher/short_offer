@@ -1,8 +1,17 @@
-declare type UnknownLine = {
-    value: string;
-};
 declare type VLine = {
+    kind: 'vline';
     value: string;
+    uses_short_nl: boolean;
+};
+declare type UnknownLine = {
+    kind: 'unknown_line';
+    value: string;
+    uses_short_nl: boolean;
+};
+declare type UnknownTerminate = {
+    kind: 'unknown_terminate';
+    value: string;
+    uses_short_nl: boolean;
 };
 declare type PegCoord = {
     offset: number;
@@ -13,9 +22,9 @@ declare type PegLocation = {
     start: PegCoord;
     end: PegCoord;
 };
-declare type ParsedLine = UnknownLine | VLine;
+declare type ParsedLine = UnknownLine | VLine | UnknownTerminate;
 declare type ParsedSdp = {
-    kind: 'offer' | 'answer';
+    kind: 'offer' | 'answer' | 'unknown' | 'unknown_terminate';
     value: ParsedLine[];
     loc: PegLocation;
 };

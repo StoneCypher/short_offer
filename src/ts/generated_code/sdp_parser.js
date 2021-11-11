@@ -142,7 +142,7 @@ function peg$parse(input, options) {
       peg$startRuleFunction  = peg$parseRawDocument,
 
       peg$c0 = peg$anyExpectation(),
-      peg$c1 = function(uts) { return ast('unknown terminating string', uts); },
+      peg$c1 = function(uts) { return ast('unknown_terminate', uts.join('') ); },
 
       peg$currPos          = 0,
       peg$savedPos         = 0,
@@ -325,9 +325,12 @@ function peg$parse(input, options) {
 
     function ast(kind, value) {
 
+      const uses_short_nl = false; // todo
+
       return {
         kind,
         value,
+        uses_short_nl,
         loc: location()
       };
 

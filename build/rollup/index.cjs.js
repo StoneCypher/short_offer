@@ -105,7 +105,7 @@ peg$SyntaxError$1.buildMessage = function (expected, found) {
 };
 function peg$parse$1(input, options) {
     options = options !== void 0 ? options : {};
-    var peg$FAILED = {}, peg$startRuleFunctions = { RawDocument: peg$parseRawDocument }, peg$startRuleFunction = peg$parseRawDocument, peg$c0 = peg$anyExpectation(), peg$c1 = function (uts) { return ast('unknown terminating string', uts); }, peg$currPos = 0, peg$savedPos = 0, peg$posDetailsCache = [{ line: 1, column: 1 }], peg$maxFailPos = 0, peg$maxFailExpected = [], peg$result;
+    var peg$FAILED = {}, peg$startRuleFunctions = { RawDocument: peg$parseRawDocument }, peg$startRuleFunction = peg$parseRawDocument, peg$c0 = peg$anyExpectation(), peg$c1 = function (uts) { return ast('unknown_terminate', uts.join('')); }, peg$currPos = 0, peg$savedPos = 0, peg$posDetailsCache = [{ line: 1, column: 1 }], peg$maxFailPos = 0, peg$maxFailExpected = [], peg$result;
     if ("startRule" in options) {
         if (!(options.startRule in peg$startRuleFunctions)) {
             throw new Error("Can't start parsing from rule \"" + options.startRule + "\".");
@@ -218,9 +218,11 @@ function peg$parse$1(input, options) {
         return s0;
     }
     function ast(kind, value) {
+        const uses_short_nl = false;
         return {
             kind,
             value,
+            uses_short_nl,
             loc: location()
         };
     }
@@ -466,5 +468,76 @@ var decompiler = {
     parse: peg$parse
 };
 
+const c_terminal = '\u0000';
+const offer = '\u0001', answer = '\u0002', vline = '\u0003';
+const short_separator_follows = '\u007c';
+const unknown_line = '\u007e';
+const unknown_terminate = '\u007f';
+
+const nl_or_cr_nl = (pl) => pl.uses_short_nl
+    ? short_separator_follows
+    : '';
+function parsed_to_bytestring(parsed) {
+    let work = '', ending = '', skip_iter = false;
+    if (parsed.kind === 'offer') {
+        work += offer;
+    }
+    else if (parsed.kind === 'answer') {
+        work += answer;
+    }
+    else if (parsed.kind === 'unknown_terminate') {
+        work += `${unknown_terminate}${parsed.value}`;
+        skip_iter = true;
+    }
+    if (!skip_iter) {
+        parsed.value.forEach(v => {
+            switch (v.kind) {
+                case 'unknown_line':
+                    work += `${unknown_line}${v.value}${nl_or_cr_nl(v)}${c_terminal}`;
+                    break;
+                case 'vline':
+                    work += `${vline}${v.value}${nl_or_cr_nl(v)}${c_terminal}`;
+                    break;
+                case 'unknown_terminate':
+                    work += `${unknown_terminate}${v.value}`;
+                    break;
+            }
+        });
+    }
+    return `${work}${ending}`;
+}
+function pack(original) {
+    if (original === '') {
+        return '';
+    }
+    const ParseTree = sdp_parser.parse(original);
+    if (Array.isArray(ParseTree)) {
+        throw 'Degenerate PEG case - should not be possible, please report';
+    }
+    else {
+        return parsed_to_bytestring(ParseTree);
+    }
+}
+
+function unpack(bytestring) {
+    if (bytestring === '') {
+        return '';
+    }
+    let work = '', at_end = '';
+    for (let i = 0, iC = bytestring.length; i < iC; ++i) {
+        switch (bytestring.charAt(i)) {
+            case unknown_terminate:
+                work += bytestring.substring(i + 1, iC);
+                i = iC;
+                break;
+            default:
+                throw new TypeError(`Unknown symbol at ${i} '${bytestring.charAt(i)}' [${bytestring.charCodeAt(i)}], corrupt encoding'`);
+        }
+    }
+    return `${work}${at_end}`;
+}
+
+exports.deparse = decompiler.parse;
+exports.pack = pack;
 exports.parse = sdp_parser.parse;
-exports.unpack = decompiler.parse;
+exports.unpack = unpack;
