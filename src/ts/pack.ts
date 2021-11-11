@@ -1,5 +1,5 @@
 
-import { parse } from "./generated_code/compiler";
+import { parse } from "./generated_code/sdp_parser";
 
 import {
 //  UnknownLine, VLine, ParsedLine,
@@ -13,8 +13,11 @@ import {
 
 function parsed_to_bytestring( _parsed: ParsedSdp ): string {
 
-//  return ${};
+  let ending = '';
+
   throw 'todo';
+
+  return `${ending}`;
 
 }
 
@@ -24,7 +27,15 @@ function parsed_to_bytestring( _parsed: ParsedSdp ): string {
 
 function pack( original: string ): string {
   // todo needs compression
-  return parsed_to_bytestring( parse( original ) );
+
+  const ParseTree = parse( original );
+
+  if (Array.isArray(ParseTree)) {  // this is just a TS type inference error
+    throw 'Degenerate PEG case - should not be possible, please report';
+  } else {
+    return parsed_to_bytestring( ParseTree );
+  }
+
 }
 
 

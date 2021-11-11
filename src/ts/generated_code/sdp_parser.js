@@ -142,7 +142,7 @@ function peg$parse(input, options) {
       peg$startRuleFunction  = peg$parseRawDocument,
 
       peg$c0 = peg$anyExpectation(),
-      peg$c1 = function(doc) { return doc.join(''); },
+      peg$c1 = function(uts) { return ast('unknown terminating string', uts); },
 
       peg$currPos          = 0,
       peg$savedPos         = 0,
@@ -281,6 +281,14 @@ function peg$parse(input, options) {
   }
 
   function peg$parseRawDocument() {
+    var s0;
+
+    s0 = peg$parseUnknownTerminatingString();
+
+    return s0;
+  }
+
+  function peg$parseUnknownTerminatingString() {
     var s0, s1, s2;
 
     s0 = peg$currPos;
@@ -310,6 +318,24 @@ function peg$parse(input, options) {
 
     return s0;
   }
+
+
+
+
+
+    function ast(kind, value) {
+
+      return {
+        kind,
+        value,
+        loc: location()
+      };
+
+    }
+
+
+
+
 
   peg$result = peg$startRuleFunction();
 

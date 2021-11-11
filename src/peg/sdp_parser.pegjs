@@ -22,7 +22,7 @@
 
 
 RawDocument
-  = UnknownTerminatingString*
+  = UnknownTerminatingString
 
-UnknownCharacter
-  = uts:.* { return ast('unknown terminating string', value: uts); }
+UnknownTerminatingString
+  = uts:.* { return ast('unknown terminating string', uts); }
