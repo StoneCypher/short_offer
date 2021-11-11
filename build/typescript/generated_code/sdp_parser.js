@@ -102,7 +102,7 @@ peg$SyntaxError.buildMessage = function (expected, found) {
 };
 function peg$parse(input, options) {
     options = options !== void 0 ? options : {};
-    var peg$FAILED = {}, peg$startRuleFunctions = { RawDocument: peg$parseRawDocument }, peg$startRuleFunction = peg$parseRawDocument, peg$c0 = peg$anyExpectation(), peg$c1 = function (uts) { return ast('unknown_terminate', uts.join('')); }, peg$currPos = 0, peg$savedPos = 0, peg$posDetailsCache = [{ line: 1, column: 1 }], peg$maxFailPos = 0, peg$maxFailExpected = [], peg$silentFails = 0, peg$result;
+    var peg$FAILED = {}, peg$startRuleFunctions = { RawDocument: peg$parseRawDocument }, peg$startRuleFunction = peg$parseRawDocument, peg$c0 = "{\"type\":\"offer\",\"sdp\":\"", peg$c1 = peg$literalExpectation("{\"type\":\"offer\",\"sdp\":\"", false), peg$c2 = peg$anyExpectation(), peg$c3 = "\"}", peg$c4 = peg$literalExpectation("\"}", false), peg$c5 = function (s) { return ast('offer', s.join('')); }, peg$c6 = function (uts) { return ast('unknown_terminate', uts.join('')); }, peg$currPos = 0, peg$savedPos = 0, peg$posDetailsCache = [{ line: 1, column: 1 }], peg$maxFailPos = 0, peg$maxFailExpected = [], peg$silentFails = 0, peg$result;
     if ("startRule" in options) {
         if (!(options.startRule in peg$startRuleFunctions)) {
             throw new Error("Can't start parsing from rule \"" + options.startRule + "\".");
@@ -200,7 +200,80 @@ function peg$parse(input, options) {
     }
     function peg$parseRawDocument() {
         var s0;
-        s0 = peg$parseUnknownTerminatingString();
+        s0 = peg$parseOffer();
+        if (s0 === peg$FAILED) {
+            s0 = peg$parseUnknownTerminatingString();
+        }
+        return s0;
+    }
+    function peg$parseOffer() {
+        var s0, s1, s2, s3;
+        s0 = peg$currPos;
+        if (input.substr(peg$currPos, 23) === peg$c0) {
+            s1 = peg$c0;
+            peg$currPos += 23;
+        }
+        else {
+            s1 = peg$FAILED;
+            if (peg$silentFails === 0) {
+                peg$fail(peg$c1);
+            }
+        }
+        if (s1 !== peg$FAILED) {
+            s2 = [];
+            if (input.length > peg$currPos) {
+                s3 = input.charAt(peg$currPos);
+                peg$currPos++;
+            }
+            else {
+                s3 = peg$FAILED;
+                if (peg$silentFails === 0) {
+                    peg$fail(peg$c2);
+                }
+            }
+            while (s3 !== peg$FAILED) {
+                s2.push(s3);
+                if (input.length > peg$currPos) {
+                    s3 = input.charAt(peg$currPos);
+                    peg$currPos++;
+                }
+                else {
+                    s3 = peg$FAILED;
+                    if (peg$silentFails === 0) {
+                        peg$fail(peg$c2);
+                    }
+                }
+            }
+            if (s2 !== peg$FAILED) {
+                if (input.substr(peg$currPos, 2) === peg$c3) {
+                    s3 = peg$c3;
+                    peg$currPos += 2;
+                }
+                else {
+                    s3 = peg$FAILED;
+                    if (peg$silentFails === 0) {
+                        peg$fail(peg$c4);
+                    }
+                }
+                if (s3 !== peg$FAILED) {
+                    peg$savedPos = s0;
+                    s1 = peg$c5(s2);
+                    s0 = s1;
+                }
+                else {
+                    peg$currPos = s0;
+                    s0 = peg$FAILED;
+                }
+            }
+            else {
+                peg$currPos = s0;
+                s0 = peg$FAILED;
+            }
+        }
+        else {
+            peg$currPos = s0;
+            s0 = peg$FAILED;
+        }
         return s0;
     }
     function peg$parseUnknownTerminatingString() {
@@ -214,7 +287,7 @@ function peg$parse(input, options) {
         else {
             s2 = peg$FAILED;
             if (peg$silentFails === 0) {
-                peg$fail(peg$c0);
+                peg$fail(peg$c2);
             }
         }
         while (s2 !== peg$FAILED) {
@@ -226,13 +299,13 @@ function peg$parse(input, options) {
             else {
                 s2 = peg$FAILED;
                 if (peg$silentFails === 0) {
-                    peg$fail(peg$c0);
+                    peg$fail(peg$c2);
                 }
             }
         }
         if (s1 !== peg$FAILED) {
             peg$savedPos = s0;
-            s1 = peg$c1(s1);
+            s1 = peg$c6(s1);
         }
         s0 = s1;
         return s0;

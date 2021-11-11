@@ -25,7 +25,16 @@
 
 
 RawDocument
-  = UnknownTerminatingString
+  = Offer
+  / UnknownTerminatingString
+
+
+
+Offer
+  = '{"type":"offer","sdp":"' s:.* '"}'
+  { return ast('offer', s.join('') ); }
+
+
 
 UnknownTerminatingString
-  = uts:.* { return ast('unknown_terminate', uts.join('') ); }
+  = uts:.* { return ast( 'unknown_terminate', uts.join('') ); }

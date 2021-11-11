@@ -16,6 +16,11 @@ function unpack(bytestring: string): string {
 
     switch (bytestring.charAt(i)) {
 
+      case symbols.offer:
+        work   += '{"type":"offer","sdp":"';
+        at_end  = '"}' + at_end;
+        break;
+
       case symbols.unknown_terminate:
         work += bytestring.substring(i+1, iC);  // sum everything remaining into the work queue
         i = iC; // end the loop

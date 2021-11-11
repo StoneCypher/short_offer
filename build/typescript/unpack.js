@@ -6,6 +6,10 @@ function unpack(bytestring) {
     let work = '', at_end = '';
     for (let i = 0, iC = bytestring.length; i < iC; ++i) {
         switch (bytestring.charAt(i)) {
+            case symbols.offer:
+                work += '{"type":"offer","sdp":"';
+                at_end = '"}' + at_end;
+                break;
             case symbols.unknown_terminate:
                 work += bytestring.substring(i + 1, iC);
                 i = iC;
