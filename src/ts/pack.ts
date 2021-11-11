@@ -1,7 +1,7 @@
 
 import {
-  UnknownLine, VLine, ParsedLine,
-  PegCoord, PegLocation,
+//  UnknownLine, VLine, ParsedLine,
+//  PegCoord, PegLocation,
   ParsedSdp
 } from './types';
 
@@ -10,7 +10,10 @@ import {
 
 
 function parsed_to_packed( _parsed: ParsedSdp ): string {
-  return '';
+
+//  return ${};
+  throw 'todo';
+
 }
 
 

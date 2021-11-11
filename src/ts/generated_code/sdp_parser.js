@@ -549,7 +549,7 @@ function peg$parse(input, options) {
       return {
         kind,
         value,
-        ends_with,
+        ends_with: ends_with? ends_with.kind : undefined,
         loc: location()
       };
 

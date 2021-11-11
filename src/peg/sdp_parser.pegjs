@@ -8,7 +8,7 @@
     return {
       kind,
       value,
-      ends_with,
+      ends_with: ends_with? ends_with.kind : undefined,
       loc: location()
     };
 
