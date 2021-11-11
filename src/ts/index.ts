@@ -1,5 +1,5 @@
 
-import { parse as compile }   from "./generated_code/compiler";
-import { parse as decompile } from "./generated_code/compiler";
+import { parse }           from "./generated_code/compiler";
+import { parse as unpack } from "./generated_code/compiler";
 
-export { compile, decompile };
+export { parse, unpack };

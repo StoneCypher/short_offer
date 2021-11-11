@@ -1,5 +1,5 @@
 
-import { compile, decompile } from './index';
+import { parse, unpack } from './index';
 import * as beacons           from './example_beacons';
 
 import * as fc from 'fast-check';
@@ -15,7 +15,7 @@ test('Round trip of random strings is always byte-accurate', () => {
 
       fc.string(),
 
-      (anyString: string) => decompile(compile(anyString)) === anyString
+      (anyString: string) => unpack(parse(anyString)) === anyString
 
     )
   );
