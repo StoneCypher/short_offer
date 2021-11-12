@@ -16,7 +16,7 @@ function unpack(bytestring) {
                 break;
             case symbols.unknown_line:
                 let found = false, end;
-                for (end = i + i; end < iC; ++end) {
+                for (end = i + 1; end < iC; ++end) {
                     if (bytestring.charAt(end) === symbols.c_terminal) {
                         found = end;
                         end = iC;
@@ -27,6 +27,23 @@ function unpack(bytestring) {
                 }
                 work += `${bytestring.substring(i + i, end + 1)}\r\n`;
                 i = end + 1;
+                break;
+            case symbols.val_zero_line:
+                work += `v=0\r\n`;
+                break;
+            case symbols.val_line:
+                let found2 = false, end2;
+                for (end2 = i + 1; end2 < iC; ++end2) {
+                    if (bytestring.charAt(end2) === symbols.c_terminal) {
+                        found2 = end2;
+                        end2 = iC;
+                    }
+                }
+                if (found2 === false) {
+                    throw new RangeError(`No terminal null for unknown_line at ${i}`);
+                }
+                work += `v=${bytestring.substring(i + 1, end2 + 1)}\r\n`;
+                i = end2 + 1;
                 break;
             case symbols.unknown_terminate:
                 work += bytestring.substring(i + 1, iC);

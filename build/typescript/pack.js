@@ -21,8 +21,11 @@ function parsed_to_bytestring(parsed) {
                 case 'unknown_line':
                     work += `${symbols.unknown_line}${v.value}${nl_or_cr_nl(v)}${symbols.c_terminal}`;
                     break;
-                case 'vline':
-                    work += `${symbols.vline}${v.value}${nl_or_cr_nl(v)}${symbols.c_terminal}`;
+                case 'val_zero_line':
+                    work += `${symbols.val_zero_line}${nl_or_cr_nl(v)}`;
+                    break;
+                case 'val_line':
+                    work += `${symbols.val_line}${v.value}${nl_or_cr_nl(v)}${symbols.c_terminal}`;
                     break;
                 case 'unknown_terminate':
                     work += `${symbols.unknown_terminate}${v.value}`;
