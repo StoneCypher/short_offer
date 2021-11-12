@@ -18,7 +18,10 @@ const offer                       = '\x01',
       a_standard_max_message_size = '\x0a',
       a_custom_max_message_size   = '\x0b',
       a_setup_actpass             = '\x0c',
-      a_setup_active              = '\x0d';
+      a_setup_active              = '\x0d',
+      a_mid_zero                  = '\x0e',
+      s_dash                      = '\x0f',
+      t_zero_zero                 = '\x10';
 
 const short_separator_follows     = '\x7c',
       short_separators_all        = '\x7d';
@@ -37,7 +40,9 @@ export {
   a_msid_semantic_ns, a_msid_semantic_ws, a_extmap_allow_mixed,
   a_standard_sctp_port, a_custom_sctp_port,
   a_standard_max_message_size, a_custom_max_message_size,
-  a_setup_actpass, a_setup_active,
+  a_setup_actpass, a_setup_active, a_mid_zero,
+  s_dash,
+  t_zero_zero,
   short_separator_follows, short_separators_all,
   unknown_line, unknown_terminate
 };

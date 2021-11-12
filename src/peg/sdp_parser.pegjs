@@ -57,6 +57,9 @@ Rule
  / AttrExtmapAllowMixed
  / ASetupActpass
  / ASetupActive
+ / AMid0
+ / SDash
+ / TZeroZero
  / StandardSctpPort
  / CustomSctpPort
  / StandardMaxMessageSize
@@ -104,6 +107,24 @@ ASetupActpass
 ASetupActive
   = 'a=setup:active'
   { return ast('a_setup_active'); }
+
+
+
+AMid0
+  = 'a=mid:0'
+  { return ast('a_mid_zero'); }
+
+
+
+SDash
+  = 's=-'
+  { return ast('s_dash'); }
+
+
+
+TZeroZero
+  = 't=0 0'
+  { return ast('t_zero_zero'); }
 
 
 

@@ -57,19 +57,19 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.a_msid_semantic_ns:
-        work   += `a=msid-semantic:WMS\r\n`;  // todo handle soft \n
+        work += `a=msid-semantic:WMS\r\n`;  // todo handle soft \n
         break;
 
       case symbols.version_zero_line:
-        work   += `a=msid-semantic: WMS\r\n`;  // todo handle soft \n
+        work += `a=msid-semantic: WMS\r\n`;  // todo handle soft \n
         break;
 
       case symbols.a_extmap_allow_mixed:
-        work   += `a=extmap-allow-mixed\r\n`;  // todo handle soft \n
+        work += `a=extmap-allow-mixed\r\n`;  // todo handle soft \n
         break;
 
       case symbols.a_standard_sctp_port:
-        work   += `a=sctp-port:5000\r\n`;  // todo handle soft \n
+        work += `a=sctp-port:5000\r\n`;  // todo handle soft \n
         break;
 
       case symbols.a_custom_sctp_port:
@@ -77,7 +77,7 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.a_standard_max_message_size:
-        work   += `a=max-message-size:262144\r\n`;  // todo handle soft \n
+        work += `a=max-message-size:262144\r\n`;  // todo handle soft \n
         break;
 
       case symbols.a_custom_max_message_size:
@@ -86,6 +86,18 @@ function unpack(bytestring: string): string {
 
       case symbols.version_line:
         scan_forward_to_null('v=', 'version_line');
+        break;
+
+      case symbols.a_mid_zero:
+        work += 'a=mid:0\r\n';
+        break;
+
+      case symbols.s_dash:
+        work += 's=-\r\n';
+        break;
+
+      case symbols.t_zero_zero:
+        work += 't=0 0\r\n';
         break;
 
       case symbols.unknown_terminate:
