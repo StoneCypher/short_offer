@@ -4,19 +4,19 @@
 
 
 
-const c_terminal              = '\u0000';
+const c_terminal              = '\x00';
 
-const offer                   = '\u0001',
-      answer                  = '\u0002',
-      vline                   = '\u0003';
+const offer                   = '\x01',
+      answer                  = '\x02',
+      vline                   = '\x03';
 
-const short_separator_follows = '\u007c',
-      short_separators_all    = '\u007d';
+const short_separator_follows = '\x7c',
+      short_separators_all    = '\x7d';
 
-const unknown_line            = '\u007e';
+const unknown_line            = '\x7e';
 
 // consumes the rest of the bytestring into the output, *then* the after-queue
-const unknown_terminate       = '\u007f';  // 127 is the highest efficient value
+const unknown_terminate       = '\x7f';  // 127 is the highest efficient value
 
 
 

@@ -26,13 +26,26 @@
 
 RawDocument
   = Offer
+  / Answer
   / UnknownTerminatingString
 
 
 
 Offer
-  = '{"type":"offer","sdp":"' s:.* '"}'
-  { return ast('offer', s.join('') ); }
+  = '{"type":"offer","sdp":"' s:Rule* '"}'
+  { return ast('offer', s ); }
+
+
+
+Answer
+  = '{"type":"answer","sdp":"' s:Rule* '"}'
+  { return ast('answer', s ); }
+
+
+
+// todo: modify this to tolerate \n instead of \r\n
+Rule
+ = rl:[^'\r\n']* '\r\n' { return ast('unknown_line', rl.join('')); }
 
 
 

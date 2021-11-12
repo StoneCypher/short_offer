@@ -38,7 +38,7 @@ function generate_test_log() {
 
     const start_time      = new Date().getTime(),
           le_parse        = so.parse(full_set[s]),
-          le_pack         = so.pack(le_parse),
+          le_pack         = so.pack(full_set[s]),
           end_time        = new Date().getTime();
 
     const original_length = full_set[s].length,
