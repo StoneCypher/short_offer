@@ -1,10 +1,20 @@
-declare type ValZeroLine = {
-    kind: 'val_zero_line';
+declare type VersionZeroLine = {
+    kind: 'version_zero_line';
     value: string;
     uses_short_nl: boolean;
 };
-declare type ValLine = {
-    kind: 'val_line';
+declare type VersionLine = {
+    kind: 'version_line';
+    value: string;
+    uses_short_nl: boolean;
+};
+declare type AMsidSemanticNS = {
+    kind: 'a_msid_semantic_ns';
+    value: string;
+    uses_short_nl: boolean;
+};
+declare type AMsidSemanticWS = {
+    kind: 'a_msid_semantic_ws';
     value: string;
     uses_short_nl: boolean;
 };
@@ -27,17 +37,10 @@ declare type PegLocation = {
     start: PegCoord;
     end: PegCoord;
 };
-declare type ParsedLine = UnknownLine | ValZeroLine | ValLine | UnknownTerminate;
+declare type ParsedLine = UnknownLine | VersionZeroLine | VersionLine | AMsidSemanticNS | AMsidSemanticWS | UnknownTerminate;
 declare type ParsedSdp = {
-    kind: 'offer' | 'answer' | 'unknown' | 'unknown_terminate';
+    kind: 'offer' | 'answer' | 'unknown' | 'unknown_terminate' | 'version_line' | 'version_zero_line' | 'a_msid_semantic_ns' | 'a_msid_semantic_ws';
     value: ParsedLine[];
     loc: PegLocation;
 };
-declare const astIds: {
-    readonly aid_error: 1;
-    readonly aid_unknownLine: 2;
-    readonly aid_offer: 2;
-    readonly aid_answer: 3;
-    readonly aid_vline: 4;
-};
-export { UnknownLine, ValZeroLine, ValLine, ParsedLine, PegCoord, PegLocation, ParsedSdp, astIds };
+export { UnknownLine, VersionZeroLine, VersionLine, ParsedLine, PegCoord, PegLocation, ParsedSdp };

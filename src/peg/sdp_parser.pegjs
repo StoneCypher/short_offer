@@ -47,19 +47,33 @@ Answer
 Rule
  = ValZeroLine
  / ValLine
+ / AttrMsidSemanticWmsClaimNoSpace
+ / AttrMsidSemanticWmsClaimWithSpace
  / UnknownRule
 
 
 
 ValZeroLine
  = 'v=0\r\n'
- { return ast('val_zero_line', undefined); }
+ { return ast('version_zero_line', undefined); }
 
 
 
 ValLine
  = 'v=' us:UntilSeparator
- { return ast('val_line', us); }
+ { return ast('version_line', us); }
+
+
+
+AttrMsidSemanticWmsClaimNoSpace
+  = 'a=msid-semantic:WMS'
+  { return ast('a_msid_semantic_ns', undefined); }
+
+
+
+AttrMsidSemanticWmsClaimWithSpace
+  = 'a=msid-semantic: WMS'
+  { return ast('a_msid_semantic_ws', undefined); }
 
 
 

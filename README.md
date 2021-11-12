@@ -2,6 +2,10 @@
 
 Write a shortened offer claim for WebRTC.  Byte-safe.  Typescript pair of peg parsers.
 
+<img src="https://github.com/StoneCypher/short_offer/main/src/maintained_artifacts/stats_by_version_absolute.png" width="500" />
+
+<img src="https://github.com/StoneCypher/short_offer/main/src/maintained_artifacts/stats_by_version_relative.png" width="500" />
+
 
 
 <br/><br/>
