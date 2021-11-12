@@ -1,5 +1,10 @@
-declare type VLine = {
-    kind: 'vline';
+declare type ValZeroLine = {
+    kind: 'val_zero_line';
+    value: string;
+    uses_short_nl: boolean;
+};
+declare type ValLine = {
+    kind: 'val_line';
     value: string;
     uses_short_nl: boolean;
 };
@@ -22,7 +27,7 @@ declare type PegLocation = {
     start: PegCoord;
     end: PegCoord;
 };
-declare type ParsedLine = UnknownLine | VLine | UnknownTerminate;
+declare type ParsedLine = UnknownLine | ValZeroLine | ValLine | UnknownTerminate;
 declare type ParsedSdp = {
     kind: 'offer' | 'answer' | 'unknown' | 'unknown_terminate';
     value: ParsedLine[];
@@ -35,4 +40,4 @@ declare const astIds: {
     readonly aid_answer: 3;
     readonly aid_vline: 4;
 };
-export { UnknownLine, VLine, ParsedLine, PegCoord, PegLocation, ParsedSdp, astIds };
+export { UnknownLine, ValZeroLine, ValLine, ParsedLine, PegCoord, PegLocation, ParsedSdp, astIds };

@@ -1,12 +1,14 @@
 
-type VLine            = { kind: 'vline',             value: string, uses_short_nl: boolean };
+type ValZeroLine      = { kind: 'val_zero_line',     value: string, uses_short_nl: boolean };
+type ValLine          = { kind: 'val_line',          value: string, uses_short_nl: boolean };
+
 type UnknownLine      = { kind: 'unknown_line',      value: string, uses_short_nl: boolean };
 type UnknownTerminate = { kind: 'unknown_terminate', value: string, uses_short_nl: boolean };
 
 type PegCoord         = { offset: number; line: number; column: number; };
 type PegLocation      = { start: PegCoord; end: PegCoord };
 
-type ParsedLine       = UnknownLine | VLine | UnknownTerminate;
+type ParsedLine       = UnknownLine | ValZeroLine | ValLine | UnknownTerminate;
 
 type ParsedSdp = {
   kind  : 'offer' | 'answer' | 'unknown' | 'unknown_terminate',
@@ -33,7 +35,9 @@ const astIds = {
 
 
 export {
-  UnknownLine, VLine, ParsedLine,
+  UnknownLine,
+  ValZeroLine, ValLine,
+  ParsedLine,
   PegCoord, PegLocation,
   ParsedSdp,
   astIds

@@ -45,7 +45,33 @@ Answer
 
 // todo: modify this to tolerate \n instead of \r\n
 Rule
- = rl:[^'\r\n']* '\r\n' { return ast('unknown_line', rl.join('')); }
+ = ValZeroLine
+ / ValLine
+ / UnknownRule
+
+
+
+ValZeroLine
+ = 'v=0\r\n'
+ { return ast('val_zero_line', undefined); }
+
+
+
+ValLine
+ = 'v=' us:UntilSeparator
+ { return ast('val_line', us); }
+
+
+
+UnknownRule
+ = us:UntilSeparator
+ { return ast('unknown_line', us); }
+
+
+
+UntilSeparator
+ = rl:[^'\r\n']* '\r\n'
+ { return rl.join(''); }
 
 
 

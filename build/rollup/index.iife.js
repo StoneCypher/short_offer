@@ -104,7 +104,7 @@ var short_offer = (function (exports) {
     };
     function peg$parse$1(input, options) {
         options = options !== void 0 ? options : {};
-        var peg$FAILED = {}, peg$startRuleFunctions = { RawDocument: peg$parseRawDocument }, peg$startRuleFunction = peg$parseRawDocument, peg$c0 = "{\"type\":\"offer\",\"sdp\":\"", peg$c1 = peg$literalExpectation("{\"type\":\"offer\",\"sdp\":\"", false), peg$c2 = "\"}", peg$c3 = peg$literalExpectation("\"}", false), peg$c4 = function (s) { return ast('offer', s); }, peg$c5 = "{\"type\":\"answer\",\"sdp\":\"", peg$c6 = peg$literalExpectation("{\"type\":\"answer\",\"sdp\":\"", false), peg$c7 = function (s) { return ast('answer', s); }, peg$c8 = /^[^'\r\n']/, peg$c9 = peg$classExpectation(["'", "\r", "\n", "'"], true, false), peg$c10 = "\r\n", peg$c11 = peg$literalExpectation("\r\n", false), peg$c12 = function (rl) { return ast('unknown_line', rl.join('')); }, peg$c13 = peg$anyExpectation(), peg$c14 = function (uts) { return ast('unknown_terminate', uts.join('')); }, peg$currPos = 0, peg$savedPos = 0, peg$posDetailsCache = [{ line: 1, column: 1 }], peg$maxFailPos = 0, peg$maxFailExpected = [], peg$result;
+        var peg$FAILED = {}, peg$startRuleFunctions = { RawDocument: peg$parseRawDocument }, peg$startRuleFunction = peg$parseRawDocument, peg$c0 = "{\"type\":\"offer\",\"sdp\":\"", peg$c1 = peg$literalExpectation("{\"type\":\"offer\",\"sdp\":\"", false), peg$c2 = "\"}", peg$c3 = peg$literalExpectation("\"}", false), peg$c4 = function (s) { return ast('offer', s); }, peg$c5 = "{\"type\":\"answer\",\"sdp\":\"", peg$c6 = peg$literalExpectation("{\"type\":\"answer\",\"sdp\":\"", false), peg$c7 = function (s) { return ast('answer', s); }, peg$c8 = "v=0\r\n", peg$c9 = peg$literalExpectation("v=0\r\n", false), peg$c10 = function () { return ast('val_zero_line', undefined); }, peg$c11 = "v=", peg$c12 = peg$literalExpectation("v=", false), peg$c13 = function (us) { return ast('val_line', us); }, peg$c14 = function (us) { return ast('unknown_line', us); }, peg$c15 = /^[^'\r\n']/, peg$c16 = peg$classExpectation(["'", "\r", "\n", "'"], true, false), peg$c17 = "\r\n", peg$c18 = peg$literalExpectation("\r\n", false), peg$c19 = function (rl) { return rl.join(''); }, peg$c20 = peg$anyExpectation(), peg$c21 = function (uts) { return ast('unknown_terminate', uts.join('')); }, peg$currPos = 0, peg$savedPos = 0, peg$posDetailsCache = [{ line: 1, column: 1 }], peg$maxFailPos = 0, peg$maxFailExpected = [], peg$result;
         if ("startRule" in options) {
             if (!(options.startRule in peg$startRuleFunctions)) {
                 throw new Error("Can't start parsing from rule \"" + options.startRule + "\".");
@@ -299,46 +299,119 @@ var short_offer = (function (exports) {
             return s0;
         }
         function peg$parseRule() {
+            var s0;
+            s0 = peg$parseValZeroLine();
+            if (s0 === peg$FAILED) {
+                s0 = peg$parseValLine();
+                if (s0 === peg$FAILED) {
+                    s0 = peg$parseUnknownRule();
+                }
+            }
+            return s0;
+        }
+        function peg$parseValZeroLine() {
+            var s0, s1;
+            s0 = peg$currPos;
+            if (input.substr(peg$currPos, 5) === peg$c8) {
+                s1 = peg$c8;
+                peg$currPos += 5;
+            }
+            else {
+                s1 = peg$FAILED;
+                {
+                    peg$fail(peg$c9);
+                }
+            }
+            if (s1 !== peg$FAILED) {
+                peg$savedPos = s0;
+                s1 = peg$c10();
+            }
+            s0 = s1;
+            return s0;
+        }
+        function peg$parseValLine() {
+            var s0, s1, s2;
+            s0 = peg$currPos;
+            if (input.substr(peg$currPos, 2) === peg$c11) {
+                s1 = peg$c11;
+                peg$currPos += 2;
+            }
+            else {
+                s1 = peg$FAILED;
+                {
+                    peg$fail(peg$c12);
+                }
+            }
+            if (s1 !== peg$FAILED) {
+                s2 = peg$parseUntilSeparator();
+                if (s2 !== peg$FAILED) {
+                    peg$savedPos = s0;
+                    s1 = peg$c13(s2);
+                    s0 = s1;
+                }
+                else {
+                    peg$currPos = s0;
+                    s0 = peg$FAILED;
+                }
+            }
+            else {
+                peg$currPos = s0;
+                s0 = peg$FAILED;
+            }
+            return s0;
+        }
+        function peg$parseUnknownRule() {
+            var s0, s1;
+            s0 = peg$currPos;
+            s1 = peg$parseUntilSeparator();
+            if (s1 !== peg$FAILED) {
+                peg$savedPos = s0;
+                s1 = peg$c14(s1);
+            }
+            s0 = s1;
+            return s0;
+        }
+        function peg$parseUntilSeparator() {
             var s0, s1, s2;
             s0 = peg$currPos;
             s1 = [];
-            if (peg$c8.test(input.charAt(peg$currPos))) {
+            if (peg$c15.test(input.charAt(peg$currPos))) {
                 s2 = input.charAt(peg$currPos);
                 peg$currPos++;
             }
             else {
                 s2 = peg$FAILED;
                 {
-                    peg$fail(peg$c9);
+                    peg$fail(peg$c16);
                 }
             }
             while (s2 !== peg$FAILED) {
                 s1.push(s2);
-                if (peg$c8.test(input.charAt(peg$currPos))) {
+                if (peg$c15.test(input.charAt(peg$currPos))) {
                     s2 = input.charAt(peg$currPos);
                     peg$currPos++;
                 }
                 else {
                     s2 = peg$FAILED;
                     {
-                        peg$fail(peg$c9);
+                        peg$fail(peg$c16);
                     }
                 }
             }
             if (s1 !== peg$FAILED) {
-                if (input.substr(peg$currPos, 2) === peg$c10) {
-                    s2 = peg$c10;
+                if (input.substr(peg$currPos, 2) === peg$c17) {
+                    s2 = peg$c17;
                     peg$currPos += 2;
                 }
                 else {
                     s2 = peg$FAILED;
                     {
-                        peg$fail(peg$c11);
+                        peg$fail(peg$c18);
                     }
                 }
                 if (s2 !== peg$FAILED) {
                     peg$savedPos = s0;
-                    s1 = peg$c12(s1);
+                    s1 = peg$c19(s1);
                     s0 = s1;
                 }
                 else {
@@ -363,7 +436,7 @@ var short_offer = (function (exports) {
             else {
                 s2 = peg$FAILED;
                 {
-                    peg$fail(peg$c13);
+                    peg$fail(peg$c20);
                 }
             }
             while (s2 !== peg$FAILED) {
@@ -375,13 +448,13 @@ var short_offer = (function (exports) {
                 else {
                     s2 = peg$FAILED;
                     {
-                        peg$fail(peg$c13);
+                        peg$fail(peg$c20);
                     }
                 }
             }
             if (s1 !== peg$FAILED) {
                 peg$savedPos = s0;
-                s1 = peg$c14(s1);
+                s1 = peg$c21(s1);
             }
             s0 = s1;
             return s0;
@@ -645,7 +718,7 @@ var short_offer = (function (exports) {
     }
 
     const c_terminal = '\x00';
-    const offer = '\x01', answer = '\x02', vline = '\x03';
+    const offer = '\x01', answer = '\x02', val_zero_line = '\x03', val_line = '\x04';
     const short_separator_follows = '\x7c';
     const unknown_line = '\x7e';
     const unknown_terminate = '\x7f';
@@ -671,8 +744,11 @@ var short_offer = (function (exports) {
                     case 'unknown_line':
                         work += `${unknown_line}${v.value}${nl_or_cr_nl(v)}${c_terminal}`;
                         break;
-                    case 'vline':
-                        work += `${vline}${v.value}${nl_or_cr_nl(v)}${c_terminal}`;
+                    case 'val_zero_line':
+                        work += `${val_zero_line}${nl_or_cr_nl(v)}`;
+                        break;
+                    case 'val_line':
+                        work += `${val_line}${v.value}${nl_or_cr_nl(v)}${c_terminal}`;
                         break;
                     case 'unknown_terminate':
                         work += `${unknown_terminate}${v.value}`;
@@ -712,7 +788,7 @@ var short_offer = (function (exports) {
                     break;
                 case unknown_line:
                     let found = false, end;
-                    for (end = i + i; end < iC; ++end) {
+                    for (end = i + 1; end < iC; ++end) {
                         if (bytestring.charAt(end) === c_terminal) {
                             found = end;
                             end = iC;
@@ -723,6 +799,23 @@ var short_offer = (function (exports) {
                     }
                     work += `${bytestring.substring(i + i, end + 1)}\r\n`;
                     i = end + 1;
+                    break;
+                case val_zero_line:
+                    work += `v=0\r\n`;
+                    break;
+                case val_line:
+                    let found2 = false, end2;
+                    for (end2 = i + 1; end2 < iC; ++end2) {
+                        if (bytestring.charAt(end2) === c_terminal) {
+                            found2 = end2;
+                            end2 = iC;
+                        }
+                    }
+                    if (found2 === false) {
+                        throw new RangeError(`No terminal null for unknown_line at ${i}`);
+                    }
+                    work += `v=${bytestring.substring(i + 1, end2 + 1)}\r\n`;
+                    i = end2 + 1;
                     break;
                 case unknown_terminate:
                     work += bytestring.substring(i + 1, iC);
