@@ -34,12 +34,21 @@ function parsed_to_bytestring(parsed) {
                 case 'a_msid_semantic_ws':
                     work += `${symbols.a_msid_semantic_ws}${nl_or_cr_nl(v)}`;
                     break;
+                case 'a_extmap_allow_mixed':
+                    work += `${symbols.a_extmap_allow_mixed}${nl_or_cr_nl(v)}`;
+                    break;
+                case 'a_standard_sctp_port':
+                    work += `${symbols.a_standard_sctp_port}${nl_or_cr_nl(v)}`;
+                    break;
+                case 'a_custom_sctp_port':
+                    work += `${symbols.a_custom_sctp_port}${v.value}${nl_or_cr_nl(v)}${symbols.c_terminal}`;
+                    break;
                 case 'unknown_terminate':
                     work += `${symbols.unknown_terminate}${v.value}`;
                     break;
                 default:
                     const exhaustiveCheck = v_kind;
-                    throw new TypeError(`Impossible bytestring symbol found: ${exhaustiveCheck}`);
+                    throw new TypeError(`Impossible bytestring symbol found: ${JSON.stringify(exhaustiveCheck)}`);
             }
         });
     }

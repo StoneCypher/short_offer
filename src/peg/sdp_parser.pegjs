@@ -31,6 +31,11 @@ RawDocument
 
 
 
+Decimal
+  = d:[0-9]+ { return parseInt(d.join(''), 10); }
+
+
+
 Offer
   = '{"type":"offer","sdp":"' s:Rule* '"}'
   { return ast('offer', s ); }
@@ -49,6 +54,9 @@ Rule
  / ValLine
  / AttrMsidSemanticWmsClaimNoSpace
  / AttrMsidSemanticWmsClaimWithSpace
+ / AttrExtmapAllowMixed
+ / StandardSctpPort
+ / CustomSctpPort
  / UnknownRule
 
 
@@ -74,6 +82,24 @@ AttrMsidSemanticWmsClaimNoSpace
 AttrMsidSemanticWmsClaimWithSpace
   = 'a=msid-semantic: WMS'
   { return ast('a_msid_semantic_ws', undefined); }
+
+
+
+AttrExtmapAllowMixed
+  = 'a=extmap-allow-mixed'
+  { return ast('a_extmap_allow_mixed', undefined); }
+
+
+
+StandardSctpPort
+  = 'a=sctp-port:5000'
+  { return ast('a_standard_sctp_port'); }
+
+
+
+CustomSctpPort
+  = 'a=sctp-port:' data:Decimal
+  { return ast('a_custom_sctp_port'); }
 
 
 
