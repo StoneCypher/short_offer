@@ -59,6 +59,9 @@ function parsed_to_bytestring( parsed: ParsedSdp ): string {
           work += `${symbols.unknown_terminate}${v.value}`;
           break;
 
+        // default:
+        //   throw new RangeError(`Unknown kind token encountered in parse tree '${v.kind}'`);
+
       }
 
     });
