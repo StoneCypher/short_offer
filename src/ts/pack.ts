@@ -98,6 +98,18 @@ function parsed_to_bytestring( parsed: ParsedSdp ): string {
           work += `${symbols.a_setup_active}${nl_or_cr_nl(v)}`;
           break;
 
+        case 'a_mid_zero':
+          work += `${symbols.a_mid_zero}${nl_or_cr_nl(v)}`;
+          break;
+
+        case 's_dash':
+          work += `${symbols.s_dash}${nl_or_cr_nl(v)}`;
+          break;
+
+        case 't_zero_zero':
+          work += `${symbols.t_zero_zero}${nl_or_cr_nl(v)}`;
+          break;
+
         case 'unknown_terminate':
           // newline stance is irrelevant
           work += `${symbols.unknown_terminate}${v.value}`;

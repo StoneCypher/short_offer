@@ -57,6 +57,15 @@ function unpack(bytestring) {
             case symbols.version_line:
                 scan_forward_to_null('v=', 'version_line');
                 break;
+            case symbols.a_mid_zero:
+                work += 'a=mid:0\r\n';
+                break;
+            case symbols.s_dash:
+                work += 's=-\r\n';
+                break;
+            case symbols.t_zero_zero:
+                work += 't=0 0\r\n';
+                break;
             case symbols.unknown_terminate:
                 work += bytestring.substring(i + 1, iC);
                 i = iC;

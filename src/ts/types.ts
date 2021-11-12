@@ -11,6 +11,10 @@ type AStandardMaxMessageSize = { kind: 'a_standard_max_message_size', value: str
 type ACustomMaxMessageSize   = { kind: 'a_custom_max_message_size',   value: string, uses_short_nl: boolean };
 type ASetupActPass           = { kind: 'a_setup_actpass',             value: string, uses_short_nl: boolean };
 type ASetupActive            = { kind: 'a_setup_active',              value: string, uses_short_nl: boolean };
+type AMidZero                = { kind: 'a_mid_zero',                  value: string, uses_short_nl: boolean };
+
+type SDash                   = { kind: 's_dash',                      value: string, uses_short_nl: boolean };
+type TZeroZero               = { kind: 't_zero_zero',                 value: string, uses_short_nl: boolean };
 
 type UnknownLine             = { kind: 'unknown_line',                value: string, uses_short_nl: boolean };
 type UnknownTerminate        = { kind: 'unknown_terminate',           value: string, uses_short_nl: boolean };
@@ -24,7 +28,9 @@ type ParsedLine
   | AMsidSemanticNS | AMsidSemanticWS | AExtmapAllowMixed
   | AStandardSctpPort | ACustomSctpPort
   | AStandardMaxMessageSize | ACustomMaxMessageSize
-  | ASetupActPass | ASetupActive
+  | ASetupActPass | ASetupActive | AMidZero
+  | SDash
+  | TZeroZero
   | UnknownTerminate;
 
 type ParsedSdp = {
@@ -32,7 +38,9 @@ type ParsedSdp = {
         | 'version_zero_line' | 'a_msid_semantic_ns' | 'a_msid_semantic_ws'
         | 'a_extmap_allow_mixed' | 'a_standard_sctp_port'
         | 'a_custom_sctp_port' | 'a_standard_max_message_size'
-        | 'a_setup_actpass' | 'a_setup_active'
+        | 'a_setup_actpass' | 'a_setup_active' | 'a_mid_zero'
+        | 's_dash'
+        | 't_zero_zero'
         | 'a_custom_max_message_size',
   value : ParsedLine[],
   loc   : PegLocation
