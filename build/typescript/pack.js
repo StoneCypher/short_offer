@@ -17,19 +17,29 @@ function parsed_to_bytestring(parsed) {
     }
     if (!skip_iter) {
         parsed.value.forEach(v => {
-            switch (v.kind) {
+            const v_kind = v.kind;
+            switch (v_kind) {
                 case 'unknown_line':
                     work += `${symbols.unknown_line}${v.value}${nl_or_cr_nl(v)}${symbols.c_terminal}`;
                     break;
-                case 'val_zero_line':
-                    work += `${symbols.val_zero_line}${nl_or_cr_nl(v)}`;
+                case 'version_zero_line':
+                    work += `${symbols.version_zero_line}${nl_or_cr_nl(v)}`;
                     break;
-                case 'val_line':
-                    work += `${symbols.val_line}${v.value}${nl_or_cr_nl(v)}${symbols.c_terminal}`;
+                case 'version_line':
+                    work += `${symbols.version_line}${v.value}${nl_or_cr_nl(v)}${symbols.c_terminal}`;
+                    break;
+                case 'a_msid_semantic_ns':
+                    work += `${symbols.a_msid_semantic_ns}${nl_or_cr_nl(v)}`;
+                    break;
+                case 'a_msid_semantic_ws':
+                    work += `${symbols.a_msid_semantic_ws}${nl_or_cr_nl(v)}`;
                     break;
                 case 'unknown_terminate':
                     work += `${symbols.unknown_terminate}${v.value}`;
                     break;
+                default:
+                    const exhaustiveCheck = v_kind;
+                    throw new TypeError(`Impossible bytestring symbol found: ${exhaustiveCheck}`);
             }
         });
     }
