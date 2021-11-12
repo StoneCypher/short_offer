@@ -55,8 +55,12 @@ Rule
  / AttrMsidSemanticWmsClaimNoSpace
  / AttrMsidSemanticWmsClaimWithSpace
  / AttrExtmapAllowMixed
+ / ASetupActpass
+ / ASetupActive
  / StandardSctpPort
  / CustomSctpPort
+ / StandardMaxMessageSize
+ / CustomMaxMessageSize
  / UnknownRule
 
 
@@ -91,6 +95,18 @@ AttrExtmapAllowMixed
 
 
 
+ASetupActpass
+  = 'a=setup:actpass'
+  { return ast('a_setup_actpass'); }
+
+
+
+ASetupActive
+  = 'a=setup:active'
+  { return ast('a_setup_active'); }
+
+
+
 StandardSctpPort
   = 'a=sctp-port:5000'
   { return ast('a_standard_sctp_port'); }
@@ -99,7 +115,19 @@ StandardSctpPort
 
 CustomSctpPort
   = 'a=sctp-port:' data:Decimal
-  { return ast('a_custom_sctp_port'); }
+  { return ast('a_custom_sctp_port', data); }
+
+
+
+StandardMaxMessageSize
+  = 'a=max-message-size:262144'
+  { return ast('a_standard_max_message_size'); }
+
+
+
+CustomMaxMessageSize
+  = 'a=max-message-size:' data:Decimal
+  { return ast('a_custom_max_message_size', data); }
 
 
 

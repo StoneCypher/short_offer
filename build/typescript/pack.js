@@ -43,6 +43,18 @@ function parsed_to_bytestring(parsed) {
                 case 'a_custom_sctp_port':
                     work += `${symbols.a_custom_sctp_port}${v.value}${nl_or_cr_nl(v)}${symbols.c_terminal}`;
                     break;
+                case 'a_standard_max_message_size':
+                    work += `${symbols.a_standard_max_message_size}${nl_or_cr_nl(v)}`;
+                    break;
+                case 'a_custom_max_message_size':
+                    work += `${symbols.a_custom_max_message_size}${v.value}${nl_or_cr_nl(v)}${symbols.c_terminal}`;
+                    break;
+                case 'a_setup_actpass':
+                    work += `${symbols.a_setup_actpass}${nl_or_cr_nl(v)}`;
+                    break;
+                case 'a_setup_active':
+                    work += `${symbols.a_setup_active}${nl_or_cr_nl(v)}`;
+                    break;
                 case 'unknown_terminate':
                     work += `${symbols.unknown_terminate}${v.value}`;
                     break;

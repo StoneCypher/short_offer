@@ -76,6 +76,14 @@ function unpack(bytestring: string): string {
         scan_forward_to_null('a=sctp-port:', 'a_custom_sctp_port', unpack_decimal);
         break;
 
+      case symbols.a_standard_max_message_size:
+        work   += `a=max-message-size:262144\r\n`;  // todo handle soft \n
+        break;
+
+      case symbols.a_custom_max_message_size:
+        scan_forward_to_null('a=max-message-size:', 'a_custom_max_message_size', unpack_decimal);
+        break;
+
       case symbols.version_line:
         scan_forward_to_null('v=', 'version_line');
         break;

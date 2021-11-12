@@ -1,7 +1,13 @@
 
+'use strict';
+
+
+
+
+
 const fs = require('fs');
 
-const package = JSON.parse(`${ fs.readFileSync('./package.json') }`);
+const pkg = JSON.parse(`${ fs.readFileSync('./package.json') }`);
 
 const logfile = './src/maintained_artifacts/stats_by_version.json',
       log     = JSON.parse(`${ fs.readFileSync(logfile) }`);
@@ -23,16 +29,37 @@ function count_unknowns_in_parse(le_parse) {
 
 
 
+function pct1(num) {
+  return `${(num*100).toFixed(1)}%`;
+}
+
+
+
+
+
 function generate_test_log() {
 
   console.log(`Running test log results`);
 
   const ret = {};
 
-  let orig   = 0,
-      final  = 0,
-      failed = 0,
-      time   = 0
+  let orig     = 0,
+      final    = 0,
+      failed   = 0,
+      time     = 0,
+
+      worstp   = 0,
+      worstpS  = '',
+      worstpSo = 0,
+      worstpSn = 0,
+
+      worstb   = Number.POSITIVE_INFINITY,
+      worstbS  = '',
+      worstbSo = 0,
+      worstbSn = 0,
+
+      worstu   = '';
+
 
   styles.map( s => {
 
@@ -45,6 +72,12 @@ function generate_test_log() {
           final_length    = le_pack.length,
           failed_claims   = count_unknowns_in_parse(le_parse),
           ltime           = end_time - start_time;
+
+    const worst_ui        = le_parse.value
+                                    .filter(v => v.kind === 'unknown_line')
+                                    .sort( (l,r) => l.value.length < r.value.length )[0].value;
+
+    if (worst_ui.length > worstu.length) { worstu = worst_ui; }
 
     ret[s] = {
 
@@ -60,6 +93,22 @@ function generate_test_log() {
     failed += failed_claims;
     time   += ltime;
 
+    const bd = original_length - final_length;
+    if (bd < worstb) {
+      worstb   = bd;
+      worstbS  = s;
+      worstbSo = original_length;
+      worstbSn = final_length;
+    }
+
+    const pd = final_length / original_length;
+    if (pd > worstp) {
+      worstp   = pd;
+      worstpS  = s;
+      worstpSo = original_length;
+      worstpSn = final_length;
+    }
+
   } )
 
   ret['total'] = {
@@ -70,6 +119,11 @@ function generate_test_log() {
     time
   }
 
+  console.log(` - Avg improvement         : ${pct1(final/orig)} (${orig} to ${final})`);
+  console.log(` - Bytewise least improved : ${worstbS} (${worstbSo} to ${worstbSn}, ${pct1(worstbSn/worstbSo)})`);
+  console.log(` - Pctwise least improved  : ${worstpS} (${worstpSo} to ${worstpSn}, ${pct1(worstpSn/worstpSo)})`);
+  console.log(` - Single worst unknown    : ${worstu}`);
+
   return ret;
 
 }
@@ -78,6 +132,6 @@ function generate_test_log() {
 
 
 
-log[ package.version ] = generate_test_log();
+log[ pkg.version ] = generate_test_log();
 
 fs.writeFileSync( logfile, JSON.stringify(log, undefined, 2) );

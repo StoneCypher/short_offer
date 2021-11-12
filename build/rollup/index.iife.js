@@ -104,7 +104,7 @@ var short_offer = (function (exports) {
     };
     function peg$parse$1(input, options) {
         options = options !== void 0 ? options : {};
-        var peg$FAILED = {}, peg$startRuleFunctions = { RawDocument: peg$parseRawDocument }, peg$startRuleFunction = peg$parseRawDocument, peg$c0 = /^[0-9]/, peg$c1 = peg$classExpectation([["0", "9"]], false, false), peg$c2 = function (d) { return parseInt(d.join(''), 10); }, peg$c3 = "{\"type\":\"offer\",\"sdp\":\"", peg$c4 = peg$literalExpectation("{\"type\":\"offer\",\"sdp\":\"", false), peg$c5 = "\"}", peg$c6 = peg$literalExpectation("\"}", false), peg$c7 = function (s) { return ast('offer', s); }, peg$c8 = "{\"type\":\"answer\",\"sdp\":\"", peg$c9 = peg$literalExpectation("{\"type\":\"answer\",\"sdp\":\"", false), peg$c10 = function (s) { return ast('answer', s); }, peg$c11 = "v=0\r\n", peg$c12 = peg$literalExpectation("v=0\r\n", false), peg$c13 = function () { return ast('version_zero_line', undefined); }, peg$c14 = "v=", peg$c15 = peg$literalExpectation("v=", false), peg$c16 = function (us) { return ast('version_line', us); }, peg$c17 = "a=msid-semantic:WMS", peg$c18 = peg$literalExpectation("a=msid-semantic:WMS", false), peg$c19 = function () { return ast('a_msid_semantic_ns', undefined); }, peg$c20 = "a=msid-semantic: WMS", peg$c21 = peg$literalExpectation("a=msid-semantic: WMS", false), peg$c22 = function () { return ast('a_msid_semantic_ws', undefined); }, peg$c23 = "a=extmap-allow-mixed", peg$c24 = peg$literalExpectation("a=extmap-allow-mixed", false), peg$c25 = function () { return ast('a_extmap_allow_mixed', undefined); }, peg$c26 = "a=sctp-port:5000", peg$c27 = peg$literalExpectation("a=sctp-port:5000", false), peg$c28 = function () { return ast('a_standard_sctp_port'); }, peg$c29 = "a=sctp-port:", peg$c30 = peg$literalExpectation("a=sctp-port:", false), peg$c31 = function (data) { return ast('a_custom_sctp_port'); }, peg$c32 = function (us) { return ast('unknown_line', us); }, peg$c33 = /^[^'\r\n']/, peg$c34 = peg$classExpectation(["'", "\r", "\n", "'"], true, false), peg$c35 = "\r\n", peg$c36 = peg$literalExpectation("\r\n", false), peg$c37 = function (rl) { return rl.join(''); }, peg$c38 = peg$anyExpectation(), peg$c39 = function (uts) { return ast('unknown_terminate', uts.join('')); }, peg$currPos = 0, peg$savedPos = 0, peg$posDetailsCache = [{ line: 1, column: 1 }], peg$maxFailPos = 0, peg$maxFailExpected = [], peg$result;
+        var peg$FAILED = {}, peg$startRuleFunctions = { RawDocument: peg$parseRawDocument }, peg$startRuleFunction = peg$parseRawDocument, peg$c0 = /^[0-9]/, peg$c1 = peg$classExpectation([["0", "9"]], false, false), peg$c2 = function (d) { return parseInt(d.join(''), 10); }, peg$c3 = "{\"type\":\"offer\",\"sdp\":\"", peg$c4 = peg$literalExpectation("{\"type\":\"offer\",\"sdp\":\"", false), peg$c5 = "\"}", peg$c6 = peg$literalExpectation("\"}", false), peg$c7 = function (s) { return ast('offer', s); }, peg$c8 = "{\"type\":\"answer\",\"sdp\":\"", peg$c9 = peg$literalExpectation("{\"type\":\"answer\",\"sdp\":\"", false), peg$c10 = function (s) { return ast('answer', s); }, peg$c11 = "v=0\r\n", peg$c12 = peg$literalExpectation("v=0\r\n", false), peg$c13 = function () { return ast('version_zero_line', undefined); }, peg$c14 = "v=", peg$c15 = peg$literalExpectation("v=", false), peg$c16 = function (us) { return ast('version_line', us); }, peg$c17 = "a=msid-semantic:WMS", peg$c18 = peg$literalExpectation("a=msid-semantic:WMS", false), peg$c19 = function () { return ast('a_msid_semantic_ns', undefined); }, peg$c20 = "a=msid-semantic: WMS", peg$c21 = peg$literalExpectation("a=msid-semantic: WMS", false), peg$c22 = function () { return ast('a_msid_semantic_ws', undefined); }, peg$c23 = "a=extmap-allow-mixed", peg$c24 = peg$literalExpectation("a=extmap-allow-mixed", false), peg$c25 = function () { return ast('a_extmap_allow_mixed', undefined); }, peg$c26 = "a=setup:actpass", peg$c27 = peg$literalExpectation("a=setup:actpass", false), peg$c28 = function () { return ast('a_setup_actpass'); }, peg$c29 = "a=setup:active", peg$c30 = peg$literalExpectation("a=setup:active", false), peg$c31 = function () { return ast('a_setup_active'); }, peg$c32 = "a=sctp-port:5000", peg$c33 = peg$literalExpectation("a=sctp-port:5000", false), peg$c34 = function () { return ast('a_standard_sctp_port'); }, peg$c35 = "a=sctp-port:", peg$c36 = peg$literalExpectation("a=sctp-port:", false), peg$c37 = function (data) { return ast('a_custom_sctp_port', data); }, peg$c38 = "a=max-message-size:262144", peg$c39 = peg$literalExpectation("a=max-message-size:262144", false), peg$c40 = function () { return ast('a_standard_max_message_size'); }, peg$c41 = "a=max-message-size:", peg$c42 = peg$literalExpectation("a=max-message-size:", false), peg$c43 = function (data) { return ast('a_custom_max_message_size', data); }, peg$c44 = function (us) { return ast('unknown_line', us); }, peg$c45 = /^[^'\r\n']/, peg$c46 = peg$classExpectation(["'", "\r", "\n", "'"], true, false), peg$c47 = "\r\n", peg$c48 = peg$literalExpectation("\r\n", false), peg$c49 = function (rl) { return rl.join(''); }, peg$c50 = peg$anyExpectation(), peg$c51 = function (uts) { return ast('unknown_terminate', uts.join('')); }, peg$currPos = 0, peg$savedPos = 0, peg$posDetailsCache = [{ line: 1, column: 1 }], peg$maxFailPos = 0, peg$maxFailExpected = [], peg$result;
         if ("startRule" in options) {
             if (!(options.startRule in peg$startRuleFunctions)) {
                 throw new Error("Can't start parsing from rule \"" + options.startRule + "\".");
@@ -349,11 +349,23 @@ var short_offer = (function (exports) {
                         if (s0 === peg$FAILED) {
                             s0 = peg$parseAttrExtmapAllowMixed();
                             if (s0 === peg$FAILED) {
-                                s0 = peg$parseStandardSctpPort();
+                                s0 = peg$parseASetupActpass();
                                 if (s0 === peg$FAILED) {
-                                    s0 = peg$parseCustomSctpPort();
+                                    s0 = peg$parseASetupActive();
                                     if (s0 === peg$FAILED) {
-                                        s0 = peg$parseUnknownRule();
+                                        s0 = peg$parseStandardSctpPort();
+                                        if (s0 === peg$FAILED) {
+                                            s0 = peg$parseCustomSctpPort();
+                                            if (s0 === peg$FAILED) {
+                                                s0 = peg$parseStandardMaxMessageSize();
+                                                if (s0 === peg$FAILED) {
+                                                    s0 = peg$parseCustomMaxMessageSize();
+                                                    if (s0 === peg$FAILED) {
+                                                        s0 = peg$parseUnknownRule();
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -474,12 +486,12 @@ var short_offer = (function (exports) {
             s0 = s1;
             return s0;
         }
-        function peg$parseStandardSctpPort() {
+        function peg$parseASetupActpass() {
             var s0, s1;
             s0 = peg$currPos;
-            if (input.substr(peg$currPos, 16) === peg$c26) {
+            if (input.substr(peg$currPos, 15) === peg$c26) {
                 s1 = peg$c26;
-                peg$currPos += 16;
+                peg$currPos += 15;
             }
             else {
                 s1 = peg$FAILED;
@@ -494,12 +506,12 @@ var short_offer = (function (exports) {
             s0 = s1;
             return s0;
         }
-        function peg$parseCustomSctpPort() {
-            var s0, s1, s2;
+        function peg$parseASetupActive() {
+            var s0, s1;
             s0 = peg$currPos;
-            if (input.substr(peg$currPos, 12) === peg$c29) {
+            if (input.substr(peg$currPos, 14) === peg$c29) {
                 s1 = peg$c29;
-                peg$currPos += 12;
+                peg$currPos += 14;
             }
             else {
                 s1 = peg$FAILED;
@@ -508,10 +520,101 @@ var short_offer = (function (exports) {
                 }
             }
             if (s1 !== peg$FAILED) {
+                peg$savedPos = s0;
+                s1 = peg$c31();
+            }
+            s0 = s1;
+            return s0;
+        }
+        function peg$parseStandardSctpPort() {
+            var s0, s1;
+            s0 = peg$currPos;
+            if (input.substr(peg$currPos, 16) === peg$c32) {
+                s1 = peg$c32;
+                peg$currPos += 16;
+            }
+            else {
+                s1 = peg$FAILED;
+                {
+                    peg$fail(peg$c33);
+                }
+            }
+            if (s1 !== peg$FAILED) {
+                peg$savedPos = s0;
+                s1 = peg$c34();
+            }
+            s0 = s1;
+            return s0;
+        }
+        function peg$parseCustomSctpPort() {
+            var s0, s1, s2;
+            s0 = peg$currPos;
+            if (input.substr(peg$currPos, 12) === peg$c35) {
+                s1 = peg$c35;
+                peg$currPos += 12;
+            }
+            else {
+                s1 = peg$FAILED;
+                {
+                    peg$fail(peg$c36);
+                }
+            }
+            if (s1 !== peg$FAILED) {
                 s2 = peg$parseDecimal();
                 if (s2 !== peg$FAILED) {
                     peg$savedPos = s0;
-                    s1 = peg$c31();
+                    s1 = peg$c37(s2);
+                    s0 = s1;
+                }
+                else {
+                    peg$currPos = s0;
+                    s0 = peg$FAILED;
+                }
+            }
+            else {
+                peg$currPos = s0;
+                s0 = peg$FAILED;
+            }
+            return s0;
+        }
+        function peg$parseStandardMaxMessageSize() {
+            var s0, s1;
+            s0 = peg$currPos;
+            if (input.substr(peg$currPos, 25) === peg$c38) {
+                s1 = peg$c38;
+                peg$currPos += 25;
+            }
+            else {
+                s1 = peg$FAILED;
+                {
+                    peg$fail(peg$c39);
+                }
+            }
+            if (s1 !== peg$FAILED) {
+                peg$savedPos = s0;
+                s1 = peg$c40();
+            }
+            s0 = s1;
+            return s0;
+        }
+        function peg$parseCustomMaxMessageSize() {
+            var s0, s1, s2;
+            s0 = peg$currPos;
+            if (input.substr(peg$currPos, 19) === peg$c41) {
+                s1 = peg$c41;
+                peg$currPos += 19;
+            }
+            else {
+                s1 = peg$FAILED;
+                {
+                    peg$fail(peg$c42);
+                }
+            }
+            if (s1 !== peg$FAILED) {
+                s2 = peg$parseDecimal();
+                if (s2 !== peg$FAILED) {
+                    peg$savedPos = s0;
+                    s1 = peg$c43(s2);
                     s0 = s1;
                 }
                 else {
@@ -531,7 +634,7 @@ var short_offer = (function (exports) {
             s1 = peg$parseUntilSeparator();
             if (s1 !== peg$FAILED) {
                 peg$savedPos = s0;
-                s1 = peg$c32(s1);
+                s1 = peg$c44(s1);
             }
             s0 = s1;
             return s0;
@@ -540,43 +643,43 @@ var short_offer = (function (exports) {
             var s0, s1, s2;
             s0 = peg$currPos;
             s1 = [];
-            if (peg$c33.test(input.charAt(peg$currPos))) {
+            if (peg$c45.test(input.charAt(peg$currPos))) {
                 s2 = input.charAt(peg$currPos);
                 peg$currPos++;
             }
             else {
                 s2 = peg$FAILED;
                 {
-                    peg$fail(peg$c34);
+                    peg$fail(peg$c46);
                 }
             }
             while (s2 !== peg$FAILED) {
                 s1.push(s2);
-                if (peg$c33.test(input.charAt(peg$currPos))) {
+                if (peg$c45.test(input.charAt(peg$currPos))) {
                     s2 = input.charAt(peg$currPos);
                     peg$currPos++;
                 }
                 else {
                     s2 = peg$FAILED;
                     {
-                        peg$fail(peg$c34);
+                        peg$fail(peg$c46);
                     }
                 }
             }
             if (s1 !== peg$FAILED) {
-                if (input.substr(peg$currPos, 2) === peg$c35) {
-                    s2 = peg$c35;
+                if (input.substr(peg$currPos, 2) === peg$c47) {
+                    s2 = peg$c47;
                     peg$currPos += 2;
                 }
                 else {
                     s2 = peg$FAILED;
                     {
-                        peg$fail(peg$c36);
+                        peg$fail(peg$c48);
                     }
                 }
                 if (s2 !== peg$FAILED) {
                     peg$savedPos = s0;
-                    s1 = peg$c37(s1);
+                    s1 = peg$c49(s1);
                     s0 = s1;
                 }
                 else {
@@ -601,7 +704,7 @@ var short_offer = (function (exports) {
             else {
                 s2 = peg$FAILED;
                 {
-                    peg$fail(peg$c38);
+                    peg$fail(peg$c50);
                 }
             }
             while (s2 !== peg$FAILED) {
@@ -613,13 +716,13 @@ var short_offer = (function (exports) {
                 else {
                     s2 = peg$FAILED;
                     {
-                        peg$fail(peg$c38);
+                        peg$fail(peg$c50);
                     }
                 }
             }
             if (s1 !== peg$FAILED) {
                 peg$savedPos = s0;
-                s1 = peg$c39(s1);
+                s1 = peg$c51(s1);
             }
             s0 = s1;
             return s0;
@@ -883,7 +986,7 @@ var short_offer = (function (exports) {
     }
 
     const c_terminal = '\x00';
-    const offer = '\x01', answer = '\x02', version_zero_line = '\x03', version_line = '\x04', a_msid_semantic_ns = '\x05', a_msid_semantic_ws = '\x06', a_extmap_allow_mixed = '\x07', a_standard_sctp_port = '\x08', a_custom_sctp_port = '\x09';
+    const offer = '\x01', answer = '\x02', version_zero_line = '\x03', version_line = '\x04', a_msid_semantic_ns = '\x05', a_msid_semantic_ws = '\x06', a_extmap_allow_mixed = '\x07', a_standard_sctp_port = '\x08', a_custom_sctp_port = '\x09', a_standard_max_message_size = '\x0a', a_custom_max_message_size = '\x0b', a_setup_actpass = '\x0c', a_setup_active = '\x0d';
     const short_separator_follows = '\x7c';
     const unknown_line = '\x7e';
     const unknown_terminate = '\x7f';
@@ -930,6 +1033,18 @@ var short_offer = (function (exports) {
                         break;
                     case 'a_custom_sctp_port':
                         work += `${a_custom_sctp_port}${v.value}${nl_or_cr_nl(v)}${c_terminal}`;
+                        break;
+                    case 'a_standard_max_message_size':
+                        work += `${a_standard_max_message_size}${nl_or_cr_nl(v)}`;
+                        break;
+                    case 'a_custom_max_message_size':
+                        work += `${a_custom_max_message_size}${v.value}${nl_or_cr_nl(v)}${c_terminal}`;
+                        break;
+                    case 'a_setup_actpass':
+                        work += `${a_setup_actpass}${nl_or_cr_nl(v)}`;
+                        break;
+                    case 'a_setup_active':
+                        work += `${a_setup_active}${nl_or_cr_nl(v)}`;
                         break;
                     case 'unknown_terminate':
                         work += `${unknown_terminate}${v.value}`;
@@ -1003,6 +1118,12 @@ var short_offer = (function (exports) {
                     break;
                 case a_custom_sctp_port:
                     scan_forward_to_null('a=sctp-port:', 'a_custom_sctp_port', unpack_decimal);
+                    break;
+                case a_standard_max_message_size:
+                    work += `a=max-message-size:262144\r\n`;
+                    break;
+                case a_custom_max_message_size:
+                    scan_forward_to_null('a=max-message-size:', 'a_custom_max_message_size', unpack_decimal);
                     break;
                 case version_line:
                     scan_forward_to_null('v=', 'version_line');
