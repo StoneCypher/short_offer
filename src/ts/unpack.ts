@@ -14,7 +14,12 @@ function unpack(bytestring: string): string {
       work   : string = '',
       at_end : string = '';
 
-  function scan_forward_to_null(prefix: string, throw_label: string) {
+
+  function unpack_none(s: string)    { return s; }
+  function unpack_decimal(d: string) { return d; }  // eventually this will be a null-not-containing number encoding
+
+
+  function scan_forward_to_null(prefix: string, throw_label: string, unpacker: Function = unpack_none) {
 
     let found: false | number = false,
         end;
@@ -27,10 +32,11 @@ function unpack(bytestring: string): string {
     }
 
     if (found === false) { throw new RangeError(`No terminal null for ${throw_label} at ${i}`); }
-    work   += `${prefix}${bytestring.substring(i+i, end+1)}\r\n`;  // todo handle soft \n
-    i       = end+1;                                               // skip forward substring's length
+    work   += `${prefix}${unpacker(bytestring.substring(i+i, end+1))}\r\n`;  // todo handle soft \n
+    i       = end+1;                                                         // skip forward substring's length
 
   }
+
 
   for (i=0, iC = bytestring.length; i<iC; ++i) {
 
@@ -56,6 +62,18 @@ function unpack(bytestring: string): string {
 
       case symbols.version_zero_line:
         work   += `a=msid-semantic: WMS\r\n`;  // todo handle soft \n
+        break;
+
+      case symbols.a_extmap_allow_mixed:
+        work   += `a=extmap-allow-mixed\r\n`;  // todo handle soft \n
+        break;
+
+      case symbols.a_standard_sctp_port:
+        work   += `a=sctp-port:5000\r\n`;  // todo handle soft \n
+        break;
+
+      case symbols.a_custom_sctp_port:
+        scan_forward_to_null('a=sctp-port:', 'a_custom_sctp_port', unpack_decimal);
         break;
 
       case symbols.version_line:

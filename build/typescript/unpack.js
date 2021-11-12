@@ -4,7 +4,9 @@ function unpack(bytestring) {
         return '';
     }
     let i, iC, work = '', at_end = '';
-    function scan_forward_to_null(prefix, throw_label) {
+    function unpack_none(s) { return s; }
+    function unpack_decimal(d) { return d; }
+    function scan_forward_to_null(prefix, throw_label, unpacker = unpack_none) {
         let found = false, end;
         for (end = i + 1; end < iC; ++end) {
             if (bytestring.charAt(end) === symbols.c_terminal) {
@@ -15,7 +17,7 @@ function unpack(bytestring) {
         if (found === false) {
             throw new RangeError(`No terminal null for ${throw_label} at ${i}`);
         }
-        work += `${prefix}${bytestring.substring(i + i, end + 1)}\r\n`;
+        work += `${prefix}${unpacker(bytestring.substring(i + i, end + 1))}\r\n`;
         i = end + 1;
     }
     for (i = 0, iC = bytestring.length; i < iC; ++i) {
@@ -36,6 +38,15 @@ function unpack(bytestring) {
                 break;
             case symbols.version_zero_line:
                 work += `a=msid-semantic: WMS\r\n`;
+                break;
+            case symbols.a_extmap_allow_mixed:
+                work += `a=extmap-allow-mixed\r\n`;
+                break;
+            case symbols.a_standard_sctp_port:
+                work += `a=sctp-port:5000\r\n`;
+                break;
+            case symbols.a_custom_sctp_port:
+                scan_forward_to_null('a=sctp-port:', 'a_custom_sctp_port', unpack_decimal);
                 break;
             case symbols.version_line:
                 scan_forward_to_null('v=', 'version_line');
