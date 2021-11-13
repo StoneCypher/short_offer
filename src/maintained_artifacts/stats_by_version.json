@@ -1177,23 +1177,23 @@
       "original_length": 718,
       "final_length": 587,
       "failed_claims": 0,
-      "time": 1
+      "time": 2
     },
     "win_10_edge_92_host": {
       "original_length": 852,
       "final_length": 721,
       "failed_claims": 0,
-      "time": 2
+      "time": 1
     },
     "win_10_ff_90_client": {
       "original_length": 1007,
-      "final_length": 903,
+      "final_length": 860,
       "failed_claims": 0,
       "time": 1
     },
     "win_10_ff_90_host": {
       "original_length": 1092,
-      "final_length": 988,
+      "final_length": 945,
       "failed_claims": 0,
       "time": 1
     },
@@ -1207,13 +1207,13 @@
       "original_length": 721,
       "final_length": 590,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "mac_saf_14_host": {
       "original_length": 694,
       "final_length": 582,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "mac_saf_14_client": {
       "original_length": 703,
@@ -1235,21 +1235,21 @@
     },
     "mac_ff_90_host": {
       "original_length": 1003,
-      "final_length": 899,
+      "final_length": 856,
       "failed_claims": 0,
       "time": 1
     },
     "mac_ff_90_client": {
       "original_length": 812,
-      "final_length": 708,
+      "final_length": 665,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "lin_ff_90_host": {
       "original_length": 1062,
       "final_length": 958,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "lin_ff_90_client": {
       "original_length": 810,
@@ -1259,34 +1259,34 @@
     },
     "and_chr_92_host": {
       "original_length": 1016,
-      "final_length": 912,
+      "final_length": 869,
       "failed_claims": 0,
       "time": 1
     },
     "and_chr_92_client": {
       "original_length": 767,
-      "final_length": 663,
+      "final_length": 620,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "ubu_ff_90_host": {
       "original_length": 815,
-      "final_length": 711,
+      "final_length": 668,
       "failed_claims": 0,
       "time": 0
     },
     "ubu_ff_90_client": {
       "original_length": 816,
-      "final_length": 712,
+      "final_length": 669,
       "failed_claims": 0,
       "time": 1
     },
     "total": {
       "variations": 20,
       "original_length": 17990,
-      "final_length": 15678,
+      "final_length": 15334,
       "failed_claims": 0,
-      "time": 15
+      "time": 16
     }
   }
 }

@@ -1331,7 +1331,7 @@ function unpack(bytestring) {
             case a_msid_semantic_ns:
                 work += `a=msid-semantic:WMS\r\n`;
                 break;
-            case version_zero_line:
+            case a_msid_semantic_ws:
                 work += `a=msid-semantic: WMS\r\n`;
                 break;
             case a_extmap_allow_mixed:
@@ -1344,10 +1344,19 @@ function unpack(bytestring) {
                 scan_forward_to_null('a=sctp-port:', 'a_custom_sctp_port', unpack_decimal);
                 break;
             case a_standard_max_message_size:
-                work += `a=max-message-size:262144\r\n`;
+                work += 'a=max-message-size:262144\r\n';
                 break;
             case a_custom_max_message_size:
                 scan_forward_to_null('a=max-message-size:', 'a_custom_max_message_size', unpack_decimal);
+                break;
+            case a_setup_actpass:
+                work += 'a=setup:actpass\r\n';
+                break;
+            case a_setup_active:
+                work += 'a=setup:active\r\n';
+                break;
+            case version_zero_line:
+                work += 'v=0\r\n';
                 break;
             case version_line:
                 scan_forward_to_null('v=', 'version_line');
