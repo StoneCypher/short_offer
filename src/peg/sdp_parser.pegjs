@@ -132,8 +132,20 @@ SDash
 
 
 MozVNum
+  = MozVNum3
+  / MozVNum2
+
+
+
+MozVNum3
   = maj:Decimal '.' min:Decimal '.' patch:Decimal
   { return ast('moz_v_num', [maj, min, patch]); }
+
+
+
+MozVNum2
+  = maj:Decimal '.' min:Decimal
+  { return ast('moz_v_num', [maj, min, undefined]); }
 
 
 
