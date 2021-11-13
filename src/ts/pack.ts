@@ -1,6 +1,7 @@
 
-import { parse }    from './parsers';
-import * as symbols from './symbols';
+import { parse }             from './parsers';
+import * as symbols          from './symbols';
+import { StandardMozOrigin } from './types';
 
 
 
@@ -21,6 +22,15 @@ const nl_or_cr_nl = (pl: ParsedLine): string =>
   pl.uses_short_nl
     ? symbols.short_separator_follows
     : '';
+
+
+
+
+
+function moz_ver([ maj, min, patch ]: [ number, number, number ]): string {
+  // todo these could be bytes with no null terminators
+  return `${maj}.${min}.${patch}${symbols.c_terminal}`
+}
 
 
 
@@ -108,6 +118,13 @@ function parsed_to_bytestring( parsed: ParsedSdp ): string {
 
         case 't_zero_zero':
           work += `${symbols.t_zero_zero}${nl_or_cr_nl(v)}`;
+          break;
+
+        case 'standard_moz_origin':
+          const smo = v as StandardMozOrigin,
+                mvs = moz_ver(smo.moz_ver);
+//        work += `${symbols.standard_moz_origin}${moz_ver(smo.moz_ver)}${smo.sess}${symbols.c_terminal}${nl_or_cr_nl(v)}`;
+          work += `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}${nl_or_cr_nl(v)}`;
           break;
 
         case 'unknown_terminate':

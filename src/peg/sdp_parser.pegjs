@@ -7,12 +7,20 @@
 
     const uses_short_nl = false; // todo
 
-    return {
+    let retval = {
       kind,
       value,
       uses_short_nl,
       loc: location()
     };
+
+    if (kind === 'standard_moz_origin') {
+      retval.moz_ver = value[0].value;
+      retval.sess    = value[1];
+      value          = '';
+    }
+
+    return retval;
 
   }
 
@@ -32,7 +40,7 @@ RawDocument
 
 
 Decimal
-  = d:[0-9]+ { return parseInt(d.join(''), 10); }
+  = d:[0-9]+ { return BigInt(d.join(''), 10); }
 
 
 
@@ -60,6 +68,7 @@ Rule
  / AMid0
  / SDash
  / TZeroZero
+ / StandardMozOrigin
  / StandardSctpPort
  / CustomSctpPort
  / StandardMaxMessageSize
@@ -119,6 +128,19 @@ AMid0
 SDash
   = 's=-'
   { return ast('s_dash'); }
+
+
+
+MozVNum
+  = maj:Decimal '.' min:Decimal '.' patch:Decimal
+  { return ast('moz_v_num', [maj, min, patch]); }
+
+
+
+// o=mozilla...THIS_IS_SDPARTA-90.0.2 4132699980109199001 0 IN IP4 0.0.0.0
+StandardMozOrigin
+  = 'o=mozilla...THIS_IS_SDPARTA-' mv:MozVNum ' ' msess:Decimal ' 0 IN IP4 0.0.0.0'
+  { return ast('standard_moz_origin', [mv, msess]); }
 
 
 
