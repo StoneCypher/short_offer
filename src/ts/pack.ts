@@ -29,7 +29,7 @@ const nl_or_cr_nl = (pl: ParsedLine): string =>
 
 function moz_ver([ maj, min, patch ]: [ number, number, number ]): string {
   // todo these could be bytes with no null terminators
-  return `${maj}.${min}.${patch}${symbols.c_terminal}`
+  return `${[ maj, min, patch ].filter(i => i !== undefined).map(i => i.toString()).join('.')}${symbols.c_terminal}`;
 }
 
 

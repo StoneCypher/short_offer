@@ -4,7 +4,7 @@ const nl_or_cr_nl = (pl) => pl.uses_short_nl
     ? symbols.short_separator_follows
     : '';
 function moz_ver([maj, min, patch]) {
-    return `${maj}.${min}.${patch}${symbols.c_terminal}`;
+    return `${[maj, min, patch].filter(i => i !== undefined).map(i => i.toString()).join('.')}${symbols.c_terminal}`;
 }
 function parsed_to_bytestring(parsed) {
     let work = '', ending = '', skip_iter = false;
