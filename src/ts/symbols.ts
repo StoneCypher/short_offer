@@ -21,7 +21,8 @@ const offer                       = '\x01',
       a_setup_active              = '\x0d',
       a_mid_zero                  = '\x0e',
       s_dash                      = '\x0f',
-      t_zero_zero                 = '\x10';
+      t_zero_zero                 = '\x10',
+      standard_moz_origin         = '\x11';
 
 const short_separator_follows     = '\x7c',
       short_separators_all        = '\x7d';
@@ -43,6 +44,7 @@ export {
   a_setup_actpass, a_setup_active, a_mid_zero,
   s_dash,
   t_zero_zero,
+  standard_moz_origin,
   short_separator_follows, short_separators_all,
   unknown_line, unknown_terminate
 };

@@ -3,6 +3,9 @@ import * as symbols from './symbols';
 const nl_or_cr_nl = (pl) => pl.uses_short_nl
     ? symbols.short_separator_follows
     : '';
+function moz_ver([maj, min, patch]) {
+    return `${maj}.${min}.${patch}${symbols.c_terminal}`;
+}
 function parsed_to_bytestring(parsed) {
     let work = '', ending = '', skip_iter = false;
     if (parsed.kind === 'offer') {
@@ -63,6 +66,10 @@ function parsed_to_bytestring(parsed) {
                     break;
                 case 't_zero_zero':
                     work += `${symbols.t_zero_zero}${nl_or_cr_nl(v)}`;
+                    break;
+                case 'standard_moz_origin':
+                    const smo = v, mvs = moz_ver(smo.moz_ver);
+                    work += `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}${nl_or_cr_nl(v)}`;
                     break;
                 case 'unknown_terminate':
                     work += `${symbols.unknown_terminate}${v.value}`;

@@ -68,6 +68,13 @@ declare type TZeroZero = {
     value: string;
     uses_short_nl: boolean;
 };
+declare type StandardMozOrigin = {
+    kind: 'standard_moz_origin';
+    value: string;
+    uses_short_nl: boolean;
+    moz_ver: [number, number, number];
+    sess: number;
+};
 declare type UnknownLine = {
     kind: 'unknown_line';
     value: string;
@@ -87,10 +94,10 @@ declare type PegLocation = {
     start: PegCoord;
     end: PegCoord;
 };
-declare type ParsedLine = UnknownLine | VersionZeroLine | VersionLine | AMsidSemanticNS | AMsidSemanticWS | AExtmapAllowMixed | AStandardSctpPort | ACustomSctpPort | AStandardMaxMessageSize | ACustomMaxMessageSize | ASetupActPass | ASetupActive | AMidZero | SDash | TZeroZero | UnknownTerminate;
+declare type ParsedLine = UnknownLine | VersionZeroLine | VersionLine | AMsidSemanticNS | AMsidSemanticWS | AExtmapAllowMixed | AStandardSctpPort | ACustomSctpPort | AStandardMaxMessageSize | ACustomMaxMessageSize | ASetupActPass | ASetupActive | AMidZero | SDash | TZeroZero | StandardMozOrigin | UnknownTerminate;
 declare type ParsedSdp = {
-    kind: 'offer' | 'answer' | 'unknown' | 'unknown_terminate' | 'version_line' | 'version_zero_line' | 'a_msid_semantic_ns' | 'a_msid_semantic_ws' | 'a_extmap_allow_mixed' | 'a_standard_sctp_port' | 'a_custom_sctp_port' | 'a_standard_max_message_size' | 'a_setup_actpass' | 'a_setup_active' | 'a_mid_zero' | 's_dash' | 't_zero_zero' | 'a_custom_max_message_size';
+    kind: 'offer' | 'answer' | 'unknown' | 'unknown_terminate' | 'version_line' | 'version_zero_line' | 'a_msid_semantic_ns' | 'a_msid_semantic_ws' | 'a_extmap_allow_mixed' | 'a_standard_sctp_port' | 'a_custom_sctp_port' | 'a_standard_max_message_size' | 'a_setup_actpass' | 'a_setup_active' | 'a_mid_zero' | 's_dash' | 't_zero_zero' | 'standard_moz_origin' | 'a_custom_max_message_size';
     value: ParsedLine[];
     loc: PegLocation;
 };
-export { UnknownLine, VersionZeroLine, VersionLine, ParsedLine, PegCoord, PegLocation, ParsedSdp };
+export { UnknownLine, VersionZeroLine, VersionLine, StandardMozOrigin, ParsedLine, PegCoord, PegLocation, ParsedSdp };

@@ -105,7 +105,7 @@ peg$SyntaxError$1.buildMessage = function (expected, found) {
 };
 function peg$parse$1(input, options) {
     options = options !== void 0 ? options : {};
-    var peg$FAILED = {}, peg$startRuleFunctions = { RawDocument: peg$parseRawDocument }, peg$startRuleFunction = peg$parseRawDocument, peg$c0 = /^[0-9]/, peg$c1 = peg$classExpectation([["0", "9"]], false, false), peg$c2 = function (d) { return parseInt(d.join(''), 10); }, peg$c3 = "{\"type\":\"offer\",\"sdp\":\"", peg$c4 = peg$literalExpectation("{\"type\":\"offer\",\"sdp\":\"", false), peg$c5 = "\"}", peg$c6 = peg$literalExpectation("\"}", false), peg$c7 = function (s) { return ast('offer', s); }, peg$c8 = "{\"type\":\"answer\",\"sdp\":\"", peg$c9 = peg$literalExpectation("{\"type\":\"answer\",\"sdp\":\"", false), peg$c10 = function (s) { return ast('answer', s); }, peg$c11 = "v=0\r\n", peg$c12 = peg$literalExpectation("v=0\r\n", false), peg$c13 = function () { return ast('version_zero_line', undefined); }, peg$c14 = "v=", peg$c15 = peg$literalExpectation("v=", false), peg$c16 = function (us) { return ast('version_line', us); }, peg$c17 = "a=msid-semantic:WMS", peg$c18 = peg$literalExpectation("a=msid-semantic:WMS", false), peg$c19 = function () { return ast('a_msid_semantic_ns', undefined); }, peg$c20 = "a=msid-semantic: WMS", peg$c21 = peg$literalExpectation("a=msid-semantic: WMS", false), peg$c22 = function () { return ast('a_msid_semantic_ws', undefined); }, peg$c23 = "a=extmap-allow-mixed", peg$c24 = peg$literalExpectation("a=extmap-allow-mixed", false), peg$c25 = function () { return ast('a_extmap_allow_mixed', undefined); }, peg$c26 = "a=setup:actpass", peg$c27 = peg$literalExpectation("a=setup:actpass", false), peg$c28 = function () { return ast('a_setup_actpass'); }, peg$c29 = "a=setup:active", peg$c30 = peg$literalExpectation("a=setup:active", false), peg$c31 = function () { return ast('a_setup_active'); }, peg$c32 = "a=mid:0", peg$c33 = peg$literalExpectation("a=mid:0", false), peg$c34 = function () { return ast('a_mid_zero'); }, peg$c35 = "s=-", peg$c36 = peg$literalExpectation("s=-", false), peg$c37 = function () { return ast('s_dash'); }, peg$c38 = "t=0 0", peg$c39 = peg$literalExpectation("t=0 0", false), peg$c40 = function () { return ast('t_zero_zero'); }, peg$c41 = "a=sctp-port:5000", peg$c42 = peg$literalExpectation("a=sctp-port:5000", false), peg$c43 = function () { return ast('a_standard_sctp_port'); }, peg$c44 = "a=sctp-port:", peg$c45 = peg$literalExpectation("a=sctp-port:", false), peg$c46 = function (data) { return ast('a_custom_sctp_port', data); }, peg$c47 = "a=max-message-size:262144", peg$c48 = peg$literalExpectation("a=max-message-size:262144", false), peg$c49 = function () { return ast('a_standard_max_message_size'); }, peg$c50 = "a=max-message-size:", peg$c51 = peg$literalExpectation("a=max-message-size:", false), peg$c52 = function (data) { return ast('a_custom_max_message_size', data); }, peg$c53 = function (us) { return ast('unknown_line', us); }, peg$c54 = /^[^'\r\n']/, peg$c55 = peg$classExpectation(["'", "\r", "\n", "'"], true, false), peg$c56 = "\r\n", peg$c57 = peg$literalExpectation("\r\n", false), peg$c58 = function (rl) { return rl.join(''); }, peg$c59 = peg$anyExpectation(), peg$c60 = function (uts) { return ast('unknown_terminate', uts.join('')); }, peg$currPos = 0, peg$savedPos = 0, peg$posDetailsCache = [{ line: 1, column: 1 }], peg$maxFailPos = 0, peg$maxFailExpected = [], peg$result;
+    var peg$FAILED = {}, peg$startRuleFunctions = { RawDocument: peg$parseRawDocument }, peg$startRuleFunction = peg$parseRawDocument, peg$c0 = /^[0-9]/, peg$c1 = peg$classExpectation([["0", "9"]], false, false), peg$c2 = function (d) { return BigInt(d.join(''), 10); }, peg$c3 = "{\"type\":\"offer\",\"sdp\":\"", peg$c4 = peg$literalExpectation("{\"type\":\"offer\",\"sdp\":\"", false), peg$c5 = "\"}", peg$c6 = peg$literalExpectation("\"}", false), peg$c7 = function (s) { return ast('offer', s); }, peg$c8 = "{\"type\":\"answer\",\"sdp\":\"", peg$c9 = peg$literalExpectation("{\"type\":\"answer\",\"sdp\":\"", false), peg$c10 = function (s) { return ast('answer', s); }, peg$c11 = "v=0\r\n", peg$c12 = peg$literalExpectation("v=0\r\n", false), peg$c13 = function () { return ast('version_zero_line', undefined); }, peg$c14 = "v=", peg$c15 = peg$literalExpectation("v=", false), peg$c16 = function (us) { return ast('version_line', us); }, peg$c17 = "a=msid-semantic:WMS", peg$c18 = peg$literalExpectation("a=msid-semantic:WMS", false), peg$c19 = function () { return ast('a_msid_semantic_ns', undefined); }, peg$c20 = "a=msid-semantic: WMS", peg$c21 = peg$literalExpectation("a=msid-semantic: WMS", false), peg$c22 = function () { return ast('a_msid_semantic_ws', undefined); }, peg$c23 = "a=extmap-allow-mixed", peg$c24 = peg$literalExpectation("a=extmap-allow-mixed", false), peg$c25 = function () { return ast('a_extmap_allow_mixed', undefined); }, peg$c26 = "a=setup:actpass", peg$c27 = peg$literalExpectation("a=setup:actpass", false), peg$c28 = function () { return ast('a_setup_actpass'); }, peg$c29 = "a=setup:active", peg$c30 = peg$literalExpectation("a=setup:active", false), peg$c31 = function () { return ast('a_setup_active'); }, peg$c32 = "a=mid:0", peg$c33 = peg$literalExpectation("a=mid:0", false), peg$c34 = function () { return ast('a_mid_zero'); }, peg$c35 = "s=-", peg$c36 = peg$literalExpectation("s=-", false), peg$c37 = function () { return ast('s_dash'); }, peg$c38 = ".", peg$c39 = peg$literalExpectation(".", false), peg$c40 = function (maj, min, patch) { return ast('moz_v_num', [maj, min, patch]); }, peg$c41 = "o=mozilla...THIS_IS_SDPARTA-", peg$c42 = peg$literalExpectation("o=mozilla...THIS_IS_SDPARTA-", false), peg$c43 = " ", peg$c44 = peg$literalExpectation(" ", false), peg$c45 = " 0 IN IP4 0.0.0.0", peg$c46 = peg$literalExpectation(" 0 IN IP4 0.0.0.0", false), peg$c47 = function (mv, msess) { return ast('standard_moz_origin', [mv, msess]); }, peg$c48 = "t=0 0", peg$c49 = peg$literalExpectation("t=0 0", false), peg$c50 = function () { return ast('t_zero_zero'); }, peg$c51 = "a=sctp-port:5000", peg$c52 = peg$literalExpectation("a=sctp-port:5000", false), peg$c53 = function () { return ast('a_standard_sctp_port'); }, peg$c54 = "a=sctp-port:", peg$c55 = peg$literalExpectation("a=sctp-port:", false), peg$c56 = function (data) { return ast('a_custom_sctp_port', data); }, peg$c57 = "a=max-message-size:262144", peg$c58 = peg$literalExpectation("a=max-message-size:262144", false), peg$c59 = function () { return ast('a_standard_max_message_size'); }, peg$c60 = "a=max-message-size:", peg$c61 = peg$literalExpectation("a=max-message-size:", false), peg$c62 = function (data) { return ast('a_custom_max_message_size', data); }, peg$c63 = function (us) { return ast('unknown_line', us); }, peg$c64 = /^[^'\r\n']/, peg$c65 = peg$classExpectation(["'", "\r", "\n", "'"], true, false), peg$c66 = "\r\n", peg$c67 = peg$literalExpectation("\r\n", false), peg$c68 = function (rl) { return rl.join(''); }, peg$c69 = peg$anyExpectation(), peg$c70 = function (uts) { return ast('unknown_terminate', uts.join('')); }, peg$currPos = 0, peg$savedPos = 0, peg$posDetailsCache = [{ line: 1, column: 1 }], peg$maxFailPos = 0, peg$maxFailExpected = [], peg$result;
     if ("startRule" in options) {
         if (!(options.startRule in peg$startRuleFunctions)) {
             throw new Error("Can't start parsing from rule \"" + options.startRule + "\".");
@@ -360,15 +360,18 @@ function peg$parse$1(input, options) {
                                         if (s0 === peg$FAILED) {
                                             s0 = peg$parseTZeroZero();
                                             if (s0 === peg$FAILED) {
-                                                s0 = peg$parseStandardSctpPort();
+                                                s0 = peg$parseStandardMozOrigin();
                                                 if (s0 === peg$FAILED) {
-                                                    s0 = peg$parseCustomSctpPort();
+                                                    s0 = peg$parseStandardSctpPort();
                                                     if (s0 === peg$FAILED) {
-                                                        s0 = peg$parseStandardMaxMessageSize();
+                                                        s0 = peg$parseCustomSctpPort();
                                                         if (s0 === peg$FAILED) {
-                                                            s0 = peg$parseCustomMaxMessageSize();
+                                                            s0 = peg$parseStandardMaxMessageSize();
                                                             if (s0 === peg$FAILED) {
-                                                                s0 = peg$parseUnknownRule();
+                                                                s0 = peg$parseCustomMaxMessageSize();
+                                                                if (s0 === peg$FAILED) {
+                                                                    s0 = peg$parseUnknownRule();
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -576,32 +579,73 @@ function peg$parse$1(input, options) {
         s0 = s1;
         return s0;
     }
-    function peg$parseTZeroZero() {
-        var s0, s1;
+    function peg$parseMozVNum() {
+        var s0, s1, s2, s3, s4, s5;
         s0 = peg$currPos;
-        if (input.substr(peg$currPos, 5) === peg$c38) {
-            s1 = peg$c38;
-            peg$currPos += 5;
-        }
-        else {
-            s1 = peg$FAILED;
-            {
-                peg$fail(peg$c39);
+        s1 = peg$parseDecimal();
+        if (s1 !== peg$FAILED) {
+            if (input.charCodeAt(peg$currPos) === 46) {
+                s2 = peg$c38;
+                peg$currPos++;
+            }
+            else {
+                s2 = peg$FAILED;
+                {
+                    peg$fail(peg$c39);
+                }
+            }
+            if (s2 !== peg$FAILED) {
+                s3 = peg$parseDecimal();
+                if (s3 !== peg$FAILED) {
+                    if (input.charCodeAt(peg$currPos) === 46) {
+                        s4 = peg$c38;
+                        peg$currPos++;
+                    }
+                    else {
+                        s4 = peg$FAILED;
+                        {
+                            peg$fail(peg$c39);
+                        }
+                    }
+                    if (s4 !== peg$FAILED) {
+                        s5 = peg$parseDecimal();
+                        if (s5 !== peg$FAILED) {
+                            peg$savedPos = s0;
+                            s1 = peg$c40(s1, s3, s5);
+                            s0 = s1;
+                        }
+                        else {
+                            peg$currPos = s0;
+                            s0 = peg$FAILED;
+                        }
+                    }
+                    else {
+                        peg$currPos = s0;
+                        s0 = peg$FAILED;
+                    }
+                }
+                else {
+                    peg$currPos = s0;
+                    s0 = peg$FAILED;
+                }
+            }
+            else {
+                peg$currPos = s0;
+                s0 = peg$FAILED;
             }
         }
-        if (s1 !== peg$FAILED) {
-            peg$savedPos = s0;
-            s1 = peg$c40();
+        else {
+            peg$currPos = s0;
+            s0 = peg$FAILED;
         }
-        s0 = s1;
         return s0;
     }
-    function peg$parseStandardSctpPort() {
-        var s0, s1;
+    function peg$parseStandardMozOrigin() {
+        var s0, s1, s2, s3, s4, s5;
         s0 = peg$currPos;
-        if (input.substr(peg$currPos, 16) === peg$c41) {
+        if (input.substr(peg$currPos, 28) === peg$c41) {
             s1 = peg$c41;
-            peg$currPos += 16;
+            peg$currPos += 28;
         }
         else {
             s1 = peg$FAILED;
@@ -610,8 +654,98 @@ function peg$parse$1(input, options) {
             }
         }
         if (s1 !== peg$FAILED) {
+            s2 = peg$parseMozVNum();
+            if (s2 !== peg$FAILED) {
+                if (input.charCodeAt(peg$currPos) === 32) {
+                    s3 = peg$c43;
+                    peg$currPos++;
+                }
+                else {
+                    s3 = peg$FAILED;
+                    {
+                        peg$fail(peg$c44);
+                    }
+                }
+                if (s3 !== peg$FAILED) {
+                    s4 = peg$parseDecimal();
+                    if (s4 !== peg$FAILED) {
+                        if (input.substr(peg$currPos, 17) === peg$c45) {
+                            s5 = peg$c45;
+                            peg$currPos += 17;
+                        }
+                        else {
+                            s5 = peg$FAILED;
+                            {
+                                peg$fail(peg$c46);
+                            }
+                        }
+                        if (s5 !== peg$FAILED) {
+                            peg$savedPos = s0;
+                            s1 = peg$c47(s2, s4);
+                            s0 = s1;
+                        }
+                        else {
+                            peg$currPos = s0;
+                            s0 = peg$FAILED;
+                        }
+                    }
+                    else {
+                        peg$currPos = s0;
+                        s0 = peg$FAILED;
+                    }
+                }
+                else {
+                    peg$currPos = s0;
+                    s0 = peg$FAILED;
+                }
+            }
+            else {
+                peg$currPos = s0;
+                s0 = peg$FAILED;
+            }
+        }
+        else {
+            peg$currPos = s0;
+            s0 = peg$FAILED;
+        }
+        return s0;
+    }
+    function peg$parseTZeroZero() {
+        var s0, s1;
+        s0 = peg$currPos;
+        if (input.substr(peg$currPos, 5) === peg$c48) {
+            s1 = peg$c48;
+            peg$currPos += 5;
+        }
+        else {
+            s1 = peg$FAILED;
+            {
+                peg$fail(peg$c49);
+            }
+        }
+        if (s1 !== peg$FAILED) {
             peg$savedPos = s0;
-            s1 = peg$c43();
+            s1 = peg$c50();
+        }
+        s0 = s1;
+        return s0;
+    }
+    function peg$parseStandardSctpPort() {
+        var s0, s1;
+        s0 = peg$currPos;
+        if (input.substr(peg$currPos, 16) === peg$c51) {
+            s1 = peg$c51;
+            peg$currPos += 16;
+        }
+        else {
+            s1 = peg$FAILED;
+            {
+                peg$fail(peg$c52);
+            }
+        }
+        if (s1 !== peg$FAILED) {
+            peg$savedPos = s0;
+            s1 = peg$c53();
         }
         s0 = s1;
         return s0;
@@ -619,21 +753,21 @@ function peg$parse$1(input, options) {
     function peg$parseCustomSctpPort() {
         var s0, s1, s2;
         s0 = peg$currPos;
-        if (input.substr(peg$currPos, 12) === peg$c44) {
-            s1 = peg$c44;
+        if (input.substr(peg$currPos, 12) === peg$c54) {
+            s1 = peg$c54;
             peg$currPos += 12;
         }
         else {
             s1 = peg$FAILED;
             {
-                peg$fail(peg$c45);
+                peg$fail(peg$c55);
             }
         }
         if (s1 !== peg$FAILED) {
             s2 = peg$parseDecimal();
             if (s2 !== peg$FAILED) {
                 peg$savedPos = s0;
-                s1 = peg$c46(s2);
+                s1 = peg$c56(s2);
                 s0 = s1;
             }
             else {
@@ -650,19 +784,19 @@ function peg$parse$1(input, options) {
     function peg$parseStandardMaxMessageSize() {
         var s0, s1;
         s0 = peg$currPos;
-        if (input.substr(peg$currPos, 25) === peg$c47) {
-            s1 = peg$c47;
+        if (input.substr(peg$currPos, 25) === peg$c57) {
+            s1 = peg$c57;
             peg$currPos += 25;
         }
         else {
             s1 = peg$FAILED;
             {
-                peg$fail(peg$c48);
+                peg$fail(peg$c58);
             }
         }
         if (s1 !== peg$FAILED) {
             peg$savedPos = s0;
-            s1 = peg$c49();
+            s1 = peg$c59();
         }
         s0 = s1;
         return s0;
@@ -670,21 +804,21 @@ function peg$parse$1(input, options) {
     function peg$parseCustomMaxMessageSize() {
         var s0, s1, s2;
         s0 = peg$currPos;
-        if (input.substr(peg$currPos, 19) === peg$c50) {
-            s1 = peg$c50;
+        if (input.substr(peg$currPos, 19) === peg$c60) {
+            s1 = peg$c60;
             peg$currPos += 19;
         }
         else {
             s1 = peg$FAILED;
             {
-                peg$fail(peg$c51);
+                peg$fail(peg$c61);
             }
         }
         if (s1 !== peg$FAILED) {
             s2 = peg$parseDecimal();
             if (s2 !== peg$FAILED) {
                 peg$savedPos = s0;
-                s1 = peg$c52(s2);
+                s1 = peg$c62(s2);
                 s0 = s1;
             }
             else {
@@ -704,7 +838,7 @@ function peg$parse$1(input, options) {
         s1 = peg$parseUntilSeparator();
         if (s1 !== peg$FAILED) {
             peg$savedPos = s0;
-            s1 = peg$c53(s1);
+            s1 = peg$c63(s1);
         }
         s0 = s1;
         return s0;
@@ -713,43 +847,43 @@ function peg$parse$1(input, options) {
         var s0, s1, s2;
         s0 = peg$currPos;
         s1 = [];
-        if (peg$c54.test(input.charAt(peg$currPos))) {
+        if (peg$c64.test(input.charAt(peg$currPos))) {
             s2 = input.charAt(peg$currPos);
             peg$currPos++;
         }
         else {
             s2 = peg$FAILED;
             {
-                peg$fail(peg$c55);
+                peg$fail(peg$c65);
             }
         }
         while (s2 !== peg$FAILED) {
             s1.push(s2);
-            if (peg$c54.test(input.charAt(peg$currPos))) {
+            if (peg$c64.test(input.charAt(peg$currPos))) {
                 s2 = input.charAt(peg$currPos);
                 peg$currPos++;
             }
             else {
                 s2 = peg$FAILED;
                 {
-                    peg$fail(peg$c55);
+                    peg$fail(peg$c65);
                 }
             }
         }
         if (s1 !== peg$FAILED) {
-            if (input.substr(peg$currPos, 2) === peg$c56) {
-                s2 = peg$c56;
+            if (input.substr(peg$currPos, 2) === peg$c66) {
+                s2 = peg$c66;
                 peg$currPos += 2;
             }
             else {
                 s2 = peg$FAILED;
                 {
-                    peg$fail(peg$c57);
+                    peg$fail(peg$c67);
                 }
             }
             if (s2 !== peg$FAILED) {
                 peg$savedPos = s0;
-                s1 = peg$c58(s1);
+                s1 = peg$c68(s1);
                 s0 = s1;
             }
             else {
@@ -774,7 +908,7 @@ function peg$parse$1(input, options) {
         else {
             s2 = peg$FAILED;
             {
-                peg$fail(peg$c59);
+                peg$fail(peg$c69);
             }
         }
         while (s2 !== peg$FAILED) {
@@ -786,25 +920,31 @@ function peg$parse$1(input, options) {
             else {
                 s2 = peg$FAILED;
                 {
-                    peg$fail(peg$c59);
+                    peg$fail(peg$c69);
                 }
             }
         }
         if (s1 !== peg$FAILED) {
             peg$savedPos = s0;
-            s1 = peg$c60(s1);
+            s1 = peg$c70(s1);
         }
         s0 = s1;
         return s0;
     }
     function ast(kind, value) {
         const uses_short_nl = false;
-        return {
+        let retval = {
             kind,
             value,
             uses_short_nl,
             loc: location()
         };
+        if (kind === 'standard_moz_origin') {
+            retval.moz_ver = value[0].value;
+            retval.sess = value[1];
+            value = '';
+        }
+        return retval;
     }
     peg$result = peg$startRuleFunction();
     if (peg$result !== peg$FAILED && peg$currPos === input.length) {
@@ -1056,7 +1196,7 @@ function deparse(bytecode) {
 }
 
 const c_terminal = '\x00';
-const offer = '\x01', answer = '\x02', version_zero_line = '\x03', version_line = '\x04', a_msid_semantic_ns = '\x05', a_msid_semantic_ws = '\x06', a_extmap_allow_mixed = '\x07', a_standard_sctp_port = '\x08', a_custom_sctp_port = '\x09', a_standard_max_message_size = '\x0a', a_custom_max_message_size = '\x0b', a_setup_actpass = '\x0c', a_setup_active = '\x0d', a_mid_zero = '\x0e', s_dash = '\x0f', t_zero_zero = '\x10';
+const offer = '\x01', answer = '\x02', version_zero_line = '\x03', version_line = '\x04', a_msid_semantic_ns = '\x05', a_msid_semantic_ws = '\x06', a_extmap_allow_mixed = '\x07', a_standard_sctp_port = '\x08', a_custom_sctp_port = '\x09', a_standard_max_message_size = '\x0a', a_custom_max_message_size = '\x0b', a_setup_actpass = '\x0c', a_setup_active = '\x0d', a_mid_zero = '\x0e', s_dash = '\x0f', t_zero_zero = '\x10', standard_moz_origin = '\x11';
 const short_separator_follows = '\x7c';
 const unknown_line = '\x7e';
 const unknown_terminate = '\x7f';
@@ -1064,6 +1204,9 @@ const unknown_terminate = '\x7f';
 const nl_or_cr_nl = (pl) => pl.uses_short_nl
     ? short_separator_follows
     : '';
+function moz_ver([maj, min, patch]) {
+    return `${maj}.${min}.${patch}${c_terminal}`;
+}
 function parsed_to_bytestring(parsed) {
     let work = '', ending = '', skip_iter = false;
     if (parsed.kind === 'offer') {
@@ -1125,6 +1268,10 @@ function parsed_to_bytestring(parsed) {
                 case 't_zero_zero':
                     work += `${t_zero_zero}${nl_or_cr_nl(v)}`;
                     break;
+                case 'standard_moz_origin':
+                    const smo = v, mvs = moz_ver(smo.moz_ver);
+                    work += `${standard_moz_origin}${mvs}${smo.sess}${c_terminal}${nl_or_cr_nl(v)}`;
+                    break;
                 case 'unknown_terminate':
                     work += `${unknown_terminate}${v.value}`;
                     break;
@@ -1156,19 +1303,21 @@ function unpack(bytestring) {
     let i, iC, work = '', at_end = '';
     function unpack_none(s) { return s; }
     function unpack_decimal(d) { return d; }
-    function scan_forward_to_null(prefix, throw_label, unpacker = unpack_none) {
-        let found = false, end;
-        for (end = i + 1; end < iC; ++end) {
+    function scan_forward_to_null(prefix, throw_label, unpacker = unpack_none, skip_r_n = false) {
+        let found = false, end, finished = false;
+        for (end = i + 1; end < iC && (finished === false); ++end) {
             if (bytestring.charAt(end) === c_terminal) {
                 found = end;
                 end = iC;
+                finished = true;
             }
         }
         if (found === false) {
             throw new RangeError(`No terminal null for ${throw_label} at ${i}`);
         }
-        work += `${prefix}${unpacker(bytestring.substring(i + i, end + 1))}\r\n`;
-        i = end + 1;
+        const unpacked = unpacker(bytestring.substring(i + 1, found));
+        work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+        i = found;
     }
     for (i = 0, iC = bytestring.length; i < iC; ++i) {
         switch (bytestring.charAt(i)) {
@@ -1186,7 +1335,7 @@ function unpack(bytestring) {
             case a_msid_semantic_ns:
                 work += `a=msid-semantic:WMS\r\n`;
                 break;
-            case version_zero_line:
+            case a_msid_semantic_ws:
                 work += `a=msid-semantic: WMS\r\n`;
                 break;
             case a_extmap_allow_mixed:
@@ -1199,10 +1348,19 @@ function unpack(bytestring) {
                 scan_forward_to_null('a=sctp-port:', 'a_custom_sctp_port', unpack_decimal);
                 break;
             case a_standard_max_message_size:
-                work += `a=max-message-size:262144\r\n`;
+                work += 'a=max-message-size:262144\r\n';
                 break;
             case a_custom_max_message_size:
                 scan_forward_to_null('a=max-message-size:', 'a_custom_max_message_size', unpack_decimal);
+                break;
+            case a_setup_actpass:
+                work += 'a=setup:actpass\r\n';
+                break;
+            case a_setup_active:
+                work += 'a=setup:active\r\n';
+                break;
+            case version_zero_line:
+                work += 'v=0\r\n';
                 break;
             case version_line:
                 scan_forward_to_null('v=', 'version_line');
@@ -1215,6 +1373,11 @@ function unpack(bytestring) {
                 break;
             case t_zero_zero:
                 work += 't=0 0\r\n';
+                break;
+            case standard_moz_origin:
+                scan_forward_to_null('o=mozilla...THIS_IS_SDPARTA-', 'standard_moz_origin_1', undefined, true);
+                scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
+                work += ' 0 IN IP4 0.0.0.0\r\n';
                 break;
             case unknown_terminate:
                 work += bytestring.substring(i + 1, iC);

@@ -15,6 +15,7 @@ type AMidZero                = { kind: 'a_mid_zero',                  value: str
 
 type SDash                   = { kind: 's_dash',                      value: string, uses_short_nl: boolean };
 type TZeroZero               = { kind: 't_zero_zero',                 value: string, uses_short_nl: boolean };
+type StandardMozOrigin       = { kind: 'standard_moz_origin',         value: string, uses_short_nl: boolean, moz_ver: [number, number, number], sess: number };
 
 type UnknownLine             = { kind: 'unknown_line',                value: string, uses_short_nl: boolean };
 type UnknownTerminate        = { kind: 'unknown_terminate',           value: string, uses_short_nl: boolean };
@@ -31,6 +32,7 @@ type ParsedLine
   | ASetupActPass | ASetupActive | AMidZero
   | SDash
   | TZeroZero
+  | StandardMozOrigin
   | UnknownTerminate;
 
 type ParsedSdp = {
@@ -41,6 +43,7 @@ type ParsedSdp = {
         | 'a_setup_actpass' | 'a_setup_active' | 'a_mid_zero'
         | 's_dash'
         | 't_zero_zero'
+        | 'standard_moz_origin'
         | 'a_custom_max_message_size',
   value : ParsedLine[],
   loc   : PegLocation
@@ -53,6 +56,7 @@ type ParsedSdp = {
 export {
   UnknownLine,
   VersionZeroLine, VersionLine,
+  StandardMozOrigin,
   ParsedLine,
   PegCoord, PegLocation,
   ParsedSdp

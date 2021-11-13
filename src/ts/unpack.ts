@@ -19,21 +19,25 @@ function unpack(bytestring: string): string {
   function unpack_decimal(d: string) { return d; }  // eventually this will be a null-not-containing number encoding
 
 
-  function scan_forward_to_null(prefix: string, throw_label: string, unpacker: Function = unpack_none) {
+  function scan_forward_to_null(prefix: string, throw_label: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
 
     let found: false | number = false,
-        end;
+        end,
+        finished: boolean = false;
 
-    for (end=i+1; end<iC; ++end) {
+    for (end=i+1; end<iC && (finished === false); ++end) {
       if (bytestring.charAt(end) === symbols.c_terminal) {
-        found = end;
-        end   = iC;
+        found    = end;
+        end      = iC;
+        finished = true;
       }
     }
 
     if (found === false) { throw new RangeError(`No terminal null for ${throw_label} at ${i}`); }
-    work   += `${prefix}${unpacker(bytestring.substring(i+i, end+1))}\r\n`;  // todo handle soft \n
-    i       = end+1;                                                         // skip forward substring's length
+    const unpacked = unpacker(bytestring.substring(i+1, found));
+
+    work   += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;  // todo handle soft \n
+    i       = found;                                           // skip forward to located null
 
   }
 
@@ -60,7 +64,7 @@ function unpack(bytestring: string): string {
         work += `a=msid-semantic:WMS\r\n`;  // todo handle soft \n
         break;
 
-      case symbols.version_zero_line:
+      case symbols.a_msid_semantic_ws:
         work += `a=msid-semantic: WMS\r\n`;  // todo handle soft \n
         break;
 
@@ -77,11 +81,23 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.a_standard_max_message_size:
-        work += `a=max-message-size:262144\r\n`;  // todo handle soft \n
+        work += 'a=max-message-size:262144\r\n';  // todo handle soft \n
         break;
 
       case symbols.a_custom_max_message_size:
         scan_forward_to_null('a=max-message-size:', 'a_custom_max_message_size', unpack_decimal);
+        break;
+
+      case symbols.a_setup_actpass:
+        work += 'a=setup:actpass\r\n';
+        break;
+
+      case symbols.a_setup_active:
+        work += 'a=setup:active\r\n';
+        break;
+
+      case symbols.version_zero_line:
+        work += 'v=0\r\n';
         break;
 
       case symbols.version_line:
@@ -98,6 +114,12 @@ function unpack(bytestring: string): string {
 
       case symbols.t_zero_zero:
         work += 't=0 0\r\n';
+        break;
+
+      case symbols.standard_moz_origin:
+        scan_forward_to_null('o=mozilla...THIS_IS_SDPARTA-', 'standard_moz_origin_1', undefined, true);
+        scan_forward_to_null(' ',                            'standard_moz_origin_2', undefined, true);
+        work += ' 0 IN IP4 0.0.0.0\r\n';
         break;
 
       case symbols.unknown_terminate:
