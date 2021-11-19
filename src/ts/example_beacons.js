@@ -74,7 +74,7 @@ const full_set = {
   ubu_ff_90_host,
   ubu_ff_90_client
 
-}
+};
 
 
 
