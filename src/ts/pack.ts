@@ -46,7 +46,7 @@ function make_src(v: ParsedLine) {
   const { kind, items } = (v as StandardRemoteCandidate);
   const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
   if (kind !== 'standard_remote_candidate') { throw 'impossible'; }
-  return `${symbols.standard_remote_candidate}:${d1} ${d2} udp ${d3} ${i1} ${d4} typ srflx raddr ${i2} rport ${d5} generation ${d6} network-cost 999`;
+  return `${symbols.standard_remote_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${i2}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
 
 }
 
@@ -72,7 +72,7 @@ function make_slc(v: ParsedLine) {
   const { kind, items } = (v as StandardLocalCandidate);
   const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
   if (kind !== 'standard_local_candidate') { throw 'impossible'; }
-  return `${symbols.standard_local_candidate}:${d1} ${d2} udp ${d3} ${i1} ${d4} typ srflx raddr ${i2} rport ${d5} generation ${d6} network-cost 999`;
+  return `${symbols.standard_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${i2}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
 
 }
 

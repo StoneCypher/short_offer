@@ -146,43 +146,43 @@ ValLine
 
 
 AttrMsidSemanticWmsClaimNoSpace
-  = 'a=msid-semantic:WMS'
+  = 'a=msid-semantic:WMS' us:UntilSeparator
   { return ast('a_msid_semantic_ns', undefined); }
 
 
 
 AttrMsidSemanticWmsClaimWithSpace
-  = 'a=msid-semantic: WMS'
+  = 'a=msid-semantic: WMS' us:UntilSeparator
   { return ast('a_msid_semantic_ws', undefined); }
 
 
 
 AttrExtmapAllowMixed
-  = 'a=extmap-allow-mixed'
+  = 'a=extmap-allow-mixed' us:UntilSeparator
   { return ast('a_extmap_allow_mixed', undefined); }
 
 
 
 ASetupActpass
-  = 'a=setup:actpass'
+  = 'a=setup:actpass' us:UntilSeparator
   { return ast('a_setup_actpass'); }
 
 
 
 ASetupActive
-  = 'a=setup:active'
+  = 'a=setup:active' us:UntilSeparator
   { return ast('a_setup_active'); }
 
 
 
 AMid0
-  = 'a=mid:0'
+  = 'a=mid:0' us:UntilSeparator
   { return ast('a_mid_zero'); }
 
 
 
 SDash
-  = 's=-'
+  = 's=-' us:UntilSeparator
   { return ast('s_dash'); }
 
 
@@ -207,44 +207,44 @@ MozVNum2
 
 // o=mozilla...THIS_IS_SDPARTA-90.0.2 4132699980109199001 0 IN IP4 0.0.0.0
 StandardMozOrigin
-  = 'o=mozilla...THIS_IS_SDPARTA-' mv:MozVNum ' ' msess:Decimal ' 0 IN IP4 0.0.0.0'
+  = 'o=mozilla...THIS_IS_SDPARTA-' mv:MozVNum ' ' msess:Decimal ' 0 IN IP4 0.0.0.0' us:UntilSeparator
   { return ast('standard_moz_origin', [mv, msess]); }
 
 
 
 TZeroZero
-  = 't=0 0'
+  = 't=0 0' us:UntilSeparator
   { return ast('t_zero_zero'); }
 
 
 
 StandardSctpPort
-  = 'a=sctp-port:5000'
+  = 'a=sctp-port:5000' us:UntilSeparator
   { return ast('a_standard_sctp_port'); }
 
 
 
 CustomSctpPort
-  = 'a=sctp-port:' data:Decimal
+  = 'a=sctp-port:' data:Decimal us:UntilSeparator
   { return ast('a_custom_sctp_port', data); }
 
 
 
 StandardMaxMessageSize
-  = 'a=max-message-size:262144'
+  = 'a=max-message-size:262144' us:UntilSeparator
   { return ast('a_standard_max_message_size'); }
 
 
 
 CustomMaxMessageSize
-  = 'a=max-message-size:' data:Decimal
+  = 'a=max-message-size:' data:Decimal us:UntilSeparator
   { return ast('a_custom_max_message_size', data); }
 
 
 
 AStandardLocalCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' g:GUID
-    '.local ' d4:Decimal ' typ host generation 0 network-cost 999'
+    '.local ' d4:Decimal ' typ host generation 0 network-cost 999' // do not add an until separator
   { return ast('standard_local_candidate', [ d1, d2, d3, g, d4 ]); }
 
 
@@ -252,7 +252,7 @@ AStandardLocalCandidate
 AStandardIp4RemoteCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP4
     ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal ' generation '
-    d6:Decimal ' network-cost 999'
+    d6:Decimal ' network-cost 999' // do not add an until separator
   { return ast('standard_remote_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); }
 
 
