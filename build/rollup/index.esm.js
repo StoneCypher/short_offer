@@ -101,7 +101,7 @@ peg$SyntaxError$1.buildMessage = function (expected, found) {
 };
 function peg$parse$1(input, options) {
     options = options !== void 0 ? options : {};
-    var peg$FAILED = {}, peg$startRuleFunctions = { RawDocument: peg$parseRawDocument }, peg$startRuleFunction = peg$parseRawDocument, peg$c0 = /^[0-9]/, peg$c1 = peg$classExpectation([["0", "9"]], false, false), peg$c2 = function (d) { return BigInt(d.join(''), 10); }, peg$c3 = /^[0-9a-fA-F]/, peg$c4 = peg$classExpectation([["0", "9"], ["a", "f"], ["A", "F"]], false, false), peg$c6 = function (a, b, c, d) { return [a, b, c, d].join(''); }, peg$c7 = function (a, b, c, d, e, f, g, h) { return [a, b, c, d, e, f, g, h].join(''); }, peg$c8 = function (a, b, c, d, e, f, g, h, i, j, k, l) { return [a, b, c, d, e, f, g, h, i, j, k, l].join(''); }, peg$c12 = "-", peg$c13 = peg$literalExpectation("-", false), peg$c14 = function (a, b, c, d, e) { return [a, b, c, d, e].join(''); }, peg$c15 = ".", peg$c16 = peg$literalExpectation(".", false), peg$c17 = function (a, b, c, d) { return ((((((a * 256n) + b) * 256n) + c) * 256n) + d).toString(); }, peg$c18 = "{\"type\":\"offer\",\"sdp\":\"", peg$c19 = peg$literalExpectation("{\"type\":\"offer\",\"sdp\":\"", false), peg$c20 = "\"}", peg$c21 = peg$literalExpectation("\"}", false), peg$c22 = function (s) { return ast('offer', s); }, peg$c23 = "{\"type\":\"answer\",\"sdp\":\"", peg$c24 = peg$literalExpectation("{\"type\":\"answer\",\"sdp\":\"", false), peg$c25 = function (s) { return ast('answer', s); }, peg$c26 = "v=0\r\n", peg$c27 = peg$literalExpectation("v=0\r\n", false), peg$c28 = function () { return ast('version_zero_line', undefined); }, peg$c29 = "v=", peg$c30 = peg$literalExpectation("v=", false), peg$c31 = function (us) { return ast('version_line', us); }, peg$c32 = "a=msid-semantic:WMS", peg$c33 = peg$literalExpectation("a=msid-semantic:WMS", false), peg$c34 = function (us) { return ast('a_msid_semantic_ns', undefined); }, peg$c35 = "a=msid-semantic: WMS", peg$c36 = peg$literalExpectation("a=msid-semantic: WMS", false), peg$c37 = function (us) { return ast('a_msid_semantic_ws', undefined); }, peg$c38 = "a=extmap-allow-mixed", peg$c39 = peg$literalExpectation("a=extmap-allow-mixed", false), peg$c40 = function (us) { return ast('a_extmap_allow_mixed', undefined); }, peg$c41 = "a=setup:actpass", peg$c42 = peg$literalExpectation("a=setup:actpass", false), peg$c43 = function (us) { return ast('a_setup_actpass'); }, peg$c44 = "a=setup:active", peg$c45 = peg$literalExpectation("a=setup:active", false), peg$c46 = function (us) { return ast('a_setup_active'); }, peg$c47 = "a=mid:0", peg$c48 = peg$literalExpectation("a=mid:0", false), peg$c49 = function (us) { return ast('a_mid_zero'); }, peg$c50 = "s=-", peg$c51 = peg$literalExpectation("s=-", false), peg$c52 = function (us) { return ast('s_dash'); }, peg$c53 = function (maj, min, patch) { return ast('moz_v_num', [maj, min, patch]); }, peg$c54 = function (maj, min) { return ast('moz_v_num', [maj, min, undefined]); }, peg$c55 = "o=mozilla...THIS_IS_SDPARTA-", peg$c56 = peg$literalExpectation("o=mozilla...THIS_IS_SDPARTA-", false), peg$c57 = " ", peg$c58 = peg$literalExpectation(" ", false), peg$c59 = " 0 IN IP4 0.0.0.0", peg$c60 = peg$literalExpectation(" 0 IN IP4 0.0.0.0", false), peg$c61 = function (mv, msess, us) { return ast('standard_moz_origin', [mv, msess]); }, peg$c62 = "t=0 0", peg$c63 = peg$literalExpectation("t=0 0", false), peg$c64 = function (us) { return ast('t_zero_zero'); }, peg$c65 = "a=sctp-port:5000", peg$c66 = peg$literalExpectation("a=sctp-port:5000", false), peg$c67 = function (us) { return ast('a_standard_sctp_port'); }, peg$c68 = "a=sctp-port:", peg$c69 = peg$literalExpectation("a=sctp-port:", false), peg$c70 = function (data, us) { return ast('a_custom_sctp_port', data); }, peg$c71 = "a=max-message-size:262144", peg$c72 = peg$literalExpectation("a=max-message-size:262144", false), peg$c73 = function (us) { return ast('a_standard_max_message_size'); }, peg$c74 = "a=max-message-size:", peg$c75 = peg$literalExpectation("a=max-message-size:", false), peg$c76 = function (data, us) { return ast('a_custom_max_message_size', data); }, peg$c77 = "a=candidate:", peg$c78 = peg$literalExpectation("a=candidate:", false), peg$c79 = " udp ", peg$c80 = peg$literalExpectation(" udp ", false), peg$c81 = ".local ", peg$c82 = peg$literalExpectation(".local ", false), peg$c83 = " typ host generation 0 network-cost 999", peg$c84 = peg$literalExpectation(" typ host generation 0 network-cost 999", false), peg$c85 = function (d1, d2, d3, g, d4) { return ast('standard_local_candidate', [d1, d2, d3, g, d4]); }, peg$c86 = " typ srflx raddr ", peg$c87 = peg$literalExpectation(" typ srflx raddr ", false), peg$c88 = " rport ", peg$c89 = peg$literalExpectation(" rport ", false), peg$c90 = " generation ", peg$c91 = peg$literalExpectation(" generation ", false), peg$c92 = " network-cost 999", peg$c93 = peg$literalExpectation(" network-cost 999", false), peg$c94 = function (d1, d2, d3, i1, d4, i2, d5, d6) { return ast('standard_remote_candidate', [d1, d2, d3, i1, d4, i2, d5, d6]); }, peg$c95 = function (us) { return ast('unknown_line', us); }, peg$c96 = /^[^'\r\n']/, peg$c97 = peg$classExpectation(["'", "\r", "\n", "'"], true, false), peg$c98 = "\r\n", peg$c99 = peg$literalExpectation("\r\n", false), peg$c100 = function (rl) { return rl.join(''); }, peg$c101 = peg$anyExpectation(), peg$c102 = function (uts) { return ast('unknown_terminate', uts.join('')); }, peg$currPos = 0, peg$savedPos = 0, peg$posDetailsCache = [{ line: 1, column: 1 }], peg$maxFailPos = 0, peg$maxFailExpected = [], peg$result;
+    var peg$FAILED = {}, peg$startRuleFunctions = { RawDocument: peg$parseRawDocument }, peg$startRuleFunction = peg$parseRawDocument, peg$c0 = /^[0-9]/, peg$c1 = peg$classExpectation([["0", "9"]], false, false), peg$c2 = function (d) { return BigInt(d.join(''), 10); }, peg$c3 = /^[0-9a-fA-F]/, peg$c4 = peg$classExpectation([["0", "9"], ["a", "f"], ["A", "F"]], false, false), peg$c6 = function (a, b, c, d) { return [a, b, c, d].join(''); }, peg$c7 = function (a, b, c, d, e, f, g, h) { return [a, b, c, d, e, f, g, h].join(''); }, peg$c8 = function (a, b, c, d, e, f, g, h, i, j, k, l) { return [a, b, c, d, e, f, g, h, i, j, k, l].join(''); }, peg$c12 = "-", peg$c13 = peg$literalExpectation("-", false), peg$c14 = function (a, b, c, d, e) { return [a, b, c, d, e].join(''); }, peg$c15 = ".", peg$c16 = peg$literalExpectation(".", false), peg$c17 = function (a, b, c, d) { return ((((((a * 256n) + b) * 256n) + c) * 256n) + d).toString(); }, peg$c18 = "{\"type\":\"offer\",\"sdp\":\"", peg$c19 = peg$literalExpectation("{\"type\":\"offer\",\"sdp\":\"", false), peg$c20 = "\"}", peg$c21 = peg$literalExpectation("\"}", false), peg$c22 = function (s) { return ast('offer', s); }, peg$c23 = "{\"type\":\"answer\",\"sdp\":\"", peg$c24 = peg$literalExpectation("{\"type\":\"answer\",\"sdp\":\"", false), peg$c25 = function (s) { return ast('answer', s); }, peg$c26 = "v=0\r\n", peg$c27 = peg$literalExpectation("v=0\r\n", false), peg$c28 = function () { return ast('version_zero_line', undefined); }, peg$c29 = "v=", peg$c30 = peg$literalExpectation("v=", false), peg$c31 = function (us) { return ast('version_line', us); }, peg$c32 = "a=msid-semantic:WMS", peg$c33 = peg$literalExpectation("a=msid-semantic:WMS", false), peg$c34 = function (us) { return ast('a_msid_semantic_ns', undefined); }, peg$c35 = "a=msid-semantic: WMS", peg$c36 = peg$literalExpectation("a=msid-semantic: WMS", false), peg$c37 = function (us) { return ast('a_msid_semantic_ws', undefined); }, peg$c38 = "a=extmap-allow-mixed", peg$c39 = peg$literalExpectation("a=extmap-allow-mixed", false), peg$c40 = function (us) { return ast('a_extmap_allow_mixed', undefined); }, peg$c41 = "a=setup:actpass", peg$c42 = peg$literalExpectation("a=setup:actpass", false), peg$c43 = function (us) { return ast('a_setup_actpass'); }, peg$c44 = "a=setup:active", peg$c45 = peg$literalExpectation("a=setup:active", false), peg$c46 = function (us) { return ast('a_setup_active'); }, peg$c47 = "a=mid:0", peg$c48 = peg$literalExpectation("a=mid:0", false), peg$c49 = function (us) { return ast('a_mid_zero'); }, peg$c50 = "s=-", peg$c51 = peg$literalExpectation("s=-", false), peg$c52 = function (us) { return ast('s_dash'); }, peg$c53 = function (maj, min, patch) { return ast('moz_v_num', [maj, min, patch]); }, peg$c54 = function (maj, min) { return ast('moz_v_num', [maj, min, undefined]); }, peg$c55 = "o=mozilla...THIS_IS_SDPARTA-", peg$c56 = peg$literalExpectation("o=mozilla...THIS_IS_SDPARTA-", false), peg$c57 = " ", peg$c58 = peg$literalExpectation(" ", false), peg$c59 = " 0 IN IP4 0.0.0.0", peg$c60 = peg$literalExpectation(" 0 IN IP4 0.0.0.0", false), peg$c61 = function (mv, msess, us) { return ast('standard_moz_origin', [mv, msess]); }, peg$c62 = "t=0 0", peg$c63 = peg$literalExpectation("t=0 0", false), peg$c64 = function (us) { return ast('t_zero_zero'); }, peg$c65 = "a=sctp-port:5000", peg$c66 = peg$literalExpectation("a=sctp-port:5000", false), peg$c67 = function (us) { return ast('a_standard_sctp_port'); }, peg$c68 = "a=sctp-port:", peg$c69 = peg$literalExpectation("a=sctp-port:", false), peg$c70 = function (data, us) { return ast('a_custom_sctp_port', data); }, peg$c71 = "a=max-message-size:262144", peg$c72 = peg$literalExpectation("a=max-message-size:262144", false), peg$c73 = function (us) { return ast('a_standard_max_message_size'); }, peg$c74 = "a=max-message-size:", peg$c75 = peg$literalExpectation("a=max-message-size:", false), peg$c76 = function (data, us) { return ast('a_custom_max_message_size', data); }, peg$c77 = "a=candidate:", peg$c78 = peg$literalExpectation("a=candidate:", false), peg$c79 = " udp ", peg$c80 = peg$literalExpectation(" udp ", false), peg$c81 = ".local ", peg$c82 = peg$literalExpectation(".local ", false), peg$c83 = " typ host generation 0 network-cost 999", peg$c84 = peg$literalExpectation(" typ host generation 0 network-cost 999", false), peg$c85 = function (d1, d2, d3, g, d4, us) { return ast('standard_local_candidate', [d1, d2, d3, g, d4]); }, peg$c86 = " typ srflx raddr ", peg$c87 = peg$literalExpectation(" typ srflx raddr ", false), peg$c88 = " rport ", peg$c89 = peg$literalExpectation(" rport ", false), peg$c90 = " generation ", peg$c91 = peg$literalExpectation(" generation ", false), peg$c92 = " network-cost 999", peg$c93 = peg$literalExpectation(" network-cost 999", false), peg$c94 = function (d1, d2, d3, i1, d4, i2, d5, d6, us) { return ast('standard_remote_candidate', [d1, d2, d3, i1, d4, i2, d5, d6]); }, peg$c95 = function (us) { return ast('unknown_line', us); }, peg$c96 = /^[^'\r\n']/, peg$c97 = peg$classExpectation(["'", "\r", "\n", "'"], true, false), peg$c98 = "\r\n", peg$c99 = peg$literalExpectation("\r\n", false), peg$c100 = function (rl) { return rl.join(''); }, peg$c101 = peg$anyExpectation(), peg$c102 = function (uts) { return ast('unknown_terminate', uts.join('')); }, peg$currPos = 0, peg$savedPos = 0, peg$posDetailsCache = [{ line: 1, column: 1 }], peg$maxFailPos = 0, peg$maxFailExpected = [], peg$result;
     if ("startRule" in options) {
         if (!(options.startRule in peg$startRuleFunctions)) {
             throw new Error("Can't start parsing from rule \"" + options.startRule + "\".");
@@ -1409,7 +1409,7 @@ function peg$parse$1(input, options) {
         return s0;
     }
     function peg$parseAStandardLocalCandidate() {
-        var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
+        var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12;
         s0 = peg$currPos;
         if (input.substr(peg$currPos, 12) === peg$c77) {
             s1 = peg$c77;
@@ -1487,9 +1487,16 @@ function peg$parse$1(input, options) {
                                                     }
                                                 }
                                                 if (s11 !== peg$FAILED) {
-                                                    peg$savedPos = s0;
-                                                    s1 = peg$c85(s2, s4, s6, s8, s10);
-                                                    s0 = s1;
+                                                    s12 = peg$parseUntilSeparator();
+                                                    if (s12 !== peg$FAILED) {
+                                                        peg$savedPos = s0;
+                                                        s1 = peg$c85(s2, s4, s6, s8, s10);
+                                                        s0 = s1;
+                                                    }
+                                                    else {
+                                                        peg$currPos = s0;
+                                                        s0 = peg$FAILED;
+                                                    }
                                                 }
                                                 else {
                                                     peg$currPos = s0;
@@ -1548,7 +1555,7 @@ function peg$parse$1(input, options) {
         return s0;
     }
     function peg$parseAStandardIp4RemoteCandidate() {
-        var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17;
+        var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18;
         s0 = peg$currPos;
         if (input.substr(peg$currPos, 12) === peg$c77) {
             s1 = peg$c77;
@@ -1665,9 +1672,16 @@ function peg$parse$1(input, options) {
                                                                             }
                                                                         }
                                                                         if (s17 !== peg$FAILED) {
-                                                                            peg$savedPos = s0;
-                                                                            s1 = peg$c94(s2, s4, s6, s8, s10, s12, s14, s16);
-                                                                            s0 = s1;
+                                                                            s18 = peg$parseUntilSeparator();
+                                                                            if (s18 !== peg$FAILED) {
+                                                                                peg$savedPos = s0;
+                                                                                s1 = peg$c94(s2, s4, s6, s8, s10, s12, s14, s16);
+                                                                                s0 = s1;
+                                                                            }
+                                                                            else {
+                                                                                peg$currPos = s0;
+                                                                                s0 = peg$FAILED;
+                                                                            }
                                                                         }
                                                                         else {
                                                                             peg$currPos = s0;
@@ -2124,13 +2138,9 @@ function deparse(bytecode) {
 
 const c_terminal = '\x00';
 const offer = '\x01', answer = '\x02', version_zero_line = '\x03', version_line = '\x04', a_msid_semantic_ns = '\x05', a_msid_semantic_ws = '\x06', a_extmap_allow_mixed = '\x07', a_standard_sctp_port = '\x08', a_custom_sctp_port = '\x09', a_standard_max_message_size = '\x0a', a_custom_max_message_size = '\x0b', a_setup_actpass = '\x0c', a_setup_active = '\x0d', a_mid_zero = '\x0e', s_dash = '\x0f', t_zero_zero = '\x10', standard_moz_origin = '\x11', standard_local_candidate = '\x12', standard_remote_candidate = '\x13';
-const short_separator_follows = '\x7c';
 const unknown_line = '\x7e';
 const unknown_terminate = '\x7f';
 
-const nl_or_cr_nl = (pl) => pl.uses_short_nl
-    ? short_separator_follows
-    : '';
 function moz_ver([maj, min, patch]) {
     return `${[maj, min, patch].filter(i => i !== undefined).map(i => i.toString()).join('.')}${c_terminal}`;
 }
@@ -2167,53 +2177,53 @@ function parsed_to_bytestring(parsed) {
             const v_kind = v.kind;
             switch (v_kind) {
                 case 'unknown_line':
-                    work += `${unknown_line}${v.value}${nl_or_cr_nl(v)}${c_terminal}`;
+                    work += `${unknown_line}${v.value}${c_terminal}`;
                     break;
                 case 'version_zero_line':
-                    work += `${version_zero_line}${nl_or_cr_nl(v)}`;
+                    work += `${version_zero_line}`;
                     break;
                 case 'version_line':
-                    work += `${version_line}${v.value}${nl_or_cr_nl(v)}${c_terminal}`;
+                    work += `${version_line}${v.value}${c_terminal}`;
                     break;
                 case 'a_msid_semantic_ns':
-                    work += `${a_msid_semantic_ns}${nl_or_cr_nl(v)}`;
+                    work += `${a_msid_semantic_ns}`;
                     break;
                 case 'a_msid_semantic_ws':
-                    work += `${a_msid_semantic_ws}${nl_or_cr_nl(v)}`;
+                    work += `${a_msid_semantic_ws}`;
                     break;
                 case 'a_extmap_allow_mixed':
-                    work += `${a_extmap_allow_mixed}${nl_or_cr_nl(v)}`;
+                    work += `${a_extmap_allow_mixed}`;
                     break;
                 case 'a_standard_sctp_port':
-                    work += `${a_standard_sctp_port}${nl_or_cr_nl(v)}`;
+                    work += `${a_standard_sctp_port}`;
                     break;
                 case 'a_custom_sctp_port':
-                    work += `${a_custom_sctp_port}${v.value}${nl_or_cr_nl(v)}${c_terminal}`;
+                    work += `${a_custom_sctp_port}${v.value}${c_terminal}`;
                     break;
                 case 'a_standard_max_message_size':
-                    work += `${a_standard_max_message_size}${nl_or_cr_nl(v)}`;
+                    work += `${a_standard_max_message_size}`;
                     break;
                 case 'a_custom_max_message_size':
-                    work += `${a_custom_max_message_size}${v.value}${nl_or_cr_nl(v)}${c_terminal}`;
+                    work += `${a_custom_max_message_size}${v.value}${c_terminal}`;
                     break;
                 case 'a_setup_actpass':
-                    work += `${a_setup_actpass}${nl_or_cr_nl(v)}`;
+                    work += `${a_setup_actpass}`;
                     break;
                 case 'a_setup_active':
-                    work += `${a_setup_active}${nl_or_cr_nl(v)}`;
+                    work += `${a_setup_active}`;
                     break;
                 case 'a_mid_zero':
-                    work += `${a_mid_zero}${nl_or_cr_nl(v)}`;
+                    work += `${a_mid_zero}`;
                     break;
                 case 's_dash':
-                    work += `${s_dash}${nl_or_cr_nl(v)}`;
+                    work += `${s_dash}`;
                     break;
                 case 't_zero_zero':
-                    work += `${t_zero_zero}${nl_or_cr_nl(v)}`;
+                    work += `${t_zero_zero}`;
                     break;
                 case 'standard_moz_origin':
                     const smo = v, mvs = moz_ver(smo.moz_ver);
-                    work += `${standard_moz_origin}${mvs}${smo.sess}${c_terminal}${nl_or_cr_nl(v)}`;
+                    work += `${standard_moz_origin}${mvs}${smo.sess}${c_terminal}`;
                     break;
                 case 'standard_local_candidate':
                     work += make_slc(v);

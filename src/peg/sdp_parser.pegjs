@@ -244,7 +244,7 @@ CustomMaxMessageSize
 
 AStandardLocalCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' g:GUID
-    '.local ' d4:Decimal ' typ host generation 0 network-cost 999' // do not add an until separator
+    '.local ' d4:Decimal ' typ host generation 0 network-cost 999' us:UntilSeparator
   { return ast('standard_local_candidate', [ d1, d2, d3, g, d4 ]); }
 
 
@@ -252,7 +252,7 @@ AStandardLocalCandidate
 AStandardIp4RemoteCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP4
     ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal ' generation '
-    d6:Decimal ' network-cost 999' // do not add an until separator
+    d6:Decimal ' network-cost 999' us:UntilSeparator
   { return ast('standard_remote_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); }
 
 
