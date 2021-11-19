@@ -1,7 +1,12 @@
 
 import { parse }             from './parsers';
 import * as symbols          from './symbols';
-import { StandardMozOrigin } from './types';
+
+import {
+  StandardMozOrigin,
+  StandardRemoteCandidate,
+  StandardLocalCandidate
+} from './types';
 
 
 
@@ -30,6 +35,45 @@ const nl_or_cr_nl = (pl: ParsedLine): string =>
 function moz_ver([ maj, min, patch ]: [ number, number, number ]): string {
   // todo these could be bytes with no null terminators
   return `${[ maj, min, patch ].filter(i => i !== undefined).map(i => i.toString()).join('.')}${symbols.c_terminal}`;
+}
+
+
+
+
+
+function make_src(v: ParsedLine) {
+
+  const { kind, items } = (v as StandardRemoteCandidate);
+  const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
+  if (kind !== 'standard_remote_candidate') { throw 'impossible'; }
+  return `${symbols.standard_remote_candidate}:${d1} ${d2} udp ${d3} ${i1} ${d4} typ srflx raddr ${i2} rport ${d5} generation ${d6} network-cost 999`;
+
+}
+
+
+
+
+
+// function make_sic(v: ParsedLine) {
+
+//   const { kind, items } = (v as StandardIpV4Candidate);
+//   const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
+//   if (kind !== 'standard_ipv4_candidate') { throw 'impossible'; }
+//   return `${symbols.standard_ipv4_candidate}:${d1} ${d2} udp ${d3} ${i1} ${d4} typ srflx raddr ${i2} rport ${d5} generation ${d6} network-cost 999`;
+
+// }
+
+
+
+
+
+function make_slc(v: ParsedLine) {
+
+  const { kind, items } = (v as StandardLocalCandidate);
+  const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
+  if (kind !== 'standard_local_candidate') { throw 'impossible'; }
+  return `${symbols.standard_local_candidate}:${d1} ${d2} udp ${d3} ${i1} ${d4} typ srflx raddr ${i2} rport ${d5} generation ${d6} network-cost 999`;
+
 }
 
 
@@ -123,9 +167,20 @@ function parsed_to_bytestring( parsed: ParsedSdp ): string {
         case 'standard_moz_origin':
           const smo = v as StandardMozOrigin,
                 mvs = moz_ver(smo.moz_ver);
-//        work += `${symbols.standard_moz_origin}${moz_ver(smo.moz_ver)}${smo.sess}${symbols.c_terminal}${nl_or_cr_nl(v)}`;
           work += `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}${nl_or_cr_nl(v)}`;
           break;
+
+        case 'standard_local_candidate':
+          work += make_slc(v);
+          break;
+
+        case 'standard_remote_candidate':
+          work += make_src(v);
+          break;
+
+        // case 'standard_ipv4_candidate':
+        //   work += make_sic(v);
+        //   break;
 
         case 'unknown_terminate':
           // newline stance is irrelevant

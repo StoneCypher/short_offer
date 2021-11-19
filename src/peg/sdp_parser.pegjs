@@ -20,6 +20,11 @@
       value          = '';
     }
 
+    if (['standard_local_candidate', 'standard_remote_candidate'].includes(kind)) {
+      retval.items = value;
+      retval.value = '';
+    }
+
     return retval;
 
   }
@@ -41,6 +46,55 @@ RawDocument
 
 Decimal
   = d:[0-9]+ { return BigInt(d.join(''), 10); }
+
+
+
+Hex
+  = [0-9a-fA-F]
+
+
+
+Hex2
+  = a:Hex b:Hex { return `${a}${b}`; }
+
+
+
+Hex4
+  = a:Hex b:Hex c:Hex d:Hex
+  { return [a,b,c,d].join(''); }
+
+
+
+Hex8
+  = a:Hex b:Hex c:Hex d:Hex e:Hex f:Hex g:Hex h:Hex
+  { return [a,b,c,d,e,f,g,h].join(''); }
+
+
+
+Hex12
+  = a:Hex b:Hex c:Hex d:Hex e:Hex f:Hex g:Hex h:Hex i:Hex j:Hex k:Hex l:Hex
+  { return [a,b,c,d,e,f,g,h,i,j,k,l].join(''); }
+
+
+
+CHex64
+  = a:Hex2 ':' b:Hex2 ':' c:Hex2 ':' d:Hex2 ':' e:Hex2 ':' f:Hex2 ':' g:Hex2 ':' h:Hex2 ':'
+    i:Hex2 ':' j:Hex2 ':' k:Hex2 ':' l:Hex2 ':' m:Hex2 ':' n:Hex2 ':' o:Hex2 ':' p:Hex2 ':'
+    q:Hex2 ':' r:Hex2 ':' s:Hex2 ':' t:Hex2 ':' u:Hex2 ':' v:Hex2 ':' w:Hex2 ':' x:Hex2 ':'
+    y:Hex2 ':' z:Hex2 ':' A:Hex2 ':' B:Hex2 ':' C:Hex2 ':' D:Hex2 ':' E:Hex2 ':' F:Hex2
+  { return [ a,b,c,d,e,f,g,h, i,j,k,l,m,n,o,p, q,r,s,t,u,v,w,x, y,z,A,B,C,D,E,F ].join(''); }
+
+
+
+GUID
+  = a:Hex8 '-' b:Hex4 '-' c:Hex4 '-' d:Hex4 '-' e:Hex12
+  { return [a,b,c,d,e].join(''); }
+
+
+
+IP4
+  = a:Decimal '.' b:Decimal '.' c:Decimal '.' d:Decimal
+  { return ((((( (a*256n) +b) *256n) +c) *256n) +d).toString(); }
 
 
 
@@ -73,6 +127,8 @@ Rule
  / CustomSctpPort
  / StandardMaxMessageSize
  / CustomMaxMessageSize
+// / AStandardLocalCandidate
+ / AStandardIp4RemoteCandidate
  / UnknownRule
 
 
@@ -183,6 +239,30 @@ StandardMaxMessageSize
 CustomMaxMessageSize
   = 'a=max-message-size:' data:Decimal
   { return ast('a_custom_max_message_size', data); }
+
+
+
+AStandardLocalCandidate
+  = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' g:GUID
+    '.local ' d4:Decimal ' typ host generation 0 network-cost 999'
+  { return ast('standard_local_candidate', [ d1, d2, d3, g, d4 ]); }
+
+
+
+AStandardIp4RemoteCandidate
+  = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP4
+    ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal ' generation '
+    d6:Decimal ' network-cost 999'
+  { return ast('standard_remote_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); }
+
+
+
+// a=candidate:2190342532 1 tcp 1517952767 172.21.32.1 9 typ host tcptype active generation 0 network-id 6
+// AStandardIp4RemoteCandidate
+//   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP4
+//     ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal ' generation '
+//     d6:Decimal ' network-cost 999'
+//   { return ast('AStandardIp4RemoteCandidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); }
 
 
 

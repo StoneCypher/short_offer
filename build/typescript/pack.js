@@ -6,6 +6,22 @@ const nl_or_cr_nl = (pl) => pl.uses_short_nl
 function moz_ver([maj, min, patch]) {
     return `${[maj, min, patch].filter(i => i !== undefined).map(i => i.toString()).join('.')}${symbols.c_terminal}`;
 }
+function make_src(v) {
+    const { kind, items } = v;
+    const [d1, d2, d3, i1, d4, i2, d5, d6] = items;
+    if (kind !== 'standard_remote_candidate') {
+        throw 'impossible';
+    }
+    return `${symbols.standard_remote_candidate}:${d1} ${d2} udp ${d3} ${i1} ${d4} typ srflx raddr ${i2} rport ${d5} generation ${d6} network-cost 999`;
+}
+function make_slc(v) {
+    const { kind, items } = v;
+    const [d1, d2, d3, i1, d4, i2, d5, d6] = items;
+    if (kind !== 'standard_local_candidate') {
+        throw 'impossible';
+    }
+    return `${symbols.standard_local_candidate}:${d1} ${d2} udp ${d3} ${i1} ${d4} typ srflx raddr ${i2} rport ${d5} generation ${d6} network-cost 999`;
+}
 function parsed_to_bytestring(parsed) {
     let work = '', ending = '', skip_iter = false;
     if (parsed.kind === 'offer') {
@@ -70,6 +86,12 @@ function parsed_to_bytestring(parsed) {
                 case 'standard_moz_origin':
                     const smo = v, mvs = moz_ver(smo.moz_ver);
                     work += `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}${nl_or_cr_nl(v)}`;
+                    break;
+                case 'standard_local_candidate':
+                    work += make_slc(v);
+                    break;
+                case 'standard_remote_candidate':
+                    work += make_src(v);
                     break;
                 case 'unknown_terminate':
                     work += `${symbols.unknown_terminate}${v.value}`;

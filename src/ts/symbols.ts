@@ -22,7 +22,9 @@ const offer                       = '\x01',
       a_mid_zero                  = '\x0e',
       s_dash                      = '\x0f',
       t_zero_zero                 = '\x10',
-      standard_moz_origin         = '\x11';
+      standard_moz_origin         = '\x11',
+      standard_local_candidate    = '\x12',
+      standard_remote_candidate   = '\x13';
 
 const short_separator_follows     = '\x7c',
       short_separators_all        = '\x7d';
@@ -45,6 +47,7 @@ export {
   s_dash,
   t_zero_zero,
   standard_moz_origin,
+  standard_local_candidate, standard_remote_candidate,
   short_separator_follows, short_separators_all,
   unknown_line, unknown_terminate
 };

@@ -16,6 +16,8 @@ type AMidZero                = { kind: 'a_mid_zero',                  value: str
 type SDash                   = { kind: 's_dash',                      value: string, uses_short_nl: boolean };
 type TZeroZero               = { kind: 't_zero_zero',                 value: string, uses_short_nl: boolean };
 type StandardMozOrigin       = { kind: 'standard_moz_origin',         value: string, uses_short_nl: boolean, moz_ver: [number, number, number], sess: number };
+type StandardRemoteCandidate = { kind: 'standard_remote_candidate',   value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
+type StandardLocalCandidate  = { kind: 'standard_local_candidate',    value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
 
 type UnknownLine             = { kind: 'unknown_line',                value: string, uses_short_nl: boolean };
 type UnknownTerminate        = { kind: 'unknown_terminate',           value: string, uses_short_nl: boolean };
@@ -33,9 +35,11 @@ type ParsedLine
   | SDash
   | TZeroZero
   | StandardMozOrigin
+  | StandardRemoteCandidate | StandardLocalCandidate
   | UnknownTerminate;
 
 type ParsedSdp = {
+
   kind  : 'offer' | 'answer' | 'unknown' | 'unknown_terminate' | 'version_line'
         | 'version_zero_line' | 'a_msid_semantic_ns' | 'a_msid_semantic_ws'
         | 'a_extmap_allow_mixed' | 'a_standard_sctp_port'
@@ -44,9 +48,13 @@ type ParsedSdp = {
         | 's_dash'
         | 't_zero_zero'
         | 'standard_moz_origin'
+        | 'standard_remote_candidate' | 'standard_local_candidate'
         | 'a_custom_max_message_size',
+
   value : ParsedLine[],
+
   loc   : PegLocation
+
 };
 
 
@@ -57,6 +65,7 @@ export {
   UnknownLine,
   VersionZeroLine, VersionLine,
   StandardMozOrigin,
+  StandardRemoteCandidate, StandardLocalCandidate,
   ParsedLine,
   PegCoord, PegLocation,
   ParsedSdp

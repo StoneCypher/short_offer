@@ -127,6 +127,31 @@ function unpack(bytestring: string): string {
         i = iC; // end the loop
         break;
 
+      case symbols.standard_local_candidate:
+        // known to be wrong
+        scan_forward_to_null(`a=candidate:`,      'standard_local_candidate_1', undefined, true);
+        scan_forward_to_null(' ',                 'standard_local_candidate_2', undefined, true);
+        scan_forward_to_null(' udp ',             'standard_local_candidate_3', undefined, true);
+        scan_forward_to_null(' ',                 'standard_local_candidate_4', undefined, true);
+        scan_forward_to_null(' ',                 'standard_local_candidate_5', undefined, true);
+        scan_forward_to_null(' typ srflx raddr ', 'standard_local_candidate_6', undefined, true);
+        scan_forward_to_null(' rport ',           'standard_local_candidate_7', undefined, true);
+        scan_forward_to_null(' generation ',      'standard_local_candidate_7', undefined, true);
+        work += ' network-cost 999';
+        break;
+
+      case symbols.standard_remote_candidate:
+        scan_forward_to_null(`a=candidate:`,      'standard_local_candidate_1', undefined, true);
+        scan_forward_to_null(' ',                 'standard_local_candidate_2', undefined, true);
+        scan_forward_to_null(' udp ',             'standard_local_candidate_3', undefined, true);
+        scan_forward_to_null(' ',                 'standard_local_candidate_4', undefined, true);
+        scan_forward_to_null(' ',                 'standard_local_candidate_5', undefined, true);
+        scan_forward_to_null(' typ srflx raddr ', 'standard_local_candidate_6', undefined, true);
+        scan_forward_to_null(' rport ',           'standard_local_candidate_7', undefined, true);
+        scan_forward_to_null(' generation ',      'standard_local_candidate_7', undefined, true);
+        work += ' network-cost 999';
+        break;
+
       default:
         throw new TypeError(`Unknown symbol at ${i} '${bytestring.charAt(i)}' [${bytestring.charCodeAt(i)}], corrupt encoding'`);
 
