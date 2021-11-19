@@ -1,8 +1,5 @@
 import { parse } from './parsers';
 import * as symbols from './symbols';
-const nl_or_cr_nl = (pl) => pl.uses_short_nl
-    ? symbols.short_separator_follows
-    : '';
 function moz_ver([maj, min, patch]) {
     return `${[maj, min, patch].filter(i => i !== undefined).map(i => i.toString()).join('.')}${symbols.c_terminal}`;
 }
@@ -39,53 +36,53 @@ function parsed_to_bytestring(parsed) {
             const v_kind = v.kind;
             switch (v_kind) {
                 case 'unknown_line':
-                    work += `${symbols.unknown_line}${v.value}${nl_or_cr_nl(v)}${symbols.c_terminal}`;
+                    work += `${symbols.unknown_line}${v.value}${symbols.c_terminal}`;
                     break;
                 case 'version_zero_line':
-                    work += `${symbols.version_zero_line}${nl_or_cr_nl(v)}`;
+                    work += `${symbols.version_zero_line}`;
                     break;
                 case 'version_line':
-                    work += `${symbols.version_line}${v.value}${nl_or_cr_nl(v)}${symbols.c_terminal}`;
+                    work += `${symbols.version_line}${v.value}${symbols.c_terminal}`;
                     break;
                 case 'a_msid_semantic_ns':
-                    work += `${symbols.a_msid_semantic_ns}${nl_or_cr_nl(v)}`;
+                    work += `${symbols.a_msid_semantic_ns}`;
                     break;
                 case 'a_msid_semantic_ws':
-                    work += `${symbols.a_msid_semantic_ws}${nl_or_cr_nl(v)}`;
+                    work += `${symbols.a_msid_semantic_ws}`;
                     break;
                 case 'a_extmap_allow_mixed':
-                    work += `${symbols.a_extmap_allow_mixed}${nl_or_cr_nl(v)}`;
+                    work += `${symbols.a_extmap_allow_mixed}`;
                     break;
                 case 'a_standard_sctp_port':
-                    work += `${symbols.a_standard_sctp_port}${nl_or_cr_nl(v)}`;
+                    work += `${symbols.a_standard_sctp_port}`;
                     break;
                 case 'a_custom_sctp_port':
-                    work += `${symbols.a_custom_sctp_port}${v.value}${nl_or_cr_nl(v)}${symbols.c_terminal}`;
+                    work += `${symbols.a_custom_sctp_port}${v.value}${symbols.c_terminal}`;
                     break;
                 case 'a_standard_max_message_size':
-                    work += `${symbols.a_standard_max_message_size}${nl_or_cr_nl(v)}`;
+                    work += `${symbols.a_standard_max_message_size}`;
                     break;
                 case 'a_custom_max_message_size':
-                    work += `${symbols.a_custom_max_message_size}${v.value}${nl_or_cr_nl(v)}${symbols.c_terminal}`;
+                    work += `${symbols.a_custom_max_message_size}${v.value}${symbols.c_terminal}`;
                     break;
                 case 'a_setup_actpass':
-                    work += `${symbols.a_setup_actpass}${nl_or_cr_nl(v)}`;
+                    work += `${symbols.a_setup_actpass}`;
                     break;
                 case 'a_setup_active':
-                    work += `${symbols.a_setup_active}${nl_or_cr_nl(v)}`;
+                    work += `${symbols.a_setup_active}`;
                     break;
                 case 'a_mid_zero':
-                    work += `${symbols.a_mid_zero}${nl_or_cr_nl(v)}`;
+                    work += `${symbols.a_mid_zero}`;
                     break;
                 case 's_dash':
-                    work += `${symbols.s_dash}${nl_or_cr_nl(v)}`;
+                    work += `${symbols.s_dash}`;
                     break;
                 case 't_zero_zero':
-                    work += `${symbols.t_zero_zero}${nl_or_cr_nl(v)}`;
+                    work += `${symbols.t_zero_zero}`;
                     break;
                 case 'standard_moz_origin':
                     const smo = v, mvs = moz_ver(smo.moz_ver);
-                    work += `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}${nl_or_cr_nl(v)}`;
+                    work += `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}`;
                     break;
                 case 'standard_local_candidate':
                     work += make_slc(v);
