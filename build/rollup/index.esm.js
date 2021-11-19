@@ -2144,22 +2144,44 @@ const unknown_terminate = '\x7f';
 function moz_ver([maj, min, patch]) {
     return `${[maj, min, patch].filter(i => i !== undefined).map(i => i.toString()).join('.')}${c_terminal}`;
 }
-function make_src(v) {
-    const { kind, items } = v;
-    const [d1, d2, d3, i1, d4, i2, d5, d6] = items;
-    if (kind !== 'standard_remote_candidate') {
-        throw 'impossible';
-    }
-    return `${standard_remote_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${i1}${c_terminal}${d4}${c_terminal}${i2}${c_terminal}${d5}${c_terminal}${d6}${c_terminal}`;
-}
-function make_slc(v) {
-    const { kind, items } = v;
-    const [d1, d2, d3, i1, d4] = items;
-    if (kind !== 'standard_local_candidate') {
-        throw 'impossible';
-    }
-    return `${standard_local_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${i1}${c_terminal}${d4}${c_terminal}`;
-}
+const parseable = {
+    'unknown_line': (v) => `${unknown_line}${v.value}${c_terminal}`,
+    'version_zero_line': (_) => `${version_zero_line}`,
+    'version_line': (v) => `${version_line}${v.value}${c_terminal}`,
+    'a_msid_semantic_ns': (_) => `${a_msid_semantic_ns}`,
+    'a_msid_semantic_ws': (_) => `${a_msid_semantic_ws}`,
+    'a_extmap_allow_mixed': (_) => `${a_extmap_allow_mixed}`,
+    'a_standard_sctp_port': (_) => `${a_standard_sctp_port}`,
+    'a_custom_sctp_port': (v) => `${a_custom_sctp_port}${v.value}${c_terminal}`,
+    'a_standard_max_message_size': (_) => `${a_standard_max_message_size}`,
+    'a_custom_max_message_size': (v) => `${a_custom_max_message_size}${v.value}${c_terminal}`,
+    'a_setup_actpass': (_) => `${a_setup_actpass}`,
+    'a_setup_active': (_) => `${a_setup_active}`,
+    'a_mid_zero': (_) => `${a_mid_zero}`,
+    's_dash': (_) => `${s_dash}`,
+    't_zero_zero': (_) => `${t_zero_zero}`,
+    'standard_moz_origin': (v) => {
+        const smo = v, mvs = moz_ver(smo.moz_ver);
+        return `${standard_moz_origin}${mvs}${smo.sess}${c_terminal}`;
+    },
+    'standard_local_candidate': (v) => {
+        const { kind, items } = v;
+        const [d1, d2, d3, i1, d4] = items;
+        if (kind !== 'standard_local_candidate') {
+            throw 'impossible';
+        }
+        return `${standard_local_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${i1}${c_terminal}${d4}${c_terminal}`;
+    },
+    'standard_remote_candidate': (v) => {
+        const { kind, items } = v;
+        const [d1, d2, d3, i1, d4, i2, d5, d6] = items;
+        if (kind !== 'standard_remote_candidate') {
+            throw 'impossible';
+        }
+        return `${standard_remote_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${i1}${c_terminal}${d4}${c_terminal}${i2}${c_terminal}${d5}${c_terminal}${d6}${c_terminal}`;
+    },
+    'unknown_terminate': (v) => `${unknown_terminate}${v.value}`
+};
 function parsed_to_bytestring(parsed) {
     let work = '', ending = '', skip_iter = false;
     if (parsed.kind === 'offer') {
@@ -2174,69 +2196,11 @@ function parsed_to_bytestring(parsed) {
     }
     if (!skip_iter) {
         parsed.value.forEach(v => {
-            const v_kind = v.kind;
-            switch (v_kind) {
-                case 'unknown_line':
-                    work += `${unknown_line}${v.value}${c_terminal}`;
-                    break;
-                case 'version_zero_line':
-                    work += `${version_zero_line}`;
-                    break;
-                case 'version_line':
-                    work += `${version_line}${v.value}${c_terminal}`;
-                    break;
-                case 'a_msid_semantic_ns':
-                    work += `${a_msid_semantic_ns}`;
-                    break;
-                case 'a_msid_semantic_ws':
-                    work += `${a_msid_semantic_ws}`;
-                    break;
-                case 'a_extmap_allow_mixed':
-                    work += `${a_extmap_allow_mixed}`;
-                    break;
-                case 'a_standard_sctp_port':
-                    work += `${a_standard_sctp_port}`;
-                    break;
-                case 'a_custom_sctp_port':
-                    work += `${a_custom_sctp_port}${v.value}${c_terminal}`;
-                    break;
-                case 'a_standard_max_message_size':
-                    work += `${a_standard_max_message_size}`;
-                    break;
-                case 'a_custom_max_message_size':
-                    work += `${a_custom_max_message_size}${v.value}${c_terminal}`;
-                    break;
-                case 'a_setup_actpass':
-                    work += `${a_setup_actpass}`;
-                    break;
-                case 'a_setup_active':
-                    work += `${a_setup_active}`;
-                    break;
-                case 'a_mid_zero':
-                    work += `${a_mid_zero}`;
-                    break;
-                case 's_dash':
-                    work += `${s_dash}`;
-                    break;
-                case 't_zero_zero':
-                    work += `${t_zero_zero}`;
-                    break;
-                case 'standard_moz_origin':
-                    const smo = v, mvs = moz_ver(smo.moz_ver);
-                    work += `${standard_moz_origin}${mvs}${smo.sess}${c_terminal}`;
-                    break;
-                case 'standard_local_candidate':
-                    work += make_slc(v);
-                    break;
-                case 'standard_remote_candidate':
-                    work += make_src(v);
-                    break;
-                case 'unknown_terminate':
-                    work += `${unknown_terminate}${v.value}`;
-                    break;
-                default:
-                    const exhaustiveCheck = v_kind;
-                    throw new TypeError(`Impossible bytestring symbol found: ${JSON.stringify(exhaustiveCheck)}`);
+            if (parseable[v.kind] === undefined) {
+                throw new TypeError(`Impossible bytestring symbol found: ${JSON.stringify(v.kind)}`);
+            }
+            else {
+                work += parseable[v.kind](v);
             }
         });
     }
