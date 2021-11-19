@@ -127,7 +127,7 @@ Rule
  / CustomSctpPort
  / StandardMaxMessageSize
  / CustomMaxMessageSize
-// / AStandardLocalCandidate
+ / AStandardLocalCandidate
  / AStandardIp4RemoteCandidate
  / UnknownRule
 

@@ -70,9 +70,9 @@ function make_src(v: ParsedLine) {
 function make_slc(v: ParsedLine) {
 
   const { kind, items } = (v as StandardLocalCandidate);
-  const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
+  const [ d1, d2, d3, i1, d4 ] = items;
   if (kind !== 'standard_local_candidate') { throw 'impossible'; }
-  return `${symbols.standard_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${i2}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+  return `${symbols.standard_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
 
 }
 

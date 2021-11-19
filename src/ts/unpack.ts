@@ -128,16 +128,12 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.standard_local_candidate:
-        // known to be wrong
         scan_forward_to_null(`a=candidate:`,      'standard_local_candidate_1', undefined, true);
         scan_forward_to_null(' ',                 'standard_local_candidate_2', undefined, true);
         scan_forward_to_null(' udp ',             'standard_local_candidate_3', undefined, true);
         scan_forward_to_null(' ',                 'standard_local_candidate_4', undefined, true);
-        scan_forward_to_null(' ',                 'standard_local_candidate_5', undefined, true);
-        scan_forward_to_null(' typ srflx raddr ', 'standard_local_candidate_6', undefined, true);
-        scan_forward_to_null(' rport ',           'standard_local_candidate_7', undefined, true);
-        scan_forward_to_null(' generation ',      'standard_local_candidate_8', undefined, true);
-        work += ' network-cost 999';
+        scan_forward_to_null('.local ',           'standard_local_candidate_5', undefined, true);
+        work += ' typ host generation 0 network-cost 999';
         break;
 
       case symbols.standard_remote_candidate:
