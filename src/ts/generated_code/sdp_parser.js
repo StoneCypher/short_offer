@@ -1504,9 +1504,12 @@ function peg$parse(input, options) {
                               if (s0 === peg$FAILED) {
                                 s0 = peg$parseCustomMaxMessageSize();
                                 if (s0 === peg$FAILED) {
-                                  s0 = peg$parseAStandardIp4RemoteCandidate();
+                                  s0 = peg$parseAStandardLocalCandidate();
                                   if (s0 === peg$FAILED) {
-                                    s0 = peg$parseUnknownRule();
+                                    s0 = peg$parseAStandardIp4RemoteCandidate();
+                                    if (s0 === peg$FAILED) {
+                                      s0 = peg$parseUnknownRule();
+                                    }
                                   }
                                 }
                               }
