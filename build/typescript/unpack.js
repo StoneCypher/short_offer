@@ -136,6 +136,9 @@ function unpack(bytestring) {
             case symbols.a_ice_ufrag:
                 scan_forward_to_null(`a=ice-ufrag:`, 'a_ice_ufrag', undefined, true);
                 break;
+            case symbols.a_fingerprint_sha1_256:
+                scan_forward_to_null(`a=fingerprint:sha-256 `, 'a_fingerprint_sha1_256', undefined, true);
+                break;
             default:
                 throw new TypeError(`Unknown symbol at ${i} '${bytestring.charAt(i)}' [${bytestring.charCodeAt(i)}], corrupt encoding'`);
         }

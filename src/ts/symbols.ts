@@ -30,7 +30,8 @@ const offer                       = '\x01',
       standard_agen_tcp_candidate = '\x16',
       a_ice_pwd                   = '\x17',
       a_ice_pwd_l                 = '\x18',
-      a_ice_ufrag                 = '\x19';
+      a_ice_ufrag                 = '\x19',
+      a_fingerprint_sha1_256      = '\x20';
 
 const short_separator_follows     = '\x7c',
       short_separators_all        = '\x7d';
@@ -55,7 +56,7 @@ export {
   standard_origin, standard_moz_origin,
   standard_local_candidate, standard_guid_candidate, standard_remote_candidate,
   standard_agen_tcp_candidate,
-  a_ice_pwd, a_ice_pwd_l, a_ice_ufrag,
+  a_ice_pwd, a_ice_pwd_l, a_ice_ufrag, a_fingerprint_sha1_256,
   short_separator_follows, short_separators_all,
   unknown_line, unknown_terminate
 };

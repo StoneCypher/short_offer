@@ -169,6 +169,7 @@ Rule
  / AIcePwd
  / AIcePwdL
  / AIceUFrag
+ / AFingerprint
  / UnknownRule
 
 
@@ -334,6 +335,11 @@ AIceUFrag
   = 'a=ice-ufrag:' data:IceChar4 us:UntilSeparator
   { return ast('a_ice_ufrag', data); }
 
+
+
+AFingerprint
+  = 'a=fingerprint:sha-256 ' data:CHex64
+  { return ast('a_fingerprint_sha1_256', data); }
 
 
 
