@@ -2,7 +2,7 @@
 const fs                    = require('fs'),
       uphi                  = require('unreasonable_phi');
 
-const ChartJSImage          = require('chart.js-image');
+const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 
 const logfile               = './src/maintained_artifacts/stats_by_version.json',
       log                   = JSON.parse(`${ fs.readFileSync(logfile) }`),
@@ -66,7 +66,11 @@ const toRowUnhandled = n =>
 
 async function to_image(fname, data, ylabel, title) {
 
-  const line_chart = ChartJSImage().chart({
+  const conf = { width: 1800, height: 1200, type: 'png' };
+
+  const canvasRenderService = new ChartJSNodeCanvas(conf);
+
+  const configuration = {
     "type": "line",
     "data": {
       "labels": versions,
@@ -75,24 +79,54 @@ async function to_image(fname, data, ylabel, title) {
     "options": {
       "title": { "display": true, "text": title },
       "scales": {
-        "xAxes": [
-          { "scaleLabel": {
-              "display": true,
-              "labelString": "Month"
-          } }
-        ],
-        "yAxes": [
-          { "stacked": false,
-            "scaleLabel": { "display": true, "labelString": ylabel } }
-        ]
+        "xAxis": {
+          "scaleLabel": {
+            "display": true,
+            "labelString": "Month"
+          }
+        },
+        "yAxis": {
+          "stacked": false,
+          "scaleLabel": {
+            "display": true,
+            "labelString": ylabel
+          }
+        }
       }
     }
-  }) // Line chart
-    .backgroundColor('white')
-    .width(1800)
-    .height(1200);
+  };
 
-  await line_chart.toFile(fname); // Promise<()>
+  // Create outputs
+  const image = canvasRenderService.renderToBufferSync(configuration);
+  fs.writeFileSync(fname, image);
+
+  // const line_chart = ChartJSImage().chart({
+  //   "type": "line",
+  //   "data": {
+  //     "labels": versions,
+  //     "datasets": data
+  //   },
+  //   "options": {
+  //     "title": { "display": true, "text": title },
+  //     "scales": {
+  //       "xAxes": [
+  //         { "scaleLabel": {
+  //             "display": true,
+  //             "labelString": "Month"
+  //         } }
+  //       ],
+  //       "yAxes": [
+  //         { "stacked": false,
+  //           "scaleLabel": { "display": true, "labelString": ylabel } }
+  //       ]
+  //     }
+  //   }
+  // }) // Line chart
+  //   .backgroundColor('white')
+  //   .width(1800)
+  //   .height(1200);
+
+  // await line_chart.toFile(fname); // Promise<()>
 
 };
 

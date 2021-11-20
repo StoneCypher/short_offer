@@ -42,7 +42,6 @@ function click_an_anchor(e, val) {
     if (e === undefined) {
         throw "Can't handle an event without an event (click_an_anchor)";
     }
-    const oe = Object.entries(full_set);
     byId('example').innerHTML = val;
     if (e) {
         const src = e.target;
@@ -53,14 +52,11 @@ function click_an_anchor(e, val) {
     }
     const ex = document.querySelector('#example'), exp = document.querySelector('#pack');
     if ((ex !== null) && (exp !== null)) {
-        const oe0 = oe[0];
-        if (oe0) {
-            const oe01 = oe0[1];
-            if (oe01) {
-                ex.innerHTML = oe01;
-                exp.innerHTML = pack(oe01);
-            }
-        }
+        ex.innerHTML = val;
+        exp.innerHTML = pack(val)
+            .split('')
+            .map(ch => ch.charCodeAt(0) < 33 ? `<span class="ch">[${ch.charCodeAt(0)}]</span>` : ch)
+            .join('&#x200b;');
     }
     const parsed = parse(val);
     byId('parse').innerHTML = parse_table(parsed);

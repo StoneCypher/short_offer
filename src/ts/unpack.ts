@@ -192,13 +192,27 @@ function unpack(bytestring: string): string {
         scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined, true);
         break;
 
+  // = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP4
+  //   ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal ' generation 0 network-id ' d6:Decimal us:UntilSeparator
+
+      case symbols.standard_agen_udp4_candidate:
+        scan_forward_to_null(`a=candidate:`,              'standard_guid_candidate_1', undefined, true);
+        scan_forward_to_null(' ',                         'standard_guid_candidate_2', undefined, true);
+        scan_forward_to_null(' udp ',                     'standard_guid_candidate_3', undefined, true);
+        scan_forward_to_null(' ',                         'standard_guid_candidate_4', undefined, true);
+        scan_forward_to_null(' ',                         'standard_guid_candidate_5', undefined, true);
+        scan_forward_to_null(' typ srflx raddr ',         'standard_guid_candidate_6', undefined, true);
+        scan_forward_to_null(' rport ',                   'standard_guid_candidate_7', undefined, true);
+        scan_forward_to_null(' generation 0 network-id ', 'standard_guid_candidate_8', undefined, true);
+        break;
+
       case symbols.standard_agen_udp6_host_candidate:
         scan_forward_to_null(`a=candidate:`,                       'standard_guid_candidate_1', undefined, true);
         scan_forward_to_null(' ',                                  'standard_guid_candidate_2', undefined, true);
         scan_forward_to_null(' udp ',                              'standard_guid_candidate_3', undefined, true);
         scan_forward_to_null(' ',                                  'standard_guid_candidate_4', undefined, true);
-        scan_forward_to_null(' ',                                  'standard_guid_candidate_4', undefined, true);
-        scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined, true);
+        scan_forward_to_null(' ',                                  'standard_guid_candidate_5', undefined, true);
+        scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_6', undefined, true);
         break;
 
       case symbols.standard_remote_candidate:

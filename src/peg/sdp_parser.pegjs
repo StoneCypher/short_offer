@@ -26,6 +26,7 @@
          'standard_remote_candidate',
          'standard_agen_tcp_candidate',
          'standard_agen_tcp6_candidate',
+         'standard_agen_udp4_candidate',
          'standard_agen_udp6_host_candidate'
         ].includes(kind)) {
       retval.items = value;
@@ -219,6 +220,7 @@ Rule
  / AStandardIp4RemoteCandidate
  / AStandardAGenTcpCandidate
  / AStandardAGenTcp6Candidate
+ / AStandardAGenUdp4Candidate
  / AStandardAGenUdp6HostCandidate
  / AIcePwd
  / AIcePwdL
@@ -392,6 +394,13 @@ AStandardAGenTcp6Candidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' tcp ' d3:Decimal ' ' i1:IP6
     ' ' d4:Decimal ' typ host tcptype active generation 0 network-id ' d5:Decimal us:UntilSeparator
   { return ast('standard_agen_tcp6_candidate', [ d1, d2, d3, i1, d4, d5 ]); }
+
+
+
+AStandardAGenUdp4Candidate
+  = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP4
+    ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal ' generation 0 network-id ' d6:Decimal us:UntilSeparator
+  { return ast('standard_agen_udp4_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); }
 
 
 

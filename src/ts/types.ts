@@ -25,6 +25,7 @@ type StandardGuidCandidate         = { kind: 'standard_guid_candidate',         
 type StandardRemoteCandidate       = { kind: 'standard_remote_candidate',         value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
 type StandardAGenTcpCandidate      = { kind: 'standard_agen_tcp_candidate',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
 type StandardAGenTcp6Candidate     = { kind: 'standard_agen_tcp6_candidate',      value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
+type StandardAGenUdp4Candidate     = { kind: 'standard_agen_udp4_candidate',      value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
 type StandardAGenUdp6HostCandidate = { kind: 'standard_agen_udp6_host_candidate', value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
 
 type UnknownLine                   = { kind: 'unknown_line',                     value: string, uses_short_nl: boolean };
@@ -50,7 +51,7 @@ type ParsedLine
   | StandardOrigin | StandardMozOrigin
   | StandardLocalCandidate | StandardGuidCandidate | StandardRemoteCandidate
   | StandardAGenTcpCandidate | StandardAGenTcp6Candidate
-  | StandardAGenUdp6HostCandidate
+  | StandardAGenUdp4Candidate | StandardAGenUdp6HostCandidate
   | UnknownTerminate;
 
 
@@ -69,6 +70,7 @@ type ParsedSdp = {
         | 'standard_moz_origin'
         | 'standard_local_candidate' | 'standard_guid_candidate' | 'standard_remote_candidate'
         | 'standard_agen_tcp_candidate' | 'standard_agen_tcp6_candidate'
+        | 'standard_agen_udp4_candidate' | 'standard_agen_udp6_host_candidate'
         | 'a_custom_max_message_size'
         | 'a_ice_pwd' | 'a_ice_pwd_l' | 'a_ice_ufrag',
 
@@ -87,7 +89,8 @@ export {
   VersionZeroLine, VersionLine,
   StandardOrigin, StandardMozOrigin,
   StandardLocalCandidate, StandardGuidCandidate, StandardRemoteCandidate,
-  StandardAGenTcpCandidate, StandardAGenTcp6Candidate, StandardAGenUdp6HostCandidate,
+  StandardAGenTcpCandidate, StandardAGenTcp6Candidate,
+  StandardAGenUdp4Candidate, StandardAGenUdp6HostCandidate,
   ParsedLine,
   PegCoord, PegLocation,
   ParsedSdp
