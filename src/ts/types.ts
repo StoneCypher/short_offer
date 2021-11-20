@@ -12,6 +12,7 @@ type ACustomMaxMessageSize     = { kind: 'a_custom_max_message_size',    value: 
 type ASetupActPass             = { kind: 'a_setup_actpass',              value: string, uses_short_nl: boolean };
 type ASetupActive              = { kind: 'a_setup_active',               value: string, uses_short_nl: boolean };
 type AMidZero                  = { kind: 'a_mid_zero',                   value: string, uses_short_nl: boolean };
+type AGroupBundleZero          = { kind: 'a_group_bundle_0',             value: string, uses_short_nl: boolean };
 
 type SDash                     = { kind: 's_dash',                       value: string, uses_short_nl: boolean };
 type TZeroZero                 = { kind: 't_zero_zero',                  value: string, uses_short_nl: boolean };
@@ -39,7 +40,7 @@ type ParsedLine
   | AMsidSemanticNS | AMsidSemanticWS | AExtmapAllowMixed
   | AStandardSctpPort | ACustomSctpPort
   | AStandardMaxMessageSize | ACustomMaxMessageSize
-  | ASetupActPass | ASetupActive | AMidZero
+  | ASetupActPass | ASetupActive | AMidZero | AGroupBundleZero
   | SDash
   | TZeroZero
   | StandardOrigin | StandardMozOrigin

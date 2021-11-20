@@ -76,6 +76,9 @@ const parseable = {
   'a_mid_zero': (_: ParsedLine) =>
     `${symbols.a_mid_zero}`,
 
+  'a_group_bundle_0': (_: ParsedLine) =>
+    `${symbols.a_group_bundle_0}`,
+
   'a_ice_pwd': (v: ParsedLine) =>
     `${symbols.a_ice_pwd}${v.value}${symbols.c_terminal}`,
 
@@ -87,6 +90,12 @@ const parseable = {
 
   'a_fingerprint_sha1_256': (v: ParsedLine) =>
     `${symbols.a_fingerprint_sha1_256}${v.value}${symbols.c_terminal}`,
+
+  'a_send_recv': (_: ParsedLine) =>
+    `${symbols.a_send_recv}`,
+
+  'a_end_of_candidates': (_: ParsedLine) =>
+    `${symbols.a_end_of_candidates}`,
 
   's_dash': (_: ParsedLine) =>
     `${symbols.s_dash}`,
@@ -174,7 +183,7 @@ function parsed_to_bytestring( parsed: ParsedSdp ): string {
     parsed.value.forEach( v => {
 
       if (parseable[v.kind] === undefined) {
-        throw new TypeError(`Impossible bytestring symbol found: ${JSON.stringify(v.kind)}`);
+        throw new TypeError(`[pack] Impossible bytestring symbol found: ${JSON.stringify(v.kind)}`);
       } else {
         work += parseable[v.kind](v);
       }

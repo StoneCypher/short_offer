@@ -17,10 +17,13 @@ const parseable = {
     'a_setup_actpass': (_) => `${symbols.a_setup_actpass}`,
     'a_setup_active': (_) => `${symbols.a_setup_active}`,
     'a_mid_zero': (_) => `${symbols.a_mid_zero}`,
+    'a_group_bundle_0': (_) => `${symbols.a_group_bundle_0}`,
     'a_ice_pwd': (v) => `${symbols.a_ice_pwd}${v.value}${symbols.c_terminal}`,
     'a_ice_pwd_l': (v) => `${symbols.a_ice_pwd_l}${v.value}${symbols.c_terminal}`,
     'a_ice_ufrag': (v) => `${symbols.a_ice_ufrag}${v.value}${symbols.c_terminal}`,
     'a_fingerprint_sha1_256': (v) => `${symbols.a_fingerprint_sha1_256}${v.value}${symbols.c_terminal}`,
+    'a_send_recv': (_) => `${symbols.a_send_recv}`,
+    'a_end_of_candidates': (_) => `${symbols.a_end_of_candidates}`,
     's_dash': (_) => `${symbols.s_dash}`,
     't_zero_zero': (_) => `${symbols.t_zero_zero}`,
     'standard_origin': (v) => {
@@ -92,7 +95,7 @@ function parsed_to_bytestring(parsed) {
     if (!skip_iter) {
         parsed.value.forEach(v => {
             if (parseable[v.kind] === undefined) {
-                throw new TypeError(`Impossible bytestring symbol found: ${JSON.stringify(v.kind)}`);
+                throw new TypeError(`[pack] Impossible bytestring symbol found: ${JSON.stringify(v.kind)}`);
             }
             else {
                 work += parseable[v.kind](v);

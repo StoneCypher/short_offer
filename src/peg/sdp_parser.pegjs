@@ -220,12 +220,15 @@ Rule
  / AIcePwdL
  / AIceUFrag
  / AFingerprint
+ / AGroupBundle0
+ / ASendRecv
+ / AEndOfCandidates
  / UnknownRule
 
 
 
 ValZeroLine
- = 'v=0\r\n'
+ = 'v=0' us:UntilSeparator
  { return ast('version_zero_line', undefined); }
 
 
@@ -233,6 +236,18 @@ ValZeroLine
 ValLine
  = 'v=' us:UntilSeparator
  { return ast('version_line', us); }
+
+
+
+ASendRecv
+ = 'a=sendrecv' us:UntilSeparator
+ { return ast('a_send_recv', us); }
+
+
+
+AEndOfCandidates
+ = 'a=end-of-candidates' us:UntilSeparator
+ { return ast('a_end_of_candidates', us); }
 
 
 
@@ -397,6 +412,12 @@ AIceUFrag
 AFingerprint
   = 'a=fingerprint:sha-256 ' data:CHex64 us:UntilSeparator
   { return ast('a_fingerprint_sha1_256', data); }
+
+
+
+AGroupBundle0
+  = 'a=group:BUNDLE 0' us:UntilSeparator
+  { return ast('a_group_bundle_0'); }
 
 
 
