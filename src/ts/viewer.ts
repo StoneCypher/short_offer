@@ -1,5 +1,7 @@
 
 import { full_set } from './example_beacons';
+import { parse }    from './parsers';
+import { pack }     from './pack';
 
 
 
@@ -60,35 +62,68 @@ function el(tag: string, { inner, className, onclick } : ElOpts) {
 
 
 
-function bootstrap() {
+function click_an_anchor(e: MouseEvent | undefined, val: string) {
+
+  if (e === undefined) { throw "Can't handle an event without an event (click_an_anchor)"; }
 
   const oe = Object.entries(full_set);
 
-  oe.forEach( ([k, v], i) =>
-    byId('list')
-      .append( el('a', {
-        inner     : k,
-        href      : '#',
-        className : i === 0? 'sel' : undefined,
-        onclick   : (e) => {
-          byId('example').innerHTML = v;
-          if (e) {
-            const src = e.target;
-            if (src && (src instanceof HTMLAnchorElement)) {
-              qSA('#list a').forEach(el => el.className = '');
-              src.className = 'sel';
-          } }
-        }
-      }) ));
+  byId('example').innerHTML = val;
 
-  const fot = document.querySelector('#example');
-  if (fot !== null) {
+  if (e) {
+    const src = e.target;
+    if (src && (src instanceof HTMLAnchorElement)) {
+      qSA('#list a').forEach(el => el.className = '');
+      src.className = 'sel';
+    }
+  }
+
+  const ex  = document.querySelector('#example'),
+        exp = document.querySelector('#pack');
+
+  if ((ex !== null) && (exp !== null)) {
     const oe0 = oe[0];
     if (oe0) {
       const oe01 = oe0[1];
       if (oe01) {
-        fot.innerHTML = oe01;
+        ex.innerHTML  = oe01;
+        exp.innerHTML = pack(oe01);
   } } }
+
+  const parsed = parse(val);
+
+  byId('parse').innerHTML = JSON.stringify(parsed);
+
+}
+
+
+
+
+
+function bootstrap() {
+
+  const oe = Object.entries(full_set);
+
+  oe.forEach( ([k, v], _i) =>
+    byId('list')
+      .append( el('a', {
+        inner     : k,
+        href      : '#',
+//      className : i === 0? 'sel' : undefined,
+        onclick   : (e) => click_an_anchor(e, v)
+      }) ));
+
+  // const ex  = document.querySelector('#example'),
+  //       exp = document.querySelector('#pack');
+
+  // if ((ex !== null) && (exp !== null)) {
+  //   const oe0 = oe[0];
+  //   if (oe0) {
+  //     const oe01 = oe0[1];
+  //     if (oe01) {
+  //       ex.innerHTML  = oe01;
+  //       exp.innerHTML = pack(oe01);
+  // } } }
 
 }
 
