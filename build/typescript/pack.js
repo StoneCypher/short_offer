@@ -21,6 +21,7 @@ const parseable = {
     'a_group_bundle_0': (_) => `${symbols.a_group_bundle_0}`,
     'a_ice_pwd': (v) => `${symbols.a_ice_pwd}${v.value}${symbols.c_terminal}`,
     'a_ice_pwd_l': (v) => `${symbols.a_ice_pwd_l}${v.value}${symbols.c_terminal}`,
+    'a_ice_pwd_v': (v) => `${symbols.a_ice_pwd_v}${v.value}${symbols.c_terminal}`,
     'a_ice_ufrag_4': (v) => `${symbols.a_ice_ufrag_4}${v.value}${symbols.c_terminal}`,
     'a_ice_ufrag_8': (v) => `${symbols.a_ice_ufrag_8}${v.value}${symbols.c_terminal}`,
     'a_fingerprint_sha1_256': (v) => `${symbols.a_fingerprint_sha1_256}${v.value}${symbols.c_terminal}`,
@@ -42,13 +43,13 @@ const parseable = {
         const smo = v, mvs = moz_ver(smo.moz_ver);
         return `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}`;
     },
-    'standard_guid_candidate': (v) => {
+    'standard_guid_local_candidate': (v) => {
         const { kind, items } = v;
         const [d1, d2, d3, i, d4] = items;
-        if (kind !== 'standard_guid_candidate') {
+        if (kind !== 'standard_guid_local_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_guid_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+        return `${symbols.standard_guid_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
     },
     'standard_local_candidate': (v) => {
         const { kind, items } = v;
