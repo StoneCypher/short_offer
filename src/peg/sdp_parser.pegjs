@@ -24,7 +24,8 @@
          'standard_local_candidate',
          'standard_guid_candidate',
          'standard_remote_candidate',
-         'standard_agen_tcp_candidate'
+         'standard_agen_tcp_candidate',
+         'standard_agen_tcp6_candidate'
         ].includes(kind)) {
       retval.items = value;
       retval.value = '';
@@ -49,8 +50,13 @@ RawDocument
 
 
 
+Digit
+  = [0-9]
+
+
+
 Decimal
-  = d:[0-9]+ { return BigInt(d.join(''), 10); }
+  = d:Digit+ { return BigInt(d.join(''), 10); }
 
 
 
@@ -132,6 +138,49 @@ IP4
 
 
 
+// cribbed from https://git.insoft.cz/insoft/modified-sip.js/-/blob/3081a21bd47215679f7f1dac8c771ae6f3d7193b/src/grammar/src/grammar.pegjs
+IP6
+  = h16 ":" h16 ":" h16 ":" h16 ":" h16 ":" h16 ":" ls32
+  /    "::" h16 ":" h16 ":" h16 ":" h16 ":" h16 ":" ls32
+  /    "::" h16 ":" h16 ":" h16 ":" h16 ":" ls32
+  /    "::" h16 ":" h16 ":" h16 ":" ls32
+  /    "::" h16 ":" h16 ":" ls32
+  /    "::" h16 ":" ls32
+  /    "::" ls32
+  /    "::" h16
+  / h16                                                                   "::" h16 ":" h16 ":" h16 ":" h16 ":" ls32
+  / h16 (":" h16)?                                                        "::" h16 ":" h16 ":" h16 ":" ls32
+  / h16 (":" h16)? (":" h16)?                                             "::" h16 ":" h16 ":" ls32
+  / h16 (":" h16)? (":" h16)? (":" h16)?                                  "::" h16 ":" ls32
+  / h16 (":" h16)? (":" h16)? (":" h16)? (":" h16)?                       "::" ls32
+  / h16 (":" h16)? (":" h16)? (":" h16)? (":" h16)? (":" h16)?            "::" h16
+  / h16 (":" h16)? (":" h16)? (":" h16)? (":" h16)? (":" h16)? (":" h16)? "::"
+
+
+h16
+  = Hex Hex? Hex? Hex?
+
+
+
+ls32
+  = ( h16 ":" h16 ) / IPv4address
+
+
+
+IPv4address
+  = dec_octet "." dec_octet "." dec_octet "." dec_octet
+
+
+
+dec_octet
+  = "25"                    [\x30-\x35] // 250-255
+  / "2"         [\x30-\x34] Digit       // 200-249
+  / "1"         Digit       Digit       // 100-199
+  / [\x31-\x39] Digit                   //  10-99
+  / Digit                               //   0-9
+
+
+
 Offer
   = '{"type":"offer","sdp":"' s:Rule* '"}'
   { return ast('offer', s ); }
@@ -166,6 +215,7 @@ Rule
  / AStandardGuidCandidate
  / AStandardIp4RemoteCandidate
  / AStandardAGenTcpCandidate
+ / AStandardAGenTcp6Candidate
  / AIcePwd
  / AIcePwdL
  / AIceUFrag
@@ -319,6 +369,13 @@ AStandardAGenTcpCandidate
 
 
 
+AStandardAGenTcp6Candidate
+  = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' tcp ' d3:Decimal ' ' i1:IP6
+    ' ' d4:Decimal ' typ host tcptype active generation 0 network-id ' d5:Decimal us:UntilSeparator
+  { return ast('standard_agen_tcp6_candidate', [ d1, d2, d3, i1, d4, d5 ]); }
+
+
+
 AIcePwd
   = 'a=ice-pwd:' data:IceChar22 us:UntilSeparator
   { return ast('a_ice_pwd', data); }
@@ -338,7 +395,7 @@ AIceUFrag
 
 
 AFingerprint
-  = 'a=fingerprint:sha-256 ' data:CHex64
+  = 'a=fingerprint:sha-256 ' data:CHex64 us:UntilSeparator
   { return ast('a_fingerprint_sha1_256', data); }
 
 

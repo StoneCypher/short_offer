@@ -67,6 +67,14 @@ const parseable = {
         }
         return `${symbols.standard_agen_tcp_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
+    'standard_agen_tcp6_candidate': (v) => {
+        const { kind, items } = v;
+        const [d1, d2, d3, i1, d4, d5] = items;
+        if (kind !== 'standard_agen_tcp6_candidate') {
+            throw 'impossible';
+        }
+        return `${symbols.standard_agen_tcp6_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+    },
     'unknown_terminate': (v) => `${symbols.unknown_terminate}${v.value}`
 };
 function parsed_to_bytestring(parsed) {
