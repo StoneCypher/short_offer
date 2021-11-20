@@ -3,6 +3,12 @@
 
 
 
+  function not_null(n) {
+    return n === null? '' : n;
+  }
+
+
+
   function ast(kind, value) {
 
     const uses_short_nl = false; // todo
@@ -140,32 +146,38 @@ IP4
 
 
 
+M_h16
+  = d:(":" h16) { return `:${d[1]}`; }
+
+
+
 // cribbed from https://git.insoft.cz/insoft/modified-sip.js/-/blob/3081a21bd47215679f7f1dac8c771ae6f3d7193b/src/grammar/src/grammar.pegjs
 IP6
-  = h16 ":" h16 ":" h16 ":" h16 ":" h16 ":" h16 ":" ls32
-  /    "::" h16 ":" h16 ":" h16 ":" h16 ":" h16 ":" ls32
-  /    "::" h16 ":" h16 ":" h16 ":" h16 ":" ls32
-  /    "::" h16 ":" h16 ":" h16 ":" ls32
-  /    "::" h16 ":" h16 ":" ls32
-  /    "::" h16 ":" ls32
-  /    "::" ls32
-  /    "::" h16
-  / h16                                                                   "::" h16 ":" h16 ":" h16 ":" h16 ":" ls32
-  / h16 (":" h16)?                                                        "::" h16 ":" h16 ":" h16 ":" ls32
-  / h16 (":" h16)? (":" h16)?                                             "::" h16 ":" h16 ":" ls32
-  / h16 (":" h16)? (":" h16)? (":" h16)?                                  "::" h16 ":" ls32
-  / h16 (":" h16)? (":" h16)? (":" h16)? (":" h16)?                       "::" ls32
-  / h16 (":" h16)? (":" h16)? (":" h16)? (":" h16)? (":" h16)?            "::" h16
-  / h16 (":" h16)? (":" h16)? (":" h16)? (":" h16)? (":" h16)? (":" h16)? "::"
+  = a:h16 ":" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `${a}:${b}:${c}:${d}:${e}:${f}:${g}`; }
+  /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `::${b}:${c}:${d}:${e}:${f}:${g}`; }
+  /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:ls32           { return `::${b}:${c}:${d}:${e}:${f}`; }
+  /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:ls32                     { return `::${b}:${c}:${d}:${e}`; }
+  /      "::" b:h16 ":" c:h16 ":" d:ls32                               { return `::${b}:${c}:${d}`; }
+  /      "::" b:h16 ":" c:ls32                                         { return `::${b}:${c}`; }
+  /      "::" b:ls32                                                   { return `::${b}`; }
+  /      "::" b:h16                                                    { return `::${b}`; }
+  / a:h16                                           "::" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `${a}::${c}:${d}:${e}:${f}:${g}`; }
+  / a:h16 b:h16?                                    "::" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32           { return `${a}:${b}::${d}:${e}:${f}:${g}`; }
+  / a:h16 b:h16? c:h16?                             "::" e:h16 ":" f:h16 ":" g:ls32                     { return `${a}:${b}:${c}::${e}:${f}:${g}`; }
+  / a:h16 b:h16? c:h16? d:h16?                      "::" f:h16 ":" g:ls32                               { return `${a}:${b}:${c}:${d}::${f}:${g}`; }
+  / a:h16 b:h16? c:h16? d:h16? e:h16?               "::" g:ls32                                         { return `${a}:${b}:${c}:${d}:${e}::${g}`; }
+  / a:h16 b:h16? c:h16? d:h16? e:h16? f:h16?        "::" g:h16                                          { return `${a}:${b}:${c}:${d}:${e}::${g}`; }
+  / a:h16 b:h16? c:h16? d:h16? e:h16? f:h16? g:h16? "::"                                                { return `${a}:${b}:${c}:${d}:${e}:${f}:${g}`; }
 
 
 h16
-  = Hex Hex? Hex? Hex?
+  = a:Hex b:Hex? c:Hex? d:Hex? { return `${a}${not_null(b)}${not_null(c)}${not_null(d)}`; }
 
 
 
 ls32
-  = ( h16 ":" h16 ) / IPv4address
+  = a:( h16 ":" h16 ) { return `${a[0]}:${a[2]}` }
+  / IPv4address
 
 
 
@@ -251,6 +263,12 @@ ASendRecv
 
 
 
+BAs30
+ = 'b=AS:30' CapAtSeparator
+ { return ast('b_as_30'); }
+
+
+
 AEndOfCandidates
  = 'a=end-of-candidates' us:UntilSeparator
  { return ast('a_end_of_candidates', us); }
@@ -258,43 +276,43 @@ AEndOfCandidates
 
 
 AttrMsidSemanticWmsClaimNoSpace
-  = 'a=msid-semantic:WMS' us:UntilSeparator
-  { return ast('a_msid_semantic_ns', undefined); }
+  = 'a=msid-semantic:WMS' CapAtSeparator
+  { return ast('a_msid_semantic_ns'); }
 
 
 
 AttrMsidSemanticWmsClaimWithSpace
-  = 'a=msid-semantic: WMS' us:UntilSeparator
-  { return ast('a_msid_semantic_ws', undefined); }
+  = 'a=msid-semantic: WMS' CapAtSeparator
+  { return ast('a_msid_semantic_ws'); }
 
 
 
 AttrExtmapAllowMixed
-  = 'a=extmap-allow-mixed' us:UntilSeparator
-  { return ast('a_extmap_allow_mixed', undefined); }
+  = 'a=extmap-allow-mixed' CapAtSeparator
+  { return ast('a_extmap_allow_mixed'); }
 
 
 
 ASetupActpass
-  = 'a=setup:actpass' us:UntilSeparator
+  = 'a=setup:actpass' CapAtSeparator
   { return ast('a_setup_actpass'); }
 
 
 
 ASetupActive
-  = 'a=setup:active' us:UntilSeparator
+  = 'a=setup:active' CapAtSeparator
   { return ast('a_setup_active'); }
 
 
 
 AMid0
-  = 'a=mid:0' us:UntilSeparator
+  = 'a=mid:0' CapAtSeparator
   { return ast('a_mid_zero'); }
 
 
 
 SDash
-  = 's=-' us:UntilSeparator
+  = 's=-' CapAtSeparator
   { return ast('s_dash'); }
 
 
@@ -319,149 +337,137 @@ MozVNum2
 
 // o=- 1199580080461629164 2 IN IP4 127.0.0.1
 StandardOrigin
-  = 'o=- ' msess:Decimal ' ' d:Decimal ' IN IP4 ' i:IP4 us:UntilSeparator
+  = 'o=- ' msess:Decimal ' ' d:Decimal ' IN IP4 ' i:IP4 CapAtSeparator
   { return ast('standard_origin', [msess, d, i]); }
 
 
 
 // o=mozilla...THIS_IS_SDPARTA-90.0.2 4132699980109199001 0 IN IP4 0.0.0.0
 StandardMozOrigin
-  = 'o=mozilla...THIS_IS_SDPARTA-' mv:MozVNum ' ' msess:Decimal ' 0 IN IP4 0.0.0.0' us:UntilSeparator
+  = 'o=mozilla...THIS_IS_SDPARTA-' mv:MozVNum ' ' msess:Decimal ' 0 IN IP4 0.0.0.0' CapAtSeparator
   { return ast('standard_moz_origin', [mv, msess]); }
 
 
 
 TZeroZero
-  = 't=0 0' us:UntilSeparator
+  = 't=0 0' CapAtSeparator
   { return ast('t_zero_zero'); }
 
 
 
 StandardSctpPort
-  = 'a=sctp-port:5000' us:UntilSeparator
+  = 'a=sctp-port:5000' CapAtSeparator
   { return ast('a_standard_sctp_port'); }
 
 
 
 CustomSctpPort
-  = 'a=sctp-port:' data:Decimal us:UntilSeparator
+  = 'a=sctp-port:' data:Decimal CapAtSeparator
   { return ast('a_custom_sctp_port', data); }
 
 
 
 StandardMaxMessageSize
-  = 'a=max-message-size:262144' us:UntilSeparator
+  = 'a=max-message-size:262144' CapAtSeparator
   { return ast('a_standard_max_message_size'); }
 
 
 
 CustomMaxMessageSize
-  = 'a=max-message-size:' data:Decimal us:UntilSeparator
+  = 'a=max-message-size:' data:Decimal CapAtSeparator
   { return ast('a_custom_max_message_size', data); }
 
 
 
-AStandardGuidCandidate
-  = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i:IP4
-    ' ' p:Decimal ' typ host generation 0 network-id ' d4:Decimal us:UntilSeparator
-  { return ast('standard_guid_candidate', [ d1, d2, d3, i, p, d4 ]); }
-
-
-
 AStandardLocalCandidate
+  = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i:IP4
+    ' ' p:Decimal ' typ host generation 0 network-id ' d4:Decimal CapAtSeparator
+  { return ast('standard_local_candidate', [ d1, d2, d3, i, p, d4 ]); }
+
+
+
+AStandardGuidCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' g:GUID
-    '.local ' d4:Decimal ' typ host generation 0 network-cost 999' us:UntilSeparator
-  { return ast('standard_local_candidate', [ d1, d2, d3, g, d4 ]); }
+    '.local ' d4:Decimal ' typ host generation 0 network-cost 999' CapAtSeparator
+  { return ast('standard_guid_candidate', [ d1, d2, d3, g, d4 ]); }
 
 
 
 AStandardIp4RemoteCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP4
     ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal ' generation '
-    d6:Decimal ' network-cost 999' us:UntilSeparator
+    d6:Decimal ' network-cost 999' CapAtSeparator
   { return ast('standard_remote_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); }
 
 
 
 AStandardAGenTcpCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' tcp ' d3:Decimal ' ' i1:IP4
-    ' ' d4:Decimal ' typ host tcptype active generation 0 network-id ' d5:Decimal us:UntilSeparator
+    ' ' d4:Decimal ' typ host tcptype active generation 0 network-id ' d5:Decimal CapAtSeparator
   { return ast('standard_agen_tcp_candidate', [ d1, d2, d3, i1, d4, d5 ]); }
 
 
 
 AStandardAGenTcp6Candidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' tcp ' d3:Decimal ' ' i1:IP6
-    ' ' d4:Decimal ' typ host tcptype active generation 0 network-id ' d5:Decimal us:UntilSeparator
+    ' ' d4:Decimal ' typ host tcptype active generation 0 network-id ' d5:Decimal CapAtSeparator
   { return ast('standard_agen_tcp6_candidate', [ d1, d2, d3, i1, d4, d5 ]); }
 
 
 
 AStandardAGenUdp4Candidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP4
-    ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal ' generation 0 network-id ' d6:Decimal us:UntilSeparator
+    ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal ' generation 0 network-id ' d6:Decimal CapAtSeparator
   { return ast('standard_agen_udp4_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); }
 
 
 
 AStandardAGenUdp6HostCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP6
-    ' ' d4:Decimal ' typ host generation 0 network-id ' d5:Decimal us:UntilSeparator
+    ' ' d4:Decimal ' typ host generation 0 network-id ' d5:Decimal CapAtSeparator
   { return ast('standard_agen_udp6_host_candidate', [ d1, d2, d3, i1, d4, d5 ]); }
 
 
 
 AIcePwd
-  = 'a=ice-pwd:' data:IceChar22 us:UntilSeparator
+  = 'a=ice-pwd:' data:IceChar22 CapAtSeparator
   { return ast('a_ice_pwd', data); }
 
 
 
 AIcePwdL
-  = 'a=ice-pwd:' data:IceChar24 us:UntilSeparator
+  = 'a=ice-pwd:' data:IceChar24 CapAtSeparator
   { return ast('a_ice_pwd_l', data); }
 
 
 
 AIceUFrag
-  = 'a=ice-ufrag:' data:IceChar4 us:UntilSeparator
+  = 'a=ice-ufrag:' data:IceChar4 CapAtSeparator
   { return ast('a_ice_ufrag', data); }
 
 
 
 AFingerprint
-  = 'a=fingerprint:sha-256 ' data:CHex64 us:UntilSeparator
+  = 'a=fingerprint:sha-256 ' data:CHex64 CapAtSeparator
   { return ast('a_fingerprint_sha1_256', data); }
 
 
 
 AGroupBundle0
-  = 'a=group:BUNDLE 0' us:UntilSeparator
+  = 'a=group:BUNDLE 0' CapAtSeparator
   { return ast('a_group_bundle_0'); }
 
 
 
 CClaimIp4
-  = 'c=IN IP4 ' data:IP4 us:UntilSeparator
+  = 'c=IN IP4 ' data:IP4 CapAtSeparator
   { return ast('c_claim_ip4', data); }
 
 
 
 StandardMApplication
-  = 'm=application ' data:Decimal ' UDP/DTLS/SCTP webrtc-datachannel' us:UntilSeparator
+  = 'm=application ' data:Decimal ' UDP/DTLS/SCTP webrtc-datachannel' CapAtSeparator
   { return ast('standard_m_application', data); }
-
-
-
-// a=candidate:142444745 1 tcp 1518149375 10.0.0.163 9 typ host tcptype active generation 0 network-id 1
-
-
-// a=candidate:2190342532 1 tcp 1517952767 172.21.32.1 9 typ host tcptype active generation 0 network-id 6
-// AStandardIp4RemoteCandidate
-//   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP4
-//     ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal ' generation '
-//     d6:Decimal ' network-cost 999'
-//   { return ast('AStandardIp4RemoteCandidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); }
 
 
 
@@ -474,6 +480,11 @@ UnknownRule
 UntilSeparator
  = rl:[^'\r\n']* '\r\n'
  { return rl.join(''); }
+
+
+
+CapAtSeparator
+ = '\r\n'
 
 
 

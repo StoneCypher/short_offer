@@ -35,7 +35,7 @@ describe('Round trip of beacon strings is always byte-accurate', () => {
   Object.entries<string>(full_set).forEach( ([ key, beacon ]) => {
 
     test(`Round trip of ${key}`, async () =>
-      unpack( pack( beacon )) === beacon
+      expect( unpack( pack( beacon )) ).toBe(beacon)
     )
 
   });

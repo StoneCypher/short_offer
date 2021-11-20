@@ -118,16 +118,16 @@ const parseable = {
 
   'standard_guid_candidate': (v: ParsedLine) => {
     const { kind, items } = (v as StandardGuidCandidate);
-    const [ d1, d2, d3, i, p, d4 ] = items;
+    const [ d1, d2, d3, i, d4 ] = items;
     if (kind !== 'standard_guid_candidate') { throw 'impossible'; }
-    return `${symbols.standard_guid_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+    return `${symbols.standard_guid_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
   },
 
   'standard_local_candidate': (v: ParsedLine) => {
     const { kind, items } = (v as StandardLocalCandidate);
-    const [ d1, d2, d3, i1, d4 ] = items;
+    const [ d1, d2, d3, i1, p, d4 ] = items;
     if (kind !== 'standard_local_candidate') { throw 'impossible'; }
-    return `${symbols.standard_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+    return `${symbols.standard_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
   },
 
   'standard_remote_candidate': (v: ParsedLine) => {
@@ -155,7 +155,7 @@ const parseable = {
     const { kind, items } = (v as StandardAGenUdp4Candidate);
     const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
     if (kind !== 'standard_agen_udp4_candidate') { throw 'impossible'; }
-    return `${symbols.standard_agen_udp4_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${i2}{symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+    return `${symbols.standard_agen_udp4_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${i2}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
   },
 
   'standard_agen_udp6_host_candidate': (v: ParsedLine) => {

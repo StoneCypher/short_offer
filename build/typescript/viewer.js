@@ -1,6 +1,7 @@
 import { full_set } from './example_beacons';
 import { parse } from './parsers';
 import { pack } from './pack';
+import { unpack } from './unpack';
 function byId(id) {
     const test = document.getElementById(id);
     if (test === null) {
@@ -50,13 +51,14 @@ function click_an_anchor(e, val) {
             src.className = 'sel';
         }
     }
-    const ex = document.querySelector('#example'), exp = document.querySelector('#pack');
-    if ((ex !== null) && (exp !== null)) {
+    const ex = document.querySelector('#example'), exp = document.querySelector('#pack'), exu = document.querySelector('#unpack');
+    if ((ex !== null) && (exp !== null) && (exu !== null)) {
         ex.innerHTML = val;
         exp.innerHTML = pack(val)
             .split('')
             .map(ch => ch.charCodeAt(0) < 33 ? `<span class="ch">[${ch.charCodeAt(0)}]</span>` : ch)
             .join('&#x200b;');
+        exu.innerHTML = unpack(pack(val));
     }
     const parsed = parse(val);
     byId('parse').innerHTML = parse_table(parsed);

@@ -7,8 +7,9 @@ body               { padding: 2em; }
 #list    { padding: 0.25em; box-sizing: border-box; top: 1em; left: 1em; bottom: 1em; width: 15em; background-color: #f0f8ff; }
 #notlist { top: 1em; left: 17em; right: 1em; }
 
-#example { font-family: monospace; background-color: #f8f8ff; }
+#example { font-family: monospace; background-color: #f8f8ff; white-space: pre; }
 #pack    { font-family: monospace; margin-top: 0.5em; background-color: #f8f8f8; }
+#unpack  { font-family: monospace; margin-top: 0.5em; background-color: #f8fff8; white-space: pre; }
 
 #list a       { padding: 0.25em; box-sizing: border-box; display: block; text-decoration: none; color: #004; }
 #list a:hover { background-color: rgba(0,0,0,   0.1); border-radius: 0.3em; }
