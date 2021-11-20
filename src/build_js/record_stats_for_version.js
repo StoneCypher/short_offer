@@ -73,11 +73,19 @@ function generate_test_log() {
           failed_claims   = count_unknowns_in_parse(le_parse),
           ltime           = end_time - start_time;
 
-    const worst_ui        = le_parse.value
+    const worst_ui_list   = le_parse.value
                                     .filter(v => v.kind === 'unknown_line')
-                                    .sort( (l,r) => l.value.length < r.value.length )[0].value;
+                                    .sort( (l,r) => l.value.length < r.value.length );
 
-    if (worst_ui.length > worstu.length) { worstu = worst_ui; }
+    if (worst_ui_list.length) {
+
+      const wulv = worst_ui_list[0].value;
+
+      if (wulv.length > worstu.length) {
+        worstu = wulv;
+      }
+
+    }
 
     ret[s] = {
 
@@ -119,7 +127,7 @@ function generate_test_log() {
     time
   }
 
-  console.log(` - Avg improvement         : ${pct1(final/orig)} (${orig} to ${final})`);
+  console.log(` - Avg improvement         : ${pct1(1 - (final/orig))} (${orig} to ${final})`);
   console.log(` - Bytewise least improved : ${worstbS} (${worstbSo} to ${worstbSn}, ${pct1(worstbSn/worstbSo)})`);
   console.log(` - Pctwise least improved  : ${worstpS} (${worstpSo} to ${worstpSn}, ${pct1(worstpSn/worstpSo)})`);
   console.log(` - Single worst unknown    : ${worstu}`);

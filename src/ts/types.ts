@@ -13,6 +13,8 @@ type ASetupActPass             = { kind: 'a_setup_actpass',              value: 
 type ASetupActive              = { kind: 'a_setup_active',               value: string, uses_short_nl: boolean };
 type AMidZero                  = { kind: 'a_mid_zero',                   value: string, uses_short_nl: boolean };
 type AGroupBundleZero          = { kind: 'a_group_bundle_0',             value: string, uses_short_nl: boolean };
+type CClaimIp4                 = { kind: 'c_claim_ip4',                  value: string, uses_short_nl: boolean };
+type StandardMApplication      = { kind: 'standard_m_application',       value: string, uses_short_nl: boolean };
 
 type SDash                     = { kind: 's_dash',                       value: string, uses_short_nl: boolean };
 type TZeroZero                 = { kind: 't_zero_zero',                  value: string, uses_short_nl: boolean };
@@ -41,6 +43,7 @@ type ParsedLine
   | AStandardSctpPort | ACustomSctpPort
   | AStandardMaxMessageSize | ACustomMaxMessageSize
   | ASetupActPass | ASetupActive | AMidZero | AGroupBundleZero
+  | CClaimIp4 | StandardMApplication
   | SDash
   | TZeroZero
   | StandardOrigin | StandardMozOrigin

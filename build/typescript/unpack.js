@@ -86,6 +86,14 @@ function unpack(bytestring) {
             case symbols.a_end_of_candidates:
                 work += 'a=end-of-candidates\r\n';
                 break;
+            case symbols.c_claim_ip4:
+                scan_forward_to_null('c=IN IP4 ', 'c_claim_ip4', undefined, true);
+                work += '\r\n';
+                break;
+            case symbols.standard_m_application:
+                scan_forward_to_null('m=application ', 'standard_m_application', undefined, true);
+                work += ' UDP/DTLS/SCTP webrtc-datachannel\r\n';
+                break;
             case symbols.standard_origin:
                 scan_forward_to_null('o=- ', 'standard_moz_origin_1', undefined, true);
                 scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
