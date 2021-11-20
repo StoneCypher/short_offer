@@ -21,7 +21,7 @@ type TZeroZero                     = { kind: 't_zero_zero',                     
 type StandardOrigin                = { kind: 'standard_origin',                   value: string, uses_short_nl: boolean, items: [ s: number, d: number, i: number ] };
 type StandardMozOrigin             = { kind: 'standard_moz_origin',               value: string, uses_short_nl: boolean, moz_ver: [number, number, number], sess: number };
 type StandardLocalCandidate        = { kind: 'standard_local_candidate',          value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
-type StandardGuidCandidate         = { kind: 'standard_guid_candidate',           value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
+type StandardGuidLocalCandidate    = { kind: 'standard_guid_local_candidate',     value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
 type StandardRemoteCandidate       = { kind: 'standard_remote_candidate',         value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
 type StandardAGenTcpCandidate      = { kind: 'standard_agen_tcp_candidate',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
 type StandardAGenTcp6Candidate     = { kind: 'standard_agen_tcp6_candidate',      value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
@@ -49,7 +49,7 @@ type ParsedLine
   | SDash
   | TZeroZero
   | StandardOrigin | StandardMozOrigin
-  | StandardLocalCandidate | StandardGuidCandidate | StandardRemoteCandidate
+  | StandardLocalCandidate | StandardGuidLocalCandidate | StandardRemoteCandidate
   | StandardAGenTcpCandidate | StandardAGenTcp6Candidate
   | StandardAGenUdp4Candidate | StandardAGenUdp6HostCandidate
   | UnknownTerminate;
@@ -68,7 +68,7 @@ type ParsedSdp = {
         | 's_dash'
         | 't_zero_zero'
         | 'standard_moz_origin'
-        | 'standard_local_candidate' | 'standard_guid_candidate' | 'standard_remote_candidate'
+        | 'standard_local_candidate' | 'standard_guid_local_candidate' | 'standard_remote_candidate'
         | 'standard_agen_tcp_candidate' | 'standard_agen_tcp6_candidate'
         | 'standard_agen_udp4_candidate' | 'standard_agen_udp6_host_candidate'
         | 'a_custom_max_message_size'
@@ -88,7 +88,7 @@ export {
   UnknownLine,
   VersionZeroLine, VersionLine,
   StandardOrigin, StandardMozOrigin,
-  StandardLocalCandidate, StandardGuidCandidate, StandardRemoteCandidate,
+  StandardLocalCandidate, StandardGuidLocalCandidate, StandardRemoteCandidate,
   StandardAGenTcpCandidate, StandardAGenTcp6Candidate,
   StandardAGenUdp4Candidate, StandardAGenUdp6HostCandidate,
   ParsedLine,

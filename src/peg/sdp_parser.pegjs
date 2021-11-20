@@ -28,7 +28,7 @@
 
     if (['standard_origin',
          'standard_local_candidate',
-         'standard_guid_candidate',
+         'standard_guid_local_candidate',
          'standard_remote_candidate',
          'standard_agen_tcp_candidate',
          'standard_agen_tcp6_candidate',
@@ -141,6 +141,17 @@ IceChar24
 
 
 
+IceChar32
+  = a:IceChar  b:IceChar  c:IceChar  d:IceChar  e:IceChar  f:IceChar
+    g:IceChar  h:IceChar  i:IceChar  j:IceChar  k:IceChar  l:IceChar
+    m:IceChar  n:IceChar  o:IceChar  p:IceChar  q:IceChar  r:IceChar
+    s:IceChar  t:IceChar  u:IceChar  v:IceChar  w:IceChar  x:IceChar
+    y:IceChar  z:IceChar  aa:IceChar ab:IceChar ac:IceChar ad:IceChar
+    ae:IceChar af:IceChar
+  { return [a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,aa,ab,ac,ad,ae,af].join(''); }
+
+
+
 GUID
   = a:Hex8 '-' b:Hex4 '-' c:Hex4 '-' d:Hex4 '-' e:Hex12
   { return [a,b,c,d,e].join(''); }
@@ -236,14 +247,15 @@ Rule
  / CClaimIp4
  / StandardMApplication
  / AStandardLocalCandidate
- / AStandardGuidCandidate
+ / AStandardGuidLocalCandidate
  / AStandardIp4RemoteCandidate
  / AStandardAGenTcpCandidate
  / AStandardAGenTcp6Candidate
  / AStandardAGenUdp4Candidate
  / AStandardAGenUdp6HostCandidate
- / AIcePwd
+ / AIcePwdV
  / AIcePwdL
+ / AIcePwd
  / AIceUFrag4
  / AIceUFrag8
  / AFingerprint
@@ -401,10 +413,10 @@ AStandardLocalCandidate
 
 
 
-AStandardGuidCandidate
+AStandardGuidLocalCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' g:GUID
     '.local ' d4:Decimal ' typ host generation 0 network-cost 999' CapAtSeparator
-  { return ast('standard_guid_candidate', [ d1, d2, d3, g, d4 ]); }
+  { return ast('standard_guid_local_candidate', [ d1, d2, d3, g, d4 ]); }
 
 
 
@@ -437,6 +449,8 @@ AStandardAGenUdp4Candidate
 
 
 
+// a=candidate:794956039 1 udp 2122197247 2601:645:8400:6c20::a610 53877 typ host generation 0 network-id 3
+// this should match but doesn't? from win10 chrome92 host
 AStandardAGenUdp6HostCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP6
     ' ' d4:Decimal ' typ host generation 0 network-id ' d5:Decimal CapAtSeparator
@@ -453,6 +467,12 @@ AIcePwd
 AIcePwdL
   = 'a=ice-pwd:' data:IceChar24 CapAtSeparator
   { return ast('a_ice_pwd_l', data); }
+
+
+
+AIcePwdV
+  = 'a=ice-pwd:' data:IceChar32 CapAtSeparator
+  { return ast('a_ice_pwd_v', data); }
 
 
 
@@ -493,19 +513,19 @@ StandardMApplication
 
 
 UnknownRule
- = us:UntilSeparator
- { return ast('unknown_line', us); }
+  = us:UntilSeparator
+  { return ast('unknown_line', us); }
 
 
 
 UntilSeparator
- = rl:[^'\r\n']* '\r\n'
- { return rl.join(''); }
+  = rl:[^'\r\n']* '\r\n'
+  { return rl.join(''); }
 
 
 
 CapAtSeparator
- = '\r\n'
+  = '\r\n'
 
 
 

@@ -192,7 +192,7 @@ function unpack(bytestring: string): string {
         i = iC; // end the loop
         break;
 
-      case symbols.standard_guid_candidate:
+      case symbols.standard_guid_local_candidate:
         scan_forward_to_null(`a=candidate:`,      'standard_local_candidate_1', undefined,   true);
         scan_forward_to_null(' ',                 'standard_local_candidate_2', undefined,   true);
         scan_forward_to_null(' udp ',             'standard_local_candidate_3', undefined,   true);
@@ -268,6 +268,10 @@ function unpack(bytestring: string): string {
         scan_forward_to_null(`a=ice-pwd:`, 'a_ice_pwd_l', undefined, false);
         break;
 
+      case symbols.a_ice_pwd_v:
+        scan_forward_to_null(`a=ice-pwd:`, 'a_ice_pwd_v', undefined, false);
+        break;
+
       case symbols.a_ice_ufrag_4:
         scan_forward_to_null(`a=ice-ufrag:`, 'a_ice_ufrag_4', undefined, false);
         break;
@@ -281,7 +285,7 @@ function unpack(bytestring: string): string {
         break;
 
       default:
-        throw new TypeError(`Unknown symbol at ${i} '${bytestring.charAt(i)}' [${bytestring.charCodeAt(i)}], corrupt encoding'`);
+        throw new TypeError(`[unpack] Unknown symbol at ${i} '${bytestring.charAt(i)}' [${bytestring.charCodeAt(i)}], corrupt encoding'`);
 
     }
 

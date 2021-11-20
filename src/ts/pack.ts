@@ -6,7 +6,7 @@ import {
   StandardOrigin,
   StandardMozOrigin,
   StandardLocalCandidate,
-  StandardGuidCandidate,
+  StandardGuidLocalCandidate,
   StandardRemoteCandidate,
   StandardAGenTcpCandidate,
   StandardAGenTcp6Candidate,
@@ -82,6 +82,9 @@ const parseable = {
   'a_ice_pwd_l': (v: ParsedLine) =>
     `${symbols.a_ice_pwd_l}${v.value}${symbols.c_terminal}`,
 
+  'a_ice_pwd_v': (v: ParsedLine) =>
+    `${symbols.a_ice_pwd_v}${v.value}${symbols.c_terminal}`,
+
   'a_ice_ufrag_4': (v: ParsedLine) =>
     `${symbols.a_ice_ufrag_4}${v.value}${symbols.c_terminal}`,
 
@@ -122,11 +125,11 @@ const parseable = {
     return `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}`;
   },
 
-  'standard_guid_candidate': (v: ParsedLine) => {
-    const { kind, items } = (v as StandardGuidCandidate);
+  'standard_guid_local_candidate': (v: ParsedLine) => {
+    const { kind, items } = (v as StandardGuidLocalCandidate);
     const [ d1, d2, d3, i, d4 ] = items;
-    if (kind !== 'standard_guid_candidate') { throw 'impossible'; }
-    return `${symbols.standard_guid_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+    if (kind !== 'standard_guid_local_candidate') { throw 'impossible'; }
+    return `${symbols.standard_guid_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
   },
 
   'standard_local_candidate': (v: ParsedLine) => {
