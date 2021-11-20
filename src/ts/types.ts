@@ -72,7 +72,7 @@ type ParsedSdp = {
         | 'standard_agen_tcp_candidate' | 'standard_agen_tcp6_candidate'
         | 'standard_agen_udp4_candidate' | 'standard_agen_udp6_host_candidate'
         | 'a_custom_max_message_size'
-        | 'a_ice_pwd' | 'a_ice_pwd_l' | 'a_ice_ufrag',
+        | 'a_ice_pwd' | 'a_ice_pwd_l' | 'a_ice_ufrag_4' | 'a_ice_ufrag_8',
 
   value : ParsedLine[],
 

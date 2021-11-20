@@ -116,6 +116,13 @@ IceChar4
 
 
 
+IceChar8
+  = a:IceChar b:IceChar c:IceChar d:IceChar e:IceChar f:IceChar
+    g:IceChar h:IceChar
+  { return [a,b,c,d,e,f,g,h].join(''); }
+
+
+
 IceChar22
   = a:IceChar b:IceChar c:IceChar d:IceChar e:IceChar f:IceChar
     g:IceChar h:IceChar i:IceChar j:IceChar k:IceChar l:IceChar
@@ -237,7 +244,8 @@ Rule
  / AStandardAGenUdp6HostCandidate
  / AIcePwd
  / AIcePwdL
- / AIceUFrag
+ / AIceUFrag4
+ / AIceUFrag8
  / AFingerprint
  / AGroupBundle0
  / ASendRecv
@@ -448,9 +456,15 @@ AIcePwdL
 
 
 
-AIceUFrag
+AIceUFrag4
   = 'a=ice-ufrag:' data:IceChar4 CapAtSeparator
-  { return ast('a_ice_ufrag', data); }
+  { return ast('a_ice_ufrag_4', data); }
+
+
+
+AIceUFrag8
+  = 'a=ice-ufrag:' data:IceChar8 CapAtSeparator
+  { return ast('a_ice_ufrag_8', data); }
 
 
 

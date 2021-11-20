@@ -82,8 +82,11 @@ const parseable = {
   'a_ice_pwd_l': (v: ParsedLine) =>
     `${symbols.a_ice_pwd_l}${v.value}${symbols.c_terminal}`,
 
-  'a_ice_ufrag': (v: ParsedLine) =>
-    `${symbols.a_ice_ufrag}${v.value}${symbols.c_terminal}`,
+  'a_ice_ufrag_4': (v: ParsedLine) =>
+    `${symbols.a_ice_ufrag_4}${v.value}${symbols.c_terminal}`,
+
+  'a_ice_ufrag_8': (v: ParsedLine) =>
+    `${symbols.a_ice_ufrag_8}${v.value}${symbols.c_terminal}`,
 
   'a_fingerprint_sha1_256': (v: ParsedLine) =>
     `${symbols.a_fingerprint_sha1_256}${v.value}${symbols.c_terminal}`,
