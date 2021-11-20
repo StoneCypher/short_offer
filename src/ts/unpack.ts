@@ -192,6 +192,15 @@ function unpack(bytestring: string): string {
         scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined, true);
         break;
 
+      case symbols.standard_agen_udp6_host_candidate:
+        scan_forward_to_null(`a=candidate:`,                       'standard_guid_candidate_1', undefined, true);
+        scan_forward_to_null(' ',                                  'standard_guid_candidate_2', undefined, true);
+        scan_forward_to_null(' udp ',                              'standard_guid_candidate_3', undefined, true);
+        scan_forward_to_null(' ',                                  'standard_guid_candidate_4', undefined, true);
+        scan_forward_to_null(' ',                                  'standard_guid_candidate_4', undefined, true);
+        scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined, true);
+        break;
+
       case symbols.standard_remote_candidate:
         scan_forward_to_null(`a=candidate:`,      'standard_remote_candidate_1', undefined, true);
         scan_forward_to_null(' ',                 'standard_remote_candidate_2', undefined, true);

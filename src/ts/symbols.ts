@@ -4,48 +4,49 @@
 
 
 
-const c_terminal                   = '\x00';
+const c_terminal                        = '\x00';
 
-const offer                        = '\x01',
-      answer                       = '\x02',
-      version_zero_line            = '\x03',
-      version_line                 = '\x04',
-      a_msid_semantic_ns           = '\x05',
-      a_msid_semantic_ws           = '\x06',
-      a_extmap_allow_mixed         = '\x07',
-      a_standard_sctp_port         = '\x08',
-      a_custom_sctp_port           = '\x09',
-      a_standard_max_message_size  = '\x0a',
-      a_custom_max_message_size    = '\x0b',
-      a_setup_actpass              = '\x0c',
-      a_setup_active               = '\x0d',
-      a_mid_zero                   = '\x0e',
-      s_dash                       = '\x0f',
-      t_zero_zero                  = '\x10',
-      standard_origin              = '\x11',
-      standard_moz_origin          = '\x12',
-      standard_local_candidate     = '\x13',
-      standard_guid_candidate      = '\x14',
-      standard_remote_candidate    = '\x15',
-      standard_agen_tcp_candidate  = '\x16',
-      standard_agen_tcp6_candidate = '\x17',
-      a_ice_pwd                    = '\x18',
-      a_ice_pwd_l                  = '\x19',
-      a_ice_ufrag                  = '\x20',
-      a_fingerprint_sha1_256       = '\x21',
-      a_group_bundle_0             = '\x22',
-      a_send_recv                  = '\x23',
-      a_end_of_candidates          = '\x24',
-      c_claim_ip4                  = '\x25',
-      standard_m_application       = '\x26';
+const offer                             = '\x01',
+      answer                            = '\x02',
+      version_zero_line                 = '\x03',
+      version_line                      = '\x04',
+      a_msid_semantic_ns                = '\x05',
+      a_msid_semantic_ws                = '\x06',
+      a_extmap_allow_mixed              = '\x07',
+      a_standard_sctp_port              = '\x08',
+      a_custom_sctp_port                = '\x09',
+      a_standard_max_message_size       = '\x0a',
+      a_custom_max_message_size         = '\x0b',
+      a_setup_actpass                   = '\x0c',
+      a_setup_active                    = '\x0d',
+      a_mid_zero                        = '\x0e',
+      s_dash                            = '\x0f',
+      t_zero_zero                       = '\x10',
+      standard_origin                   = '\x11',
+      standard_moz_origin               = '\x12',
+      standard_local_candidate          = '\x13',
+      standard_guid_candidate           = '\x14',
+      standard_remote_candidate         = '\x15',
+      standard_agen_tcp_candidate       = '\x16',
+      standard_agen_tcp6_candidate      = '\x17',
+      standard_agen_udp6_host_candidate = '\x18',
+      a_ice_pwd                         = '\x19',
+      a_ice_pwd_l                       = '\x1a',
+      a_ice_ufrag                       = '\x1b',
+      a_fingerprint_sha1_256            = '\x1c',
+      a_group_bundle_0                  = '\x1d',
+      a_send_recv                       = '\x1e',
+      a_end_of_candidates               = '\x1f',
+      c_claim_ip4                       = '\x20',
+      standard_m_application            = '\x21';
 
-const short_separator_follows      = '\x7c',
-      short_separators_all         = '\x7d';
+const short_separator_follows           = '\x7c',
+      short_separators_all              = '\x7d';
 
-const unknown_line                 = '\x7e';
+const unknown_line                      = '\x7e';
 
 // consumes the rest of the bytestring into the output, *then* the after-queue
-const unknown_terminate            = '\x7f';  // 127 is the highest efficient value
+const unknown_terminate                 = '\x7f';  // 127 is the highest efficient value
 
 
 
@@ -62,6 +63,7 @@ export {
   standard_origin, standard_moz_origin,
   standard_local_candidate, standard_guid_candidate, standard_remote_candidate,
   standard_agen_tcp_candidate, standard_agen_tcp6_candidate,
+  standard_agen_udp6_host_candidate,
   a_ice_pwd, a_ice_pwd_l, a_ice_ufrag, a_fingerprint_sha1_256,
   a_group_bundle_0,
   a_send_recv, a_end_of_candidates,

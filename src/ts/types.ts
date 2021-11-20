@@ -1,33 +1,34 @@
 
-type VersionZeroLine           = { kind: 'version_zero_line',            value: string, uses_short_nl: boolean };
-type VersionLine               = { kind: 'version_line',                 value: string, uses_short_nl: boolean };
+type VersionZeroLine               = { kind: 'version_zero_line',                 value: string, uses_short_nl: boolean };
+type VersionLine                   = { kind: 'version_line',                      value: string, uses_short_nl: boolean };
 
-type AMsidSemanticNS           = { kind: 'a_msid_semantic_ns',           value: string, uses_short_nl: boolean };
-type AMsidSemanticWS           = { kind: 'a_msid_semantic_ws',           value: string, uses_short_nl: boolean };
-type AExtmapAllowMixed         = { kind: 'a_extmap_allow_mixed',         value: string, uses_short_nl: boolean };
-type AStandardSctpPort         = { kind: 'a_standard_sctp_port',         value: string, uses_short_nl: boolean };
-type ACustomSctpPort           = { kind: 'a_custom_sctp_port',           value: string, uses_short_nl: boolean };
-type AStandardMaxMessageSize   = { kind: 'a_standard_max_message_size',  value: string, uses_short_nl: boolean };
-type ACustomMaxMessageSize     = { kind: 'a_custom_max_message_size',    value: string, uses_short_nl: boolean };
-type ASetupActPass             = { kind: 'a_setup_actpass',              value: string, uses_short_nl: boolean };
-type ASetupActive              = { kind: 'a_setup_active',               value: string, uses_short_nl: boolean };
-type AMidZero                  = { kind: 'a_mid_zero',                   value: string, uses_short_nl: boolean };
-type AGroupBundleZero          = { kind: 'a_group_bundle_0',             value: string, uses_short_nl: boolean };
-type CClaimIp4                 = { kind: 'c_claim_ip4',                  value: string, uses_short_nl: boolean };
-type StandardMApplication      = { kind: 'standard_m_application',       value: string, uses_short_nl: boolean };
+type AMsidSemanticNS               = { kind: 'a_msid_semantic_ns',                value: string, uses_short_nl: boolean };
+type AMsidSemanticWS               = { kind: 'a_msid_semantic_ws',                value: string, uses_short_nl: boolean };
+type AExtmapAllowMixed             = { kind: 'a_extmap_allow_mixed',              value: string, uses_short_nl: boolean };
+type AStandardSctpPort             = { kind: 'a_standard_sctp_port',              value: string, uses_short_nl: boolean };
+type ACustomSctpPort               = { kind: 'a_custom_sctp_port',                value: string, uses_short_nl: boolean };
+type AStandardMaxMessageSize       = { kind: 'a_standard_max_message_size',       value: string, uses_short_nl: boolean };
+type ACustomMaxMessageSize         = { kind: 'a_custom_max_message_size',         value: string, uses_short_nl: boolean };
+type ASetupActPass                 = { kind: 'a_setup_actpass',                   value: string, uses_short_nl: boolean };
+type ASetupActive                  = { kind: 'a_setup_active',                    value: string, uses_short_nl: boolean };
+type AMidZero                      = { kind: 'a_mid_zero',                        value: string, uses_short_nl: boolean };
+type AGroupBundleZero              = { kind: 'a_group_bundle_0',                  value: string, uses_short_nl: boolean };
+type CClaimIp4                     = { kind: 'c_claim_ip4',                       value: string, uses_short_nl: boolean };
+type StandardMApplication          = { kind: 'standard_m_application',            value: string, uses_short_nl: boolean };
 
-type SDash                     = { kind: 's_dash',                       value: string, uses_short_nl: boolean };
-type TZeroZero                 = { kind: 't_zero_zero',                  value: string, uses_short_nl: boolean };
-type StandardOrigin            = { kind: 'standard_origin',              value: string, uses_short_nl: boolean, items: [ s: number, d: number, i: number ] };
-type StandardMozOrigin         = { kind: 'standard_moz_origin',          value: string, uses_short_nl: boolean, moz_ver: [number, number, number], sess: number };
-type StandardLocalCandidate    = { kind: 'standard_local_candidate',     value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
-type StandardGuidCandidate     = { kind: 'standard_guid_candidate',      value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
-type StandardRemoteCandidate   = { kind: 'standard_remote_candidate',    value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
-type StandardAGenTcpCandidate  = { kind: 'standard_agen_tcp_candidate',  value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
-type StandardAGenTcp6Candidate = { kind: 'standard_agen_tcp6_candidate', value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
+type SDash                         = { kind: 's_dash',                            value: string, uses_short_nl: boolean };
+type TZeroZero                     = { kind: 't_zero_zero',                       value: string, uses_short_nl: boolean };
+type StandardOrigin                = { kind: 'standard_origin',                   value: string, uses_short_nl: boolean, items: [ s: number, d: number, i: number ] };
+type StandardMozOrigin             = { kind: 'standard_moz_origin',               value: string, uses_short_nl: boolean, moz_ver: [number, number, number], sess: number };
+type StandardLocalCandidate        = { kind: 'standard_local_candidate',          value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
+type StandardGuidCandidate         = { kind: 'standard_guid_candidate',           value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
+type StandardRemoteCandidate       = { kind: 'standard_remote_candidate',         value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
+type StandardAGenTcpCandidate      = { kind: 'standard_agen_tcp_candidate',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
+type StandardAGenTcp6Candidate     = { kind: 'standard_agen_tcp6_candidate',      value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
+type StandardAGenUdp6HostCandidate = { kind: 'standard_agen_udp6_host_candidate', value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
 
-type UnknownLine               = { kind: 'unknown_line',                value: string, uses_short_nl: boolean };
-type UnknownTerminate          = { kind: 'unknown_terminate',           value: string, uses_short_nl: boolean };
+type UnknownLine                   = { kind: 'unknown_line',                     value: string, uses_short_nl: boolean };
+type UnknownTerminate              = { kind: 'unknown_terminate',                value: string, uses_short_nl: boolean };
 
 type PegCoord                  = { offset: number; line: number; column: number; };
 type PegLocation               = { start: PegCoord; end: PegCoord };
@@ -49,6 +50,7 @@ type ParsedLine
   | StandardOrigin | StandardMozOrigin
   | StandardLocalCandidate | StandardGuidCandidate | StandardRemoteCandidate
   | StandardAGenTcpCandidate | StandardAGenTcp6Candidate
+  | StandardAGenUdp6HostCandidate
   | UnknownTerminate;
 
 
@@ -85,7 +87,7 @@ export {
   VersionZeroLine, VersionLine,
   StandardOrigin, StandardMozOrigin,
   StandardLocalCandidate, StandardGuidCandidate, StandardRemoteCandidate,
-  StandardAGenTcpCandidate, StandardAGenTcp6Candidate,
+  StandardAGenTcpCandidate, StandardAGenTcp6Candidate, StandardAGenUdp6HostCandidate,
   ParsedLine,
   PegCoord, PegLocation,
   ParsedSdp
