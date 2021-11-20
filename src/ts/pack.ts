@@ -3,6 +3,7 @@ import { parse }             from './parsers';
 import * as symbols          from './symbols';
 
 import {
+  StandardOrigin,
   StandardMozOrigin,
   StandardLocalCandidate,
   StandardGuidCandidate,
@@ -79,6 +80,13 @@ const parseable = {
 
   't_zero_zero': (_: ParsedLine) =>
     `${symbols.t_zero_zero}`,
+
+  'standard_origin': (v: ParsedLine) => {
+    const { kind, items } = (v as StandardOrigin);
+    const [ s, d, i ] = items;
+    if (kind !== 'standard_origin') { throw 'impossible'; }
+    return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${i}${symbols.c_terminal}`;
+  },
 
   'standard_moz_origin': (v: ParsedLine) => {
     const smo = v as StandardMozOrigin,

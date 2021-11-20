@@ -19,6 +19,14 @@ const parseable = {
     'a_mid_zero': (_) => `${symbols.a_mid_zero}`,
     's_dash': (_) => `${symbols.s_dash}`,
     't_zero_zero': (_) => `${symbols.t_zero_zero}`,
+    'standard_origin': (v) => {
+        const { kind, items } = v;
+        const [s, d, i] = items;
+        if (kind !== 'standard_origin') {
+            throw 'impossible';
+        }
+        return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${i}${symbols.c_terminal}`;
+    },
     'standard_moz_origin': (v) => {
         const smo = v, mvs = moz_ver(smo.moz_ver);
         return `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}`;

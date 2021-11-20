@@ -31,7 +31,7 @@ function el(tag, { inner, className, onclick }) {
 function parse_table(parsed) {
     let result = '';
     parsed.value.forEach(v => result += `
-    <tr>
+    <tr${v.kind === 'unknown_line' ? ' class="unk"' : ''}>
       <td>${v.kind}</td>
       <td>${v.value}</td>
     </tr>
@@ -67,11 +67,14 @@ function click_an_anchor(e, val) {
 }
 function bootstrap() {
     const oe = Object.entries(full_set);
-    oe.forEach(([k, v], _i) => byId('list')
-        .append(el('a', {
-        inner: k,
-        href: '#',
-        onclick: (e) => click_an_anchor(e, v)
-    })));
+    oe.forEach(([k, v], _i) => {
+        const p = parse(v), c = p.value.filter(val => val.kind === 'unknown_line').length;
+        byId('list')
+            .append(el('a', {
+            inner: `${k} (${c})`,
+            href: '#',
+            onclick: (e) => click_an_anchor(e, v)
+        }));
+    });
 }
 export { bootstrap };

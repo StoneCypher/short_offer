@@ -16,3 +16,5 @@ body               { padding: 2em; }
 
 #parse td    { text-align: right; }
 #parse td+td { text-align: left; }
+
+tr.unk td { background-color: #fee; }
