@@ -2,6 +2,7 @@
 import { full_set }  from './example_beacons';
 import { parse }     from './parsers';
 import { pack }      from './pack';
+import { unpack }    from './unpack';
 import { ParsedSdp } from './types';
 
 
@@ -97,14 +98,16 @@ function click_an_anchor(e: MouseEvent | undefined, val: string) {
   }
 
   const ex  = document.querySelector('#example'),
-        exp = document.querySelector('#pack');
+        exp = document.querySelector('#pack'),
+        exu = document.querySelector('#unpack');
 
-  if ((ex !== null) && (exp !== null)) {
+  if ((ex !== null) && (exp !== null) && (exu !== null)) {
     ex.innerHTML  = val;
     exp.innerHTML = pack(val)
                       .split('')
                       .map(ch => ch.charCodeAt(0) < 33? `<span class="ch">[${ch.charCodeAt(0)}]</span>` : ch)
                       .join('&#x200b;');
+    exu.innerHTML = unpack(pack(val));
   }
 
   const parsed = parse(val);

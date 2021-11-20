@@ -8,6 +8,6 @@ test('Round trip of random strings is always byte-accurate', () => {
 });
 describe('Round trip of beacon strings is always byte-accurate', () => {
     Object.entries(full_set).forEach(([key, beacon]) => {
-        test(`Round trip of ${key}`, async () => unpack(pack(beacon)) === beacon);
+        test(`Round trip of ${key}`, async () => expect(unpack(pack(beacon))).toBe(beacon));
     });
 });
