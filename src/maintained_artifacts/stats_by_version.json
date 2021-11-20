@@ -3227,27 +3227,27 @@
   "0.22.0": {
     "win_10_chrome_92_client": {
       "original_length": 1068,
-      "final_length": 561,
+      "final_length": 526,
       "failed_claims": 0,
-      "time": 6
+      "time": 8
     },
     "win_10_chrome_92_host": {
       "original_length": 1866,
-      "final_length": 1032,
+      "final_length": 997,
       "failed_claims": 0,
-      "time": 4
+      "time": 2
     },
     "win_10_edge_92_client": {
       "original_length": 718,
       "final_length": 275,
       "failed_claims": 0,
-      "time": 2
+      "time": 1
     },
     "win_10_edge_92_host": {
       "original_length": 852,
       "final_length": 335,
       "failed_claims": 0,
-      "time": 0
+      "time": 2
     },
     "win_10_ff_90_client": {
       "original_length": 1007,
@@ -3295,13 +3295,13 @@
       "original_length": 723,
       "final_length": 271,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "mac_ff_90_host": {
       "original_length": 1003,
       "final_length": 632,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "mac_ff_90_client": {
       "original_length": 812,
@@ -3319,25 +3319,25 @@
       "original_length": 810,
       "final_length": 439,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "and_chr_92_host": {
       "original_length": 1016,
       "final_length": 645,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "and_chr_92_client": {
       "original_length": 767,
       "final_length": 396,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "ubu_ff_90_host": {
       "original_length": 815,
       "final_length": 442,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "ubu_ff_90_client": {
       "original_length": 816,
@@ -3348,9 +3348,9 @@
     "total": {
       "variations": 20,
       "original_length": 17990,
-      "final_length": 9317,
+      "final_length": 9247,
       "failed_claims": 0,
-      "time": 23
+      "time": 24
     }
   }
 }
