@@ -28,6 +28,16 @@ function el(tag, { inner, className, onclick }) {
     }
     return nTag;
 }
+function parse_table(parsed) {
+    let result = '';
+    parsed.value.forEach(v => result += `
+    <tr>
+      <td>${v.kind}</td>
+      <td>${v.value}</td>
+    </tr>
+  `);
+    return result;
+}
 function click_an_anchor(e, val) {
     if (e === undefined) {
         throw "Can't handle an event without an event (click_an_anchor)";
@@ -53,7 +63,7 @@ function click_an_anchor(e, val) {
         }
     }
     const parsed = parse(val);
-    byId('parse').innerHTML = JSON.stringify(parsed);
+    byId('parse').innerHTML = parse_table(parsed);
 }
 function bootstrap() {
     const oe = Object.entries(full_set);

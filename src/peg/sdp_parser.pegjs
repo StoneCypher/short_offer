@@ -20,7 +20,11 @@
       value          = '';
     }
 
-    if (['standard_local_candidate', 'standard_remote_candidate'].includes(kind)) {
+    if (['standard_local_candidate',
+         'standard_guid_candidate',
+         'standard_remote_candidate',
+         'standard_agen_tcp_candidate'
+        ].includes(kind)) {
       retval.items = value;
       retval.value = '';
     }
@@ -128,7 +132,9 @@ Rule
  / StandardMaxMessageSize
  / CustomMaxMessageSize
  / AStandardLocalCandidate
+ / AStandardGuidCandidate
  / AStandardIp4RemoteCandidate
+ / AStandardAGenTcpCandidate
  / UnknownRule
 
 
@@ -242,6 +248,13 @@ CustomMaxMessageSize
 
 
 
+AStandardGuidCandidate
+  = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i:IP4
+    ' ' p:Decimal ' typ host generation 0 network-id ' d4:Decimal us:UntilSeparator
+  { return ast('standard_guid_candidate', [ d1, d2, d3, i, p, d4 ]); }
+
+
+
 AStandardLocalCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' g:GUID
     '.local ' d4:Decimal ' typ host generation 0 network-cost 999' us:UntilSeparator
@@ -255,6 +268,17 @@ AStandardIp4RemoteCandidate
     d6:Decimal ' network-cost 999' us:UntilSeparator
   { return ast('standard_remote_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); }
 
+
+
+AStandardAGenTcpCandidate
+  = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' tcp ' d3:Decimal ' ' i1:IP4
+    ' ' d4:Decimal ' typ host tcptype active generation 0 network-id ' d5:Decimal
+  { return ast('standard_agen_tcp_candidate', [ d1, d2, d3, i1, d4, d5 ]); }
+
+
+
+
+// a=candidate:142444745 1 tcp 1518149375 10.0.0.163 9 typ host tcptype active generation 0 network-id 1
 
 
 // a=candidate:2190342532 1 tcp 1517952767 172.21.32.1 9 typ host tcptype active generation 0 network-id 6

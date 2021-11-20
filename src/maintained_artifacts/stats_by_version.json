@@ -2197,7 +2197,7 @@
       "original_length": 1068,
       "final_length": 921,
       "failed_claims": 0,
-      "time": 3
+      "time": 4
     },
     "win_10_chrome_92_host": {
       "original_length": 1866,
@@ -2210,6 +2210,135 @@
       "final_length": 441,
       "failed_claims": 0,
       "time": 1
+    },
+    "win_10_edge_92_host": {
+      "original_length": 852,
+      "final_length": 499,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "win_10_ff_90_client": {
+      "original_length": 1007,
+      "final_length": 842,
+      "failed_claims": 0,
+      "time": 3
+    },
+    "win_10_ff_90_host": {
+      "original_length": 1092,
+      "final_length": 927,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "lin_chr_92_host": {
+      "original_length": 722,
+      "final_length": 434,
+      "failed_claims": 0,
+      "time": 0
+    },
+    "lin_chr_92_client": {
+      "original_length": 721,
+      "final_length": 433,
+      "failed_claims": 0,
+      "time": 0
+    },
+    "mac_saf_14_host": {
+      "original_length": 694,
+      "final_length": 427,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "mac_saf_14_client": {
+      "original_length": 703,
+      "final_length": 436,
+      "failed_claims": 0,
+      "time": 0
+    },
+    "mac_chrome_92_host": {
+      "original_length": 723,
+      "final_length": 435,
+      "failed_claims": 0,
+      "time": 0
+    },
+    "mac_chrome_92_client": {
+      "original_length": 723,
+      "final_length": 435,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "mac_ff_90_host": {
+      "original_length": 1003,
+      "final_length": 838,
+      "failed_claims": 0,
+      "time": 0
+    },
+    "mac_ff_90_client": {
+      "original_length": 812,
+      "final_length": 647,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "lin_ff_90_host": {
+      "original_length": 1062,
+      "final_length": 897,
+      "failed_claims": 0,
+      "time": 0
+    },
+    "lin_ff_90_client": {
+      "original_length": 810,
+      "final_length": 645,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "and_chr_92_host": {
+      "original_length": 1016,
+      "final_length": 851,
+      "failed_claims": 0,
+      "time": 0
+    },
+    "and_chr_92_client": {
+      "original_length": 767,
+      "final_length": 602,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "ubu_ff_90_host": {
+      "original_length": 815,
+      "final_length": 650,
+      "failed_claims": 0,
+      "time": 0
+    },
+    "ubu_ff_90_client": {
+      "original_length": 816,
+      "final_length": 651,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "total": {
+      "variations": 20,
+      "original_length": 17990,
+      "final_length": 13730,
+      "failed_claims": 0,
+      "time": 18
+    }
+  },
+  "0.16.0": {
+    "win_10_chrome_92_client": {
+      "original_length": 1068,
+      "final_length": 722,
+      "failed_claims": 0,
+      "time": 3
+    },
+    "win_10_chrome_92_host": {
+      "original_length": 1866,
+      "final_length": 1269,
+      "failed_claims": 0,
+      "time": 2
+    },
+    "win_10_edge_92_client": {
+      "original_length": 718,
+      "final_length": 441,
+      "failed_claims": 0,
+      "time": 2
     },
     "win_10_edge_92_host": {
       "original_length": 852,
@@ -2251,37 +2380,37 @@
       "original_length": 703,
       "final_length": 436,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "mac_chrome_92_host": {
       "original_length": 723,
       "final_length": 435,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "mac_chrome_92_client": {
       "original_length": 723,
       "final_length": 435,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "mac_ff_90_host": {
       "original_length": 1003,
       "final_length": 838,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "mac_ff_90_client": {
       "original_length": 812,
       "final_length": 647,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "lin_ff_90_host": {
       "original_length": 1062,
       "final_length": 897,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "lin_ff_90_client": {
       "original_length": 810,
@@ -2316,9 +2445,9 @@
     "total": {
       "variations": 20,
       "original_length": 17990,
-      "final_length": 13730,
+      "final_length": 13081,
       "failed_claims": 0,
-      "time": 16
+      "time": 17
     }
   }
 }

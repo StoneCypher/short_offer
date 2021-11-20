@@ -1,7 +1,8 @@
 
-import { full_set } from './example_beacons';
-import { parse }    from './parsers';
-import { pack }     from './pack';
+import { full_set }  from './example_beacons';
+import { parse }     from './parsers';
+import { pack }      from './pack';
+import { ParsedSdp } from './types';
 
 
 
@@ -62,17 +63,19 @@ function el(tag: string, { inner, className, onclick } : ElOpts) {
 
 
 
-function parse_table(_parsed: unknown) {
-  return `
+function parse_table(parsed: ParsedSdp) {
+
+  let result = '';
+
+  parsed.value.forEach( v => result += `
     <tr>
-      <td>1</td>
-      <td>2</td>
+      <td>${v.kind}</td>
+      <td>${v.value}</td>
     </tr>
-    <tr>
-      <td>3</td>
-      <td>4</td>
-    </tr>
-  `;
+  ` );
+
+  return result;
+
 }
 
 
