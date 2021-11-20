@@ -77,6 +77,12 @@ function unpack(bytestring) {
             case symbols.t_zero_zero:
                 work += 't=0 0\r\n';
                 break;
+            case symbols.standard_origin:
+                scan_forward_to_null('o=- ', 'standard_moz_origin_1', undefined, true);
+                scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
+                scan_forward_to_null(' IN IP4 ', 'standard_moz_origin_3', undefined, true);
+                work += '\r\n';
+                break;
             case symbols.standard_moz_origin:
                 scan_forward_to_null('o=mozilla...THIS_IS_SDPARTA-', 'standard_moz_origin_1', undefined, true);
                 scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);

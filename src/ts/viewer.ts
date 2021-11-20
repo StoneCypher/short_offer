@@ -68,7 +68,7 @@ function parse_table(parsed: ParsedSdp) {
   let result = '';
 
   parsed.value.forEach( v => result += `
-    <tr>
+    <tr${v.kind === 'unknown_line'? ' class="unk"' : ''}>
       <td>${v.kind}</td>
       <td>${v.value}</td>
     </tr>
@@ -124,26 +124,19 @@ function bootstrap() {
 
   const oe = Object.entries(full_set);
 
-  oe.forEach( ([k, v], _i) =>
+  oe.forEach( ([k, v], _i) => {
+
+    const p = parse(v),
+          c = p.value.filter(val => val.kind === 'unknown_line').length;
+
     byId('list')
       .append( el('a', {
-        inner     : k,
+        inner     : `${k} (${c})`,
         href      : '#',
-//      className : i === 0? 'sel' : undefined,
         onclick   : (e) => click_an_anchor(e, v)
-      }) ));
+      }) );
 
-  // const ex  = document.querySelector('#example'),
-  //       exp = document.querySelector('#pack');
-
-  // if ((ex !== null) && (exp !== null)) {
-  //   const oe0 = oe[0];
-  //   if (oe0) {
-  //     const oe01 = oe0[1];
-  //     if (oe01) {
-  //       ex.innerHTML  = oe01;
-  //       exp.innerHTML = pack(oe01);
-  // } } }
+  });
 
 }
 

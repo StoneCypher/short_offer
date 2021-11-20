@@ -20,7 +20,8 @@
       value          = '';
     }
 
-    if (['standard_local_candidate',
+    if (['standard_origin',
+         'standard_local_candidate',
          'standard_guid_candidate',
          'standard_remote_candidate',
          'standard_agen_tcp_candidate'
@@ -126,6 +127,7 @@ Rule
  / AMid0
  / SDash
  / TZeroZero
+ / StandardOrigin
  / StandardMozOrigin
  / StandardSctpPort
  / CustomSctpPort
@@ -208,6 +210,13 @@ MozVNum3
 MozVNum2
   = maj:Decimal '.' min:Decimal
   { return ast('moz_v_num', [maj, min, undefined]); }
+
+
+
+// o=- 1199580080461629164 2 IN IP4 127.0.0.1
+StandardOrigin
+  = 'o=- ' msess:Decimal ' ' d:Decimal ' IN IP4 ' i:IP4 us:UntilSeparator
+  { return ast('standard_origin', [msess, d, i]); }
 
 
 

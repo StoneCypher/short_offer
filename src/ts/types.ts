@@ -15,6 +15,7 @@ type AMidZero                 = { kind: 'a_mid_zero',                  value: st
 
 type SDash                    = { kind: 's_dash',                      value: string, uses_short_nl: boolean };
 type TZeroZero                = { kind: 't_zero_zero',                 value: string, uses_short_nl: boolean };
+type StandardOrigin           = { kind: 'standard_origin',             value: string, uses_short_nl: boolean, items: [ s: number, d: number, i: number ] };
 type StandardMozOrigin        = { kind: 'standard_moz_origin',         value: string, uses_short_nl: boolean, moz_ver: [number, number, number], sess: number };
 type StandardLocalCandidate   = { kind: 'standard_local_candidate',    value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
 type StandardGuidCandidate    = { kind: 'standard_guid_candidate',     value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
@@ -36,7 +37,7 @@ type ParsedLine
   | ASetupActPass | ASetupActive | AMidZero
   | SDash
   | TZeroZero
-  | StandardMozOrigin
+  | StandardOrigin | StandardMozOrigin
   | StandardLocalCandidate | StandardGuidCandidate | StandardRemoteCandidate
   | StandardAGenTcpCandidate
   | UnknownTerminate;
@@ -68,7 +69,7 @@ type ParsedSdp = {
 export {
   UnknownLine,
   VersionZeroLine, VersionLine,
-  StandardMozOrigin,
+  StandardOrigin, StandardMozOrigin,
   StandardLocalCandidate, StandardGuidCandidate, StandardRemoteCandidate,
   StandardAGenTcpCandidate,
   ParsedLine,
