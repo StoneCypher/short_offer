@@ -8,6 +8,7 @@ const parseable = {
     'version_zero_line': (_) => `${symbols.version_zero_line}`,
     'version_line': (v) => `${symbols.version_line}${v.value}${symbols.c_terminal}`,
     'a_msid_semantic_ns': (_) => `${symbols.a_msid_semantic_ns}`,
+    'a_msid_semantic_star_ns': (_) => `${symbols.a_msid_semantic_star_ns}`,
     'a_msid_semantic_ws': (_) => `${symbols.a_msid_semantic_ws}`,
     'a_extmap_allow_mixed': (_) => `${symbols.a_extmap_allow_mixed}`,
     'a_standard_sctp_port': (_) => `${symbols.a_standard_sctp_port}`,

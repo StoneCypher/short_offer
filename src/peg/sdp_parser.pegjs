@@ -212,6 +212,7 @@ Rule
  = ValZeroLine
  / ValLine
  / AttrMsidSemanticWmsClaimNoSpace
+ / AttrMsidSemanticWmsClaimStarNoSpace
  / AttrMsidSemanticWmsClaimWithSpace
  / AttrExtmapAllowMixed
  / ASetupActpass
@@ -278,6 +279,12 @@ AEndOfCandidates
 AttrMsidSemanticWmsClaimNoSpace
   = 'a=msid-semantic:WMS' CapAtSeparator
   { return ast('a_msid_semantic_ns'); }
+
+
+
+AttrMsidSemanticWmsClaimStarNoSpace
+  = 'a=msid-semantic:WMS *' CapAtSeparator
+  { return ast('a_msid_semantic_star_ns'); }
 
 
 

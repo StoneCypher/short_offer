@@ -68,7 +68,7 @@ function unpack(bytestring: string): string {
     if (found === false) { throw new RangeError(`No terminal null for ${throw_label} at ${i}`); }
     const unpacked = unpacker(bytestring.substring(i+1, found));
 
-    work   += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;  // todo handle soft \n
+    work   += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
     i       = found;                                           // skip forward to located null
 
   }
@@ -93,19 +93,23 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.a_msid_semantic_ns:
-        work += `a=msid-semantic:WMS\r\n`;  // todo handle soft \n
+        work += `a=msid-semantic:WMS\r\n`;
+        break;
+
+      case symbols.a_msid_semantic_star_ns:
+        work += `a=msid-semantic:WMS *\r\n`;
         break;
 
       case symbols.a_msid_semantic_ws:
-        work += `a=msid-semantic: WMS\r\n`;  // todo handle soft \n
+        work += `a=msid-semantic: WMS\r\n`;
         break;
 
       case symbols.a_extmap_allow_mixed:
-        work += `a=extmap-allow-mixed\r\n`;  // todo handle soft \n
+        work += `a=extmap-allow-mixed\r\n`;
         break;
 
       case symbols.a_standard_sctp_port:
-        work += `a=sctp-port:5000\r\n`;  // todo handle soft \n
+        work += `a=sctp-port:5000\r\n`;
         break;
 
       case symbols.a_custom_sctp_port:
@@ -113,7 +117,7 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.a_standard_max_message_size:
-        work += 'a=max-message-size:262144\r\n';  // todo handle soft \n
+        work += 'a=max-message-size:262144\r\n';
         break;
 
       case symbols.a_custom_max_message_size:

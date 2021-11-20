@@ -43,6 +43,9 @@ const parseable = {
   'a_msid_semantic_ns': (_: ParsedLine) =>
     `${symbols.a_msid_semantic_ns}`,
 
+  'a_msid_semantic_star_ns': (_: ParsedLine) =>
+    `${symbols.a_msid_semantic_star_ns}`,
+
   'a_msid_semantic_ws': (_: ParsedLine) =>
     `${symbols.a_msid_semantic_ws}`,
 

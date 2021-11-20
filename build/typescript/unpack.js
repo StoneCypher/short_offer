@@ -48,6 +48,9 @@ function unpack(bytestring) {
             case symbols.a_msid_semantic_ns:
                 work += `a=msid-semantic:WMS\r\n`;
                 break;
+            case symbols.a_msid_semantic_star_ns:
+                work += `a=msid-semantic:WMS *\r\n`;
+                break;
             case symbols.a_msid_semantic_ws:
                 work += `a=msid-semantic: WMS\r\n`;
                 break;
