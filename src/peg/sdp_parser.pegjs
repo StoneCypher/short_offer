@@ -319,19 +319,19 @@ AStandardAGenTcpCandidate
 
 
 AIcePwd
-  = 'a=ice-pwd:' data:IceChar22
+  = 'a=ice-pwd:' data:IceChar22 us:UntilSeparator
   { return ast('a_ice_pwd', data); }
 
 
 
 AIcePwdL
-  = 'a=ice-pwd:' data:IceChar24
+  = 'a=ice-pwd:' data:IceChar24 us:UntilSeparator
   { return ast('a_ice_pwd_l', data); }
 
 
 
 AIceUFrag
-  = 'a=ice-ufrag:' data:IceChar4
+  = 'a=ice-ufrag:' data:IceChar4 us:UntilSeparator
   { return ast('a_ice_ufrag', data); }
 
 

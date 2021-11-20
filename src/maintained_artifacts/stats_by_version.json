@@ -2707,5 +2707,134 @@
       "failed_claims": 0,
       "time": 21
     }
+  },
+  "0.18.1": {
+    "win_10_chrome_92_client": {
+      "original_length": 1068,
+      "final_length": 688,
+      "failed_claims": 0,
+      "time": 8
+    },
+    "win_10_chrome_92_host": {
+      "original_length": 1866,
+      "final_length": 1227,
+      "failed_claims": 0,
+      "time": 2
+    },
+    "win_10_edge_92_client": {
+      "original_length": 718,
+      "final_length": 407,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "win_10_edge_92_host": {
+      "original_length": 852,
+      "final_length": 465,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "win_10_ff_90_client": {
+      "original_length": 1007,
+      "final_length": 806,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "win_10_ff_90_host": {
+      "original_length": 1092,
+      "final_length": 891,
+      "failed_claims": 0,
+      "time": 2
+    },
+    "lin_chr_92_host": {
+      "original_length": 722,
+      "final_length": 400,
+      "failed_claims": 0,
+      "time": 0
+    },
+    "lin_chr_92_client": {
+      "original_length": 721,
+      "final_length": 399,
+      "failed_claims": 0,
+      "time": 0
+    },
+    "mac_saf_14_host": {
+      "original_length": 694,
+      "final_length": 393,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "mac_saf_14_client": {
+      "original_length": 703,
+      "final_length": 402,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "mac_chrome_92_host": {
+      "original_length": 723,
+      "final_length": 401,
+      "failed_claims": 0,
+      "time": 0
+    },
+    "mac_chrome_92_client": {
+      "original_length": 723,
+      "final_length": 401,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "mac_ff_90_host": {
+      "original_length": 1003,
+      "final_length": 802,
+      "failed_claims": 0,
+      "time": 0
+    },
+    "mac_ff_90_client": {
+      "original_length": 812,
+      "final_length": 611,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "lin_ff_90_host": {
+      "original_length": 1062,
+      "final_length": 861,
+      "failed_claims": 0,
+      "time": 2
+    },
+    "lin_ff_90_client": {
+      "original_length": 810,
+      "final_length": 609,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "and_chr_92_host": {
+      "original_length": 1016,
+      "final_length": 815,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "and_chr_92_client": {
+      "original_length": 767,
+      "final_length": 566,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "ubu_ff_90_host": {
+      "original_length": 815,
+      "final_length": 614,
+      "failed_claims": 0,
+      "time": 0
+    },
+    "ubu_ff_90_client": {
+      "original_length": 816,
+      "final_length": 615,
+      "failed_claims": 0,
+      "time": 1
+    },
+    "total": {
+      "variations": 20,
+      "original_length": 17990,
+      "final_length": 12373,
+      "failed_claims": 0,
+      "time": 25
+    }
   }
 }
