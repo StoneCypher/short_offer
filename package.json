@@ -1,6 +1,6 @@
 {
   "name": "short_offer",
-  "version": "0.15.2",
+  "version": "0.15.3",
   "description": "Present a shortened WebRTC offer.  Fully tested, typescript double-parser.",
   "main": "index.js",
   "scripts": {
@@ -8,8 +8,9 @@
     "pegjs": "pegjs -o src/ts/generated_code/sdp_parser.js --format commonjs src/peg/sdp_parser.pegjs && pegjs -o src/ts/generated_code/decompiler.js --format commonjs src/peg/decompiler.pegjs",
     "typescript": "tsc --build tsconfig.json",
     "rollup": "rollup -c",
+    "site": "cp ./src/html/* docs && cp ./build/rollup/viewer.* docs",
     "report": "node ./src/build_js/record_stats_for_version.js && node ./src/build_js/record_stats_image_for_version.js",
-    "build": "npm run clean && npm run pegjs && npm run typescript && npm run rollup && npm run test && npm run report",
+    "build": "npm run clean && npm run pegjs && npm run typescript && npm run rollup && npm run test && npm run site && npm run report",
     "test": "jest --verbose"
   },
   "repository": {

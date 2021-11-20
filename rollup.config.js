@@ -93,4 +93,34 @@ const iife_config = {
 
 
 
-export default [ es6_config, cjs_config, iife_config ];
+const viewer_config = {
+
+  input   : 'build/typescript/viewer.js',
+
+  output  : {
+    file   : 'build/rollup/viewer.iife.js',
+    format : 'iife',
+    name   : 'so_viewer'
+  },
+
+  plugins : [
+
+    nodeResolve({
+      mainFields     : ['module', 'main'],
+      browser        : true,
+      extensions     : [ '.js', '.ts' ],
+      preferBuiltins : false
+    }),
+
+    commonjs()
+
+  ]
+
+
+};
+
+
+
+
+
+export default [ es6_config, cjs_config, iife_config, viewer_config ];
