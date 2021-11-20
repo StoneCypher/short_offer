@@ -116,6 +116,18 @@ function unpack(bytestring: string): string {
         work += 't=0 0\r\n';
         break;
 
+      case symbols.a_group_bundle_0:
+        work += 'a=group:BUNDLE 0\r\n';
+        break;
+
+      case symbols.a_send_recv:
+        work += 'a=sendrecv\r\n';
+        break;
+
+      case symbols.a_end_of_candidates:
+        work += 'a=end-of-candidates\r\n';
+        break;
+
       case symbols.standard_origin:
         scan_forward_to_null('o=- ',     'standard_moz_origin_1', undefined, true);
         scan_forward_to_null(' ',        'standard_moz_origin_2', undefined, true);

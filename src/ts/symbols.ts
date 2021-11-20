@@ -32,7 +32,10 @@ const offer                        = '\x01',
       a_ice_pwd                    = '\x18',
       a_ice_pwd_l                  = '\x19',
       a_ice_ufrag                  = '\x20',
-      a_fingerprint_sha1_256       = '\x21';
+      a_fingerprint_sha1_256       = '\x21',
+      a_group_bundle_0             = '\x22',
+      a_send_recv                  = '\x23',
+      a_end_of_candidates          = '\x24';
 
 const short_separator_follows      = '\x7c',
       short_separators_all         = '\x7d';
@@ -58,6 +61,8 @@ export {
   standard_local_candidate, standard_guid_candidate, standard_remote_candidate,
   standard_agen_tcp_candidate, standard_agen_tcp6_candidate,
   a_ice_pwd, a_ice_pwd_l, a_ice_ufrag, a_fingerprint_sha1_256,
+  a_group_bundle_0,
+  a_send_recv, a_end_of_candidates,
   short_separator_follows, short_separators_all,
   unknown_line, unknown_terminate
 };
