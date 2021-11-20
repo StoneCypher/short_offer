@@ -84,6 +84,9 @@ const parseable = {
   'a_ice_ufrag': (v: ParsedLine) =>
     `${symbols.a_ice_ufrag}${v.value}${symbols.c_terminal}`,
 
+  'a_fingerprint_sha1_256': (v: ParsedLine) =>
+    `${symbols.a_fingerprint_sha1_256}${v.value}${symbols.c_terminal}`,
+
   's_dash': (_: ParsedLine) =>
     `${symbols.s_dash}`,
 

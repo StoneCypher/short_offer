@@ -20,6 +20,7 @@ const parseable = {
     'a_ice_pwd': (v) => `${symbols.a_ice_pwd}${v.value}${symbols.c_terminal}`,
     'a_ice_pwd_l': (v) => `${symbols.a_ice_pwd_l}${v.value}${symbols.c_terminal}`,
     'a_ice_ufrag': (v) => `${symbols.a_ice_ufrag}${v.value}${symbols.c_terminal}`,
+    'a_fingerprint_sha1_256': (v) => `${symbols.a_fingerprint_sha1_256}${v.value}${symbols.c_terminal}`,
     's_dash': (_) => `${symbols.s_dash}`,
     't_zero_zero': (_) => `${symbols.t_zero_zero}`,
     'standard_origin': (v) => {
