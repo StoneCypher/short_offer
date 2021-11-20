@@ -91,6 +91,35 @@ CHex64
 
 
 
+IceChar
+  = [0-9a-zA-Z/+]
+
+
+
+IceChar4
+  = a:IceChar b:IceChar c:IceChar d:IceChar
+  { return [a,b,c,d].join(''); }
+
+
+
+IceChar22
+  = a:IceChar b:IceChar c:IceChar d:IceChar e:IceChar f:IceChar
+    g:IceChar h:IceChar i:IceChar j:IceChar k:IceChar l:IceChar
+    m:IceChar n:IceChar o:IceChar p:IceChar q:IceChar r:IceChar
+    s:IceChar t:IceChar u:IceChar v:IceChar
+  { return [a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v].join(''); }
+
+
+
+IceChar24
+  = a:IceChar b:IceChar c:IceChar d:IceChar e:IceChar f:IceChar
+    g:IceChar h:IceChar i:IceChar j:IceChar k:IceChar l:IceChar
+    m:IceChar n:IceChar o:IceChar p:IceChar q:IceChar r:IceChar
+    s:IceChar t:IceChar u:IceChar v:IceChar w:IceChar x:IceChar
+  { return [a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x].join(''); }
+
+
+
 GUID
   = a:Hex8 '-' b:Hex4 '-' c:Hex4 '-' d:Hex4 '-' e:Hex12
   { return [a,b,c,d,e].join(''); }
@@ -137,6 +166,9 @@ Rule
  / AStandardGuidCandidate
  / AStandardIp4RemoteCandidate
  / AStandardAGenTcpCandidate
+ / AIcePwd
+ / AIcePwdL
+ / AIceUFrag
  / UnknownRule
 
 
@@ -281,8 +313,26 @@ AStandardIp4RemoteCandidate
 
 AStandardAGenTcpCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' tcp ' d3:Decimal ' ' i1:IP4
-    ' ' d4:Decimal ' typ host tcptype active generation 0 network-id ' d5:Decimal
+    ' ' d4:Decimal ' typ host tcptype active generation 0 network-id ' d5:Decimal us:UntilSeparator
   { return ast('standard_agen_tcp_candidate', [ d1, d2, d3, i1, d4, d5 ]); }
+
+
+
+AIcePwd
+  = 'a=ice-pwd:' data:IceChar22
+  { return ast('a_ice_pwd', data); }
+
+
+
+AIcePwdL
+  = 'a=ice-pwd:' data:IceChar24
+  { return ast('a_ice_pwd_l', data); }
+
+
+
+AIceUFrag
+  = 'a=ice-ufrag:' data:IceChar4
+  { return ast('a_ice_ufrag', data); }
 
 
 

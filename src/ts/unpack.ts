@@ -173,6 +173,18 @@ function unpack(bytestring: string): string {
         work += ' network-cost 999';
         break;
 
+      case symbols.a_ice_pwd:
+        scan_forward_to_null(`a=ice-pwd:`, 'a_ice_pwd', undefined, true);
+        break;
+
+      case symbols.a_ice_pwd_l:
+        scan_forward_to_null(`a=ice-pwd:`, 'a_ice_pwd_l', undefined, true);
+        break;
+
+      case symbols.a_ice_ufrag:
+        scan_forward_to_null(`a=ice-ufrag:`, 'a_ice_ufrag', undefined, true);
+        break;
+
       default:
         throw new TypeError(`Unknown symbol at ${i} '${bytestring.charAt(i)}' [${bytestring.charCodeAt(i)}], corrupt encoding'`);
 

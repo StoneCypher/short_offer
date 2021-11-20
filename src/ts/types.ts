@@ -54,7 +54,8 @@ type ParsedSdp = {
         | 'standard_moz_origin'
         | 'standard_local_candidate' | 'standard_guid_candidate' | 'standard_remote_candidate'
         | 'standard_agen_tcp_candidate'
-        | 'a_custom_max_message_size',
+        | 'a_custom_max_message_size'
+        | 'a_ice_pwd' | 'a_ice_pwd_l' | 'a_ice_ufrag',
 
   value : ParsedLine[],
 
