@@ -75,6 +75,15 @@ const parseable = {
   'a_mid_zero': (_: ParsedLine) =>
     `${symbols.a_mid_zero}`,
 
+  'a_ice_pwd': (v: ParsedLine) =>
+    `${symbols.a_ice_pwd}${v.value}${symbols.c_terminal}`,
+
+  'a_ice_pwd_l': (v: ParsedLine) =>
+    `${symbols.a_ice_pwd_l}${v.value}${symbols.c_terminal}`,
+
+  'a_ice_ufrag': (v: ParsedLine) =>
+    `${symbols.a_ice_ufrag}${v.value}${symbols.c_terminal}`,
+
   's_dash': (_: ParsedLine) =>
     `${symbols.s_dash}`,
 
