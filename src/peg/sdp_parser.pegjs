@@ -211,6 +211,8 @@ Rule
  / CustomSctpPort
  / StandardMaxMessageSize
  / CustomMaxMessageSize
+ / CClaimIp4
+ / StandardMApplication
  / AStandardLocalCandidate
  / AStandardGuidCandidate
  / AStandardIp4RemoteCandidate
@@ -418,6 +420,18 @@ AFingerprint
 AGroupBundle0
   = 'a=group:BUNDLE 0' us:UntilSeparator
   { return ast('a_group_bundle_0'); }
+
+
+
+CClaimIp4
+  = 'c=IN IP4 ' data:IP4 us:UntilSeparator
+  { return ast('c_claim_ip4', data); }
+
+
+
+StandardMApplication
+  = 'm=application ' data:Decimal ' UDP/DTLS/SCTP webrtc-datachannel' us:UntilSeparator
+  { return ast('standard_m_application', data); }
 
 
 

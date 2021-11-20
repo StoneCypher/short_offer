@@ -103,6 +103,12 @@ const parseable = {
   't_zero_zero': (_: ParsedLine) =>
     `${symbols.t_zero_zero}`,
 
+  'c_claim_ip4': (v: ParsedLine) =>
+    `${symbols.c_claim_ip4}${v.value}${symbols.c_terminal}`,
+
+  'standard_m_application': (v: ParsedLine) =>
+    `${symbols.standard_m_application}${v.value}${symbols.c_terminal}`,
+
   'standard_origin': (v: ParsedLine) => {
     const { kind, items } = (v as StandardOrigin);
     const [ s, d, i ] = items;
@@ -202,9 +208,9 @@ function parsed_to_bytestring( parsed: ParsedSdp ): string {
 
 function pack( original: string ): string {
 
-  if (original === '') { return ''; }
-
   // todo needs compression
+
+  if (original === '') { return ''; }
 
   const ParseTree = parse( original );
 
