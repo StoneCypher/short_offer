@@ -2,12 +2,17 @@
 html, body, h1, h2 { border: 0; margin: 0; padding: 0; }
 body               { padding: 2em; }
 
-#list, #example_f, #parse, #pack { position: fixed; }
+#list, #notlist { position: fixed; }
 
-#list      { padding: 0.25em; box-sizing: border-box; top: 1em; left: 1em; bottom: 1em; width: 15em; background-color: #f0f8ff; }
-#example_f { padding: 0.5em;  box-sizing: border-box; top: 1em; left: 17em; right: 1em; background-color: #f0fff8; }
+#list    { padding: 0.25em; box-sizing: border-box; top: 1em; left: 1em; bottom: 1em; width: 15em; background-color: #f0f8ff; }
+#notlist { top: 1em; left: 17em; right: 1em; }
+
+#example { background-color: #f8f8ff; }
+#pack    { margin-top: 0.5em; background-color: #f8f8f8; }
 
 #list a       { padding: 0.25em; box-sizing: border-box; display: block; text-decoration: none; color: #004; }
 #list a:hover { background-color: rgba(0,0,0,   0.1); border-radius: 0.3em; }
 #list a.sel   { background-color: rgba(0,0,127, 0.1); border-radius: 0.3em; }
 
+#parse td    { text-align: right; }
+#parse td+td { text-align: left; }

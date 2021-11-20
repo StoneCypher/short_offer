@@ -4,8 +4,10 @@ import * as symbols          from './symbols';
 
 import {
   StandardMozOrigin,
+  StandardLocalCandidate,
+  StandardGuidCandidate,
   StandardRemoteCandidate,
-  StandardLocalCandidate
+  StandardAGenTcpCandidate
 } from './types';
 
 
@@ -84,6 +86,13 @@ const parseable = {
     return `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}`;
   },
 
+  'standard_guid_candidate': (v: ParsedLine) => {
+    const { kind, items } = (v as StandardGuidCandidate);
+    const [ d1, d2, d3, i, p, d4 ] = items;
+    if (kind !== 'standard_guid_candidate') { throw 'impossible'; }
+    return `${symbols.standard_guid_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+  },
+
   'standard_local_candidate': (v: ParsedLine) => {
     const { kind, items } = (v as StandardLocalCandidate);
     const [ d1, d2, d3, i1, d4 ] = items;
@@ -96,6 +105,13 @@ const parseable = {
     const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
     if (kind !== 'standard_remote_candidate') { throw 'impossible'; }
     return `${symbols.standard_remote_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${i2}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+  },
+
+  'standard_agen_tcp_candidate': (v: ParsedLine) => {
+    const { kind, items } = (v as StandardAGenTcpCandidate);
+    const [ d1, d2, d3, i1, d4, d5 ] = items;
+    if (kind !== 'standard_agen_tcp_candidate') { throw 'impossible'; }
+    return `${symbols.standard_agen_tcp_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
   },
 
   'unknown_terminate': (v: ParsedLine) =>
