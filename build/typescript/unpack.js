@@ -189,8 +189,11 @@ function unpack(bytestring) {
             case symbols.a_ice_pwd_l:
                 scan_forward_to_null(`a=ice-pwd:`, 'a_ice_pwd_l', undefined, false);
                 break;
-            case symbols.a_ice_ufrag:
-                scan_forward_to_null(`a=ice-ufrag:`, 'a_ice_ufrag', undefined, false);
+            case symbols.a_ice_ufrag_4:
+                scan_forward_to_null(`a=ice-ufrag:`, 'a_ice_ufrag_4', undefined, false);
+                break;
+            case symbols.a_ice_ufrag_8:
+                scan_forward_to_null(`a=ice-ufrag:`, 'a_ice_ufrag_8', undefined, false);
                 break;
             case symbols.a_fingerprint_sha1_256:
                 scan_forward_to_null(`a=fingerprint:sha-256 `, 'a_fingerprint_sha1_256', unpack_sha_colons, false);
