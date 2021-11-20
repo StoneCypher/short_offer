@@ -62,6 +62,23 @@ function el(tag: string, { inner, className, onclick } : ElOpts) {
 
 
 
+function parse_table(_parsed: unknown) {
+  return `
+    <tr>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>4</td>
+    </tr>
+  `;
+}
+
+
+
+
+
 function click_an_anchor(e: MouseEvent | undefined, val: string) {
 
   if (e === undefined) { throw "Can't handle an event without an event (click_an_anchor)"; }
@@ -92,7 +109,7 @@ function click_an_anchor(e: MouseEvent | undefined, val: string) {
 
   const parsed = parse(val);
 
-  byId('parse').innerHTML = JSON.stringify(parsed);
+  byId('parse').innerHTML = parse_table(parsed);
 
 }
 
