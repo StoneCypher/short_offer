@@ -29,7 +29,9 @@
     if (['standard_origin',
          'standard_local_candidate',
          'standard_guid_local_candidate',
+         'standard_guid_local_candidate_ffus',
          'standard_remote_candidate',
+         'standard_remote_candidate_ffus',
          'standard_agen_tcp_candidate',
          'standard_agen_tcp6_candidate',
          'standard_agen_udp4_candidate',
@@ -248,7 +250,9 @@ Rule
  / StandardMApplication
  / AStandardLocalCandidate
  / AStandardGuidLocalCandidate
+ / AStandardGuidLocalCandidateFfUS
  / AStandardIp4RemoteCandidate
+ / AStandardIp4RemoteCandidateFfUS
  / AStandardAGenTcpCandidate
  / AStandardAGenTcp6Candidate
  / AStandardAGenUdp4Candidate
@@ -420,11 +424,26 @@ AStandardGuidLocalCandidate
 
 
 
+// a=candidate:0 1 UDP 2122187007 221ef227-2e49-4a0b-9b9d-dc8b767523e6.local 51652 typ host
+AStandardGuidLocalCandidateFfUS
+  = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' UDP ' d3:Decimal ' ' g:GUID
+    '.local ' d4:Decimal ' typ host' CapAtSeparator
+  { return ast('standard_guid_local_candidate_ffus', [ d1, d2, d3, g, d4 ]); }
+
+
+
 AStandardIp4RemoteCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP4
     ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal ' generation '
     d6:Decimal ' network-cost 999' CapAtSeparator
   { return ast('standard_remote_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); }
+
+
+
+AStandardIp4RemoteCandidateFfUS
+  = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' UDP ' d3:Decimal ' ' i1:IP4
+    ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal CapAtSeparator
+  { return ast('standard_remote_candidate_ffus', [ d1, d2, d3, i1, d4, i2, d5 ]); }
 
 
 

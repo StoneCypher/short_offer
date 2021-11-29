@@ -7,7 +7,9 @@ import {
   StandardMozOrigin,
   StandardLocalCandidate,
   StandardGuidLocalCandidate,
+  StandardGuidLocalCandidateFfUS,
   StandardRemoteCandidate,
+  StandardRemoteCandidateFfUS,
   StandardAGenTcpCandidate,
   StandardAGenTcp6Candidate,
   StandardAGenUdp4Candidate,
@@ -132,6 +134,13 @@ const parseable = {
     return `${symbols.standard_guid_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
   },
 
+  'standard_guid_local_candidate_ffus': (v: ParsedLine) => {
+    const { kind, items } = (v as StandardGuidLocalCandidateFfUS);
+    const [ d1, d2, d3, i, d4 ] = items;
+    if (kind !== 'standard_guid_local_candidate_ffus') { throw 'impossible'; }
+    return `${symbols.standard_guid_local_candidate_ffus}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+  },
+
   'standard_local_candidate': (v: ParsedLine) => {
     const { kind, items } = (v as StandardLocalCandidate);
     const [ d1, d2, d3, i1, p, d4 ] = items;
@@ -144,6 +153,13 @@ const parseable = {
     const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
     if (kind !== 'standard_remote_candidate') { throw 'impossible'; }
     return `${symbols.standard_remote_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${i2}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+  },
+
+  'standard_remote_candidate_ffus': (v: ParsedLine) => {
+    const { kind, items } = (v as StandardRemoteCandidateFfUS);
+    const [ d1, d2, d3, i1, d4, i2, d5 ] = items;
+    if (kind !== 'standard_remote_candidate_ffus') { throw 'impossible'; }
+    return `${symbols.standard_remote_candidate_ffus}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${i2}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
   },
 
   'standard_agen_tcp_candidate': (v: ParsedLine) => {
