@@ -4,18 +4,20 @@ body               { padding: 2em; }
 
 #list, #notlist { position: fixed; }
 
-#list    { padding: 0.25em; box-sizing: border-box; top: 1em; left: 1em; bottom: 1em; width: 15em; background-color: #f0f8ff; }
-#notlist { top: 1em; left: 17em; right: 1em; }
+#list    { padding: 0.25em; box-sizing: border-box; top: 1em; left: 1em; bottom: 1em; width: 22em; background-color: #f0f8ff; }
+#list td { padding-right: 0.5em; }
+#notlist { top: 1em; left: 24em; right: 1em; }
 
 #example, #pack, #unpack { padding: 1em; }
 
 #example { font-family: monospace; background-color: #eef; white-space: pre; }
 #pack    { font-family: monospace; margin-top: 0.5em; background-color: #f8f8f8; }
-#unpack  { font-family: monospace; margin-top: 0.5em; background-color: #efe; white-space: pre; }
+#unpack  { display: none; font-family: monospace; margin-top: 0.5em; background-color: #efe; white-space: pre; }
 
-#list a       { padding: 0.25em; box-sizing: border-box; display: block; text-decoration: none; color: #004; }
-#list a:hover { background-color: rgba(0,0,0,   0.1); border-radius: 0.3em; }
-#list a.sel   { background-color: rgba(0,0,127, 0.1); border-radius: 0.3em; }
+#list a        { padding: 0.25em; box-sizing: border-box; display: block; text-decoration: none; color: #004; }
+#list a:hover  { background-color: rgba(0,0,0,   0.1); border-radius: 0.3em; }
+#list a.sel    { background-color: rgba(0,0,127, 0.1); border-radius: 0.3em; }
+#list img.stat { display: block; width: 95%; margin: 0.5em auto; background-color: white; }
 
 #parse td    { text-align: right; }
 #parse td+td { text-align: left; }

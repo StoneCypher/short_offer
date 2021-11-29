@@ -127,14 +127,31 @@ function bootstrap() {
   oe.forEach( ([k, v], _i) => {
 
     const p = parse(v),
+          q = pack(v),
           c = p.value.filter(val => val.kind === 'unknown_line').length;
 
-    byId('list')
-      .append( el('a', {
-        inner     : `${k} (${c})`,
-        href      : '#',
-        onclick   : (e) => click_an_anchor(e, v)
-      }) );
+    const a = el('a', {
+      inner     : `${k} (${c})`,
+      href      : '#',
+      onclick   : (e) => click_an_anchor(e, v)
+    });
+
+    const tr  = el('tr', {}),
+          btd = el('td', {}),
+          atd = el('td', {}),
+          std = el('td', {});
+
+    btd.innerHTML = `${q.length.toLocaleString()}b`;
+    tr.appendChild(btd);
+
+    std.innerHTML = `${((q.length/v.length)*100).toFixed(1)}%`;
+    tr.appendChild(std);
+
+    atd.appendChild(a);
+    tr.appendChild(atd);
+
+    byId('listtgt')
+      .append( tr );
 
   });
 
