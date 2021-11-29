@@ -152,6 +152,10 @@ function unpack(bytestring: string): string {
         work += 't=0 0\r\n';
         break;
 
+      case symbols.b_as_30:
+        work += 'b=AS:30\r\n';
+        break;
+
       case symbols.a_group_bundle_0:
         work += 'a=group:BUNDLE 0\r\n';
         break;

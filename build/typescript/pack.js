@@ -29,6 +29,7 @@ const parseable = {
     'a_end_of_candidates': (_) => `${symbols.a_end_of_candidates}`,
     's_dash': (_) => `${symbols.s_dash}`,
     't_zero_zero': (_) => `${symbols.t_zero_zero}`,
+    'b_as_30': (_) => `${symbols.b_as_30}`,
     'c_claim_ip4': (v) => `${symbols.c_claim_ip4}${v.value}${symbols.c_terminal}`,
     'standard_m_application': (v) => `${symbols.standard_m_application}${v.value}${symbols.c_terminal}`,
     'standard_origin': (v) => {

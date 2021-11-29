@@ -18,6 +18,7 @@ type StandardMApplication           = { kind: 'standard_m_application',         
 
 type SDash                          = { kind: 's_dash',                             value: string, uses_short_nl: boolean };
 type TZeroZero                      = { kind: 't_zero_zero',                        value: string, uses_short_nl: boolean };
+type BAs30                          = { kind: 'b_as_30',                            value: string, uses_short_nl: boolean };
 type StandardOrigin                 = { kind: 'standard_origin',                    value: string, uses_short_nl: boolean, items: [ s: number, d: number, i: number ] };
 type StandardMozOrigin              = { kind: 'standard_moz_origin',                value: string, uses_short_nl: boolean, moz_ver: [number, number, number], sess: number };
 type StandardLocalCandidate         = { kind: 'standard_local_candidate',           value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
@@ -48,8 +49,7 @@ type ParsedLine
   | AStandardMaxMessageSize | ACustomMaxMessageSize
   | ASetupActPass | ASetupActive | AMidZero | AGroupBundleZero
   | CClaimIp4 | StandardMApplication
-  | SDash
-  | TZeroZero
+  | SDash | TZeroZero | BAs30
   | StandardOrigin | StandardMozOrigin
   | StandardLocalCandidate | StandardGuidLocalCandidate
   | StandardGuidLocalCandidateFfUS
@@ -69,8 +69,7 @@ type ParsedSdp = {
         | 'a_extmap_allow_mixed' | 'a_standard_sctp_port'
         | 'a_custom_sctp_port' | 'a_standard_max_message_size'
         | 'a_setup_actpass' | 'a_setup_active' | 'a_mid_zero'
-        | 's_dash'
-        | 't_zero_zero'
+        | 's_dash' | 't_zero_zero' | 'b_as_30'
         | 'standard_moz_origin'
         | 'standard_local_candidate' | 'standard_guid_local_candidate'
         | 'standard_remote_candidate' | 'standard_remote_candidate_ffus'

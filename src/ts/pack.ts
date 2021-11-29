@@ -108,6 +108,9 @@ const parseable = {
   't_zero_zero': (_: ParsedLine) =>
     `${symbols.t_zero_zero}`,
 
+  'b_as_30': (_: ParsedLine) =>
+    `${symbols.b_as_30}`,
+
   'c_claim_ip4': (v: ParsedLine) =>
     `${symbols.c_claim_ip4}${v.value}${symbols.c_terminal}`,
 
