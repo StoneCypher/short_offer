@@ -201,6 +201,15 @@ function unpack(bytestring: string): string {
         work += ' typ host generation 0 network-cost 999\r\n';
         break;
 
+      case symbols.standard_guid_local_candidate_ffus:
+        scan_forward_to_null(`a=candidate:`,      'standard_local_candidate_1', undefined,   true);
+        scan_forward_to_null(' ',                 'standard_local_candidate_2', undefined,   true);
+        scan_forward_to_null(' UDP ',             'standard_local_candidate_3', undefined,   true);
+        scan_forward_to_null(' ',                 'standard_local_candidate_4', unpack_guid, true);
+        scan_forward_to_null('.local ',           'standard_local_candidate_5', undefined,   true);
+        work += ' typ host\r\n';
+        break;
+
       case symbols.standard_local_candidate:
         scan_forward_to_null(`a=candidate:`,                       'standard_guid_candidate_1', undefined,   true);
         scan_forward_to_null(' ',                                  'standard_guid_candidate_2', undefined,   true);
@@ -258,6 +267,16 @@ function unpack(bytestring: string): string {
         scan_forward_to_null(' rport ',           'standard_remote_candidate_7', undefined,   true);
         scan_forward_to_null(' generation ',      'standard_remote_candidate_8', undefined,   true);
         work += ' network-cost 999\r\n';
+        break;
+
+      case symbols.standard_remote_candidate_ffus:
+        scan_forward_to_null(`a=candidate:`,      'standard_remote_candidate_1', undefined,   true);
+        scan_forward_to_null(' ',                 'standard_remote_candidate_2', undefined,   true);
+        scan_forward_to_null(' UDP ',             'standard_remote_candidate_3', undefined,   true);
+        scan_forward_to_null(' ',                 'standard_remote_candidate_4', unpack_ipv4, true);
+        scan_forward_to_null(' ',                 'standard_remote_candidate_5', undefined,   true);
+        scan_forward_to_null(' typ srflx raddr ', 'standard_remote_candidate_6', unpack_ipv4, true);
+        scan_forward_to_null(' rport ',           'standard_remote_candidate_7', undefined,   false);
         break;
 
       case symbols.a_ice_pwd:
