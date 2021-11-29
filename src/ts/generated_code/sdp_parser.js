@@ -3650,61 +3650,64 @@ function peg$parse(input, options) {
                     if (s0 === peg$FAILED) {
                       s0 = peg$parseSDash();
                       if (s0 === peg$FAILED) {
-                        s0 = peg$parseTZeroZero();
+                        s0 = peg$parseBAs30();
                         if (s0 === peg$FAILED) {
-                          s0 = peg$parseStandardOrigin();
+                          s0 = peg$parseTZeroZero();
                           if (s0 === peg$FAILED) {
-                            s0 = peg$parseStandardMozOrigin();
+                            s0 = peg$parseStandardOrigin();
                             if (s0 === peg$FAILED) {
-                              s0 = peg$parseStandardSctpPort();
+                              s0 = peg$parseStandardMozOrigin();
                               if (s0 === peg$FAILED) {
-                                s0 = peg$parseCustomSctpPort();
+                                s0 = peg$parseStandardSctpPort();
                                 if (s0 === peg$FAILED) {
-                                  s0 = peg$parseStandardMaxMessageSize();
+                                  s0 = peg$parseCustomSctpPort();
                                   if (s0 === peg$FAILED) {
-                                    s0 = peg$parseCustomMaxMessageSize();
+                                    s0 = peg$parseStandardMaxMessageSize();
                                     if (s0 === peg$FAILED) {
-                                      s0 = peg$parseCClaimIp4();
+                                      s0 = peg$parseCustomMaxMessageSize();
                                       if (s0 === peg$FAILED) {
-                                        s0 = peg$parseStandardMApplication();
+                                        s0 = peg$parseCClaimIp4();
                                         if (s0 === peg$FAILED) {
-                                          s0 = peg$parseAStandardLocalCandidate();
+                                          s0 = peg$parseStandardMApplication();
                                           if (s0 === peg$FAILED) {
-                                            s0 = peg$parseAStandardGuidLocalCandidate();
+                                            s0 = peg$parseAStandardLocalCandidate();
                                             if (s0 === peg$FAILED) {
-                                              s0 = peg$parseAStandardGuidLocalCandidateFfUS();
+                                              s0 = peg$parseAStandardGuidLocalCandidate();
                                               if (s0 === peg$FAILED) {
-                                                s0 = peg$parseAStandardIp4RemoteCandidate();
+                                                s0 = peg$parseAStandardGuidLocalCandidateFfUS();
                                                 if (s0 === peg$FAILED) {
-                                                  s0 = peg$parseAStandardIp4RemoteCandidateFfUS();
+                                                  s0 = peg$parseAStandardIp4RemoteCandidate();
                                                   if (s0 === peg$FAILED) {
-                                                    s0 = peg$parseAStandardAGenTcpCandidate();
+                                                    s0 = peg$parseAStandardIp4RemoteCandidateFfUS();
                                                     if (s0 === peg$FAILED) {
-                                                      s0 = peg$parseAStandardAGenTcp6Candidate();
+                                                      s0 = peg$parseAStandardAGenTcpCandidate();
                                                       if (s0 === peg$FAILED) {
-                                                        s0 = peg$parseAStandardAGenUdp4Candidate();
+                                                        s0 = peg$parseAStandardAGenTcp6Candidate();
                                                         if (s0 === peg$FAILED) {
-                                                          s0 = peg$parseAStandardAGenUdp6HostCandidate();
+                                                          s0 = peg$parseAStandardAGenUdp4Candidate();
                                                           if (s0 === peg$FAILED) {
-                                                            s0 = peg$parseAIcePwdV();
+                                                            s0 = peg$parseAStandardAGenUdp6HostCandidate();
                                                             if (s0 === peg$FAILED) {
-                                                              s0 = peg$parseAIcePwdL();
+                                                              s0 = peg$parseAIcePwdV();
                                                               if (s0 === peg$FAILED) {
-                                                                s0 = peg$parseAIcePwd();
+                                                                s0 = peg$parseAIcePwdL();
                                                                 if (s0 === peg$FAILED) {
-                                                                  s0 = peg$parseAIceUFrag4();
+                                                                  s0 = peg$parseAIcePwd();
                                                                   if (s0 === peg$FAILED) {
-                                                                    s0 = peg$parseAIceUFrag8();
+                                                                    s0 = peg$parseAIceUFrag4();
                                                                     if (s0 === peg$FAILED) {
-                                                                      s0 = peg$parseAFingerprint();
+                                                                      s0 = peg$parseAIceUFrag8();
                                                                       if (s0 === peg$FAILED) {
-                                                                        s0 = peg$parseAGroupBundle0();
+                                                                        s0 = peg$parseAFingerprint();
                                                                         if (s0 === peg$FAILED) {
-                                                                          s0 = peg$parseASendRecv();
+                                                                          s0 = peg$parseAGroupBundle0();
                                                                           if (s0 === peg$FAILED) {
-                                                                            s0 = peg$parseAEndOfCandidates();
+                                                                            s0 = peg$parseASendRecv();
                                                                             if (s0 === peg$FAILED) {
-                                                                              s0 = peg$parseUnknownRule();
+                                                                              s0 = peg$parseAEndOfCandidates();
+                                                                              if (s0 === peg$FAILED) {
+                                                                                s0 = peg$parseUnknownRule();
+                                                                              }
                                                                             }
                                                                           }
                                                                         }

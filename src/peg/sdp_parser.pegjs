@@ -239,6 +239,7 @@ Rule
  / ASetupActive
  / AMid0
  / SDash
+ / BAs30
  / TZeroZero
  / StandardOrigin
  / StandardMozOrigin

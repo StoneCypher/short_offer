@@ -90,6 +90,9 @@ function unpack(bytestring) {
             case symbols.t_zero_zero:
                 work += 't=0 0\r\n';
                 break;
+            case symbols.b_as_30:
+                work += 'b=AS:30\r\n';
+                break;
             case symbols.a_group_bundle_0:
                 work += 'a=group:BUNDLE 0\r\n';
                 break;
