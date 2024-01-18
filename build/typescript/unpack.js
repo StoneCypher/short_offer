@@ -2,8 +2,8 @@ import * as symbols from './symbols';
 function unpack_sha_colons(str) {
     return (str.match(/.{1,2}/g) || []).join(':');
 }
-function unpack_ipv4(str) {
-    const e = BigInt(str), d = e % 256n, c = (e >> 8n) % 256n, b = (e >> 16n) % 256n, a = (e >> 24n) % 256n;
+function unpack_bytized_ipv4(str) {
+    const a = str.codePointAt(0), b = str.codePointAt(1), c = str.codePointAt(2), d = str.codePointAt(3);
     return `${a}.${b}.${c}.${d}`;
 }
 function unpack_guid(guid) {
@@ -31,6 +31,11 @@ function unpack(bytestring) {
         const unpacked = unpacker(bytestring.substring(i + 1, found));
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i = found;
+    }
+    function scan_forward_four_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
+        const unpacked = unpacker(bytestring.substring(i + 1, i + 5));
+        work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+        i += 5;
     }
     for (i = 0, iC = bytestring.length; i < iC; ++i) {
         switch (bytestring.charAt(i)) {
@@ -103,7 +108,7 @@ function unpack(bytestring) {
                 work += 'a=end-of-candidates\r\n';
                 break;
             case symbols.c_claim_ip4:
-                scan_forward_to_null('c=IN IP4 ', 'c_claim_ip4', unpack_ipv4, true);
+                scan_forward_four_bytes('c=IN IP4 ', unpack_bytized_ipv4, true);
                 work += '\r\n';
                 break;
             case symbols.standard_m_application:
@@ -113,7 +118,7 @@ function unpack(bytestring) {
             case symbols.standard_origin:
                 scan_forward_to_null('o=- ', 'standard_moz_origin_1', undefined, true);
                 scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
-                scan_forward_to_null(' IN IP4 ', 'standard_moz_origin_3', unpack_ipv4, true);
+                scan_forward_four_bytes(' IN IP4 ', unpack_bytized_ipv4, true);
                 work += '\r\n';
                 break;
             case symbols.standard_moz_origin:
@@ -145,7 +150,7 @@ function unpack(bytestring) {
                 scan_forward_to_null(`a=candidate:`, 'standard_guid_candidate_1', undefined, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_2', undefined, true);
                 scan_forward_to_null(' udp ', 'standard_guid_candidate_3', undefined, true);
-                scan_forward_to_null(' ', 'standard_guid_candidate_4', unpack_ipv4, true);
+                scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
                 scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                 break;
@@ -153,7 +158,7 @@ function unpack(bytestring) {
                 scan_forward_to_null(`a=candidate:`, 'standard_guid_candidate_1', undefined, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_2', undefined, true);
                 scan_forward_to_null(' tcp ', 'standard_guid_candidate_3', undefined, true);
-                scan_forward_to_null(' ', 'standard_guid_candidate_4', unpack_ipv4, true);
+                scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
                 scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                 break;
@@ -169,9 +174,9 @@ function unpack(bytestring) {
                 scan_forward_to_null(`a=candidate:`, 'standard_guid_candidate_1', undefined, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_2', undefined, true);
                 scan_forward_to_null(' udp ', 'standard_guid_candidate_3', undefined, true);
-                scan_forward_to_null(' ', 'standard_guid_candidate_4', unpack_ipv4, true);
+                scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_5', undefined, true);
-                scan_forward_to_null(' typ srflx raddr ', 'standard_guid_candidate_6', unpack_ipv4, true);
+                scan_forward_four_bytes(' typ srflx raddr ', unpack_bytized_ipv4, true);
                 scan_forward_to_null(' rport ', 'standard_guid_candidate_7', undefined, true);
                 scan_forward_to_null(' generation 0 network-id ', 'standard_guid_candidate_8', undefined, false);
                 break;
@@ -187,9 +192,9 @@ function unpack(bytestring) {
                 scan_forward_to_null(`a=candidate:`, 'standard_remote_candidate_1', undefined, true);
                 scan_forward_to_null(' ', 'standard_remote_candidate_2', undefined, true);
                 scan_forward_to_null(' udp ', 'standard_remote_candidate_3', undefined, true);
-                scan_forward_to_null(' ', 'standard_remote_candidate_4', unpack_ipv4, true);
+                scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
                 scan_forward_to_null(' ', 'standard_remote_candidate_5', undefined, true);
-                scan_forward_to_null(' typ srflx raddr ', 'standard_remote_candidate_6', unpack_ipv4, true);
+                scan_forward_four_bytes(' typ srflx raddr ', unpack_bytized_ipv4, true);
                 scan_forward_to_null(' rport ', 'standard_remote_candidate_7', undefined, true);
                 scan_forward_to_null(' generation ', 'standard_remote_candidate_8', undefined, true);
                 work += ' network-cost 999\r\n';
@@ -198,9 +203,9 @@ function unpack(bytestring) {
                 scan_forward_to_null(`a=candidate:`, 'standard_remote_candidate_1', undefined, true);
                 scan_forward_to_null(' ', 'standard_remote_candidate_2', undefined, true);
                 scan_forward_to_null(' UDP ', 'standard_remote_candidate_3', undefined, true);
-                scan_forward_to_null(' ', 'standard_remote_candidate_4', unpack_ipv4, true);
+                scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
                 scan_forward_to_null(' ', 'standard_remote_candidate_5', undefined, true);
-                scan_forward_to_null(' typ srflx raddr ', 'standard_remote_candidate_6', unpack_ipv4, true);
+                scan_forward_four_bytes(' typ srflx raddr ', unpack_bytized_ipv4, true);
                 scan_forward_to_null(' rport ', 'standard_remote_candidate_7', undefined, false);
                 break;
             case symbols.a_ice_pwd:

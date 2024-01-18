@@ -31,6 +31,43 @@ function moz_ver([ maj, min, patch ]: [ number, number, number ]): string {
 
 
 
+function pack_i32(i32: number | string): string {
+
+  let val: number;
+
+  switch (typeof i32) {
+    case 'number':
+      val = i32;
+      break;
+    case 'string':
+      val = Number(i32);
+      break;
+  }
+
+  // const num = Math.trunc(val) & 0xFFFFFFFF,
+  //       A   = String.fromCodePoint((num & 0xff000000) >> 24),
+  //       B   = String.fromCodePoint((num & 0x00ff0000) >> 16),
+  //       C   = String.fromCodePoint((num & 0x0000ff00) >> 8),
+  //       D   = String.fromCodePoint( num & 0x000000ff );
+
+  const arr  = new ArrayBuffer(4),
+        view = new DataView(arr);
+
+  view.setUint32(0, val, false); // byteOffset = 0; litteEndian = false
+
+  const A = String.fromCodePoint(view.getUint8(0)),
+        B = String.fromCodePoint(view.getUint8(1)),
+        C = String.fromCodePoint(view.getUint8(2)),
+        D = String.fromCodePoint(view.getUint8(3));
+
+  return `${A}${B}${C}${D}`;
+
+}
+
+
+
+
+
 const parseable = {
 
   'unknown_line': (v: ParsedLine) =>
@@ -111,8 +148,9 @@ const parseable = {
   'b_as_30': (_: ParsedLine) =>
     `${symbols.b_as_30}`,
 
+  // v.value is the *integer* form of the ipv4
   'c_claim_ip4': (v: ParsedLine) =>
-    `${symbols.c_claim_ip4}${v.value}${symbols.c_terminal}`,
+    `${symbols.c_claim_ip4}${pack_i32(v.value)}${symbols.c_terminal}`,
 
   'standard_m_application': (v: ParsedLine) =>
     `${symbols.standard_m_application}${v.value}${symbols.c_terminal}`,
@@ -121,7 +159,7 @@ const parseable = {
     const { kind, items } = (v as StandardOrigin);
     const [ s, d, i ] = items;
     if (kind !== 'standard_origin') { throw 'impossible'; }
-    return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${i}${symbols.c_terminal}`;
+    return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${pack_i32(i)}${symbols.c_terminal}`;
   },
 
   'standard_moz_origin': (v: ParsedLine) => {
@@ -148,28 +186,28 @@ const parseable = {
     const { kind, items } = (v as StandardLocalCandidate);
     const [ d1, d2, d3, i1, p, d4 ] = items;
     if (kind !== 'standard_local_candidate') { throw 'impossible'; }
-    return `${symbols.standard_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+    return `${symbols.standard_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
   },
 
   'standard_remote_candidate': (v: ParsedLine) => {
     const { kind, items } = (v as StandardRemoteCandidate);
     const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
     if (kind !== 'standard_remote_candidate') { throw 'impossible'; }
-    return `${symbols.standard_remote_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${i2}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+    return `${symbols.standard_remote_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
   },
 
   'standard_remote_candidate_ffus': (v: ParsedLine) => {
     const { kind, items } = (v as StandardRemoteCandidateFfUS);
     const [ d1, d2, d3, i1, d4, i2, d5 ] = items;
     if (kind !== 'standard_remote_candidate_ffus') { throw 'impossible'; }
-    return `${symbols.standard_remote_candidate_ffus}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${i2}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+    return `${symbols.standard_remote_candidate_ffus}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
   },
 
   'standard_agen_tcp_candidate': (v: ParsedLine) => {
     const { kind, items } = (v as StandardAGenTcpCandidate);
     const [ d1, d2, d3, i1, d4, d5 ] = items;
     if (kind !== 'standard_agen_tcp_candidate') { throw 'impossible'; }
-    return `${symbols.standard_agen_tcp_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+    return `${symbols.standard_agen_tcp_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
   },
 
   'standard_agen_tcp6_candidate': (v: ParsedLine) => {
@@ -183,7 +221,7 @@ const parseable = {
     const { kind, items } = (v as StandardAGenUdp4Candidate);
     const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
     if (kind !== 'standard_agen_udp4_candidate') { throw 'impossible'; }
-    return `${symbols.standard_agen_udp4_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${i2}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+    return `${symbols.standard_agen_udp4_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
   },
 
   'standard_agen_udp6_host_candidate': (v: ParsedLine) => {
