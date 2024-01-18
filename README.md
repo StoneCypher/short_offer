@@ -1,5 +1,7 @@
 # short_offer
 
+[Live client](https://stonecypher.github.io/short_offer/)
+
 Write a shortened offer claim for WebRTC.  Byte-safe.  Typescript pair of peg parsers.
 
 <img src="/src/maintained_artifacts/stats_by_version_relative.png" width="500" />
