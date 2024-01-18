@@ -80,7 +80,7 @@ const full_set = {
 
 
 
-module.exports = {
+export {
 
   full_set,
 

@@ -1,21 +1,20 @@
 
 'use strict';
 
+import { readFileSync, writeFileSync } from 'node:fs';
+import { full_set }                    from '../ts/example_beacons.js';
+import { parse, pack }                 from '../../build/rollup/index.js';
 
 
 
 
-const fs = require('fs');
 
-const pkg = JSON.parse(`${ fs.readFileSync('./package.json') }`);
+const pkg = JSON.parse(`${ readFileSync('./package.json') }`);
 
 const logfile = './src/maintained_artifacts/stats_by_version.json',
-      log     = JSON.parse(`${ fs.readFileSync(logfile) }`);
+      log     = JSON.parse(`${ readFileSync(logfile) }`),
+      styles  = Object.keys(full_set);
 
-const full_set = require('../ts/example_beacons.js').full_set,
-      styles   = Object.keys(full_set);
-
-const so = require('../../build/rollup/index.cjs.js');
 
 
 
@@ -64,8 +63,8 @@ function generate_test_log() {
   styles.map( s => {
 
     const start_time      = new Date().getTime(),
-          le_parse        = so.parse(full_set[s]),
-          le_pack         = so.pack(full_set[s]),
+          le_parse        = parse(full_set[s]),
+          le_pack         = pack(full_set[s]),
           end_time        = new Date().getTime();
 
     const original_length = full_set[s].length,
@@ -142,4 +141,4 @@ function generate_test_log() {
 
 log[ pkg.version ] = generate_test_log();
 
-fs.writeFileSync( logfile, JSON.stringify(log, undefined, 2) );
+writeFileSync( logfile, JSON.stringify(log, undefined, 2) );

@@ -1,15 +1,16 @@
 
-const fs                    = require('fs'),
-      uphi                  = require('unreasonable_phi');
+import { readFileSync, writeFileSync } from 'node:fs';
 
-const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
+import { gen }                         from 'unreasonable_phi';
+import { ChartJSNodeCanvas }           from 'chartjs-node-canvas';
+
+import { full_set }                    from '../ts/example_beacons.js';
+
 
 const logfile               = './src/maintained_artifacts/stats_by_version.json',
-      log                   = JSON.parse(`${ fs.readFileSync(logfile) }`),
+      log                   = JSON.parse(`${ readFileSync(logfile) }`),
       versions              = Object.keys(log),
-      version_count         = versions.length;
-
-const full_set              = require('../ts/example_beacons.js').full_set,
+      version_count         = versions.length,
       styles                = Object.keys(full_set);
 
 const image_target_filename = './src/maintained_artifacts/stats_by_version';
@@ -18,8 +19,7 @@ const r63 = n => Math.floor(n*192)+64;
 const seq = n => new Array(n).fill(false).map( (_, i) => i );
 
 const fcolors =
-  uphi
-    .gen( styles.length, 3 )
+  gen( styles.length, 3 )
     .map( ([rf, gf, bf]) => `rgb(${r63(rf)},${r63(gf)},${r63(bf)})` );
 
 const rand = n =>
@@ -66,11 +66,10 @@ const toRowUnhandled = n =>
 
 async function to_image(fname, data, ylabel, title) {
 
-  const conf = { width: 1800, height: 1200, type: 'png' };
+  const crs_conf            = { width: 1800, height: 1200, type: 'png' },
+        canvasRenderService = new ChartJSNodeCanvas(crs_conf);
 
-  const canvasRenderService = new ChartJSNodeCanvas(conf);
-
-  const configuration = {
+  const chart_configuration = {
     "type": "line",
     "data": {
       "labels": versions,
@@ -97,38 +96,11 @@ async function to_image(fname, data, ylabel, title) {
   };
 
   // Create outputs
-  const image = canvasRenderService.renderToBufferSync(configuration);
-  fs.writeFileSync(fname, image);
-
-  // const line_chart = ChartJSImage().chart({
-  //   "type": "line",
-  //   "data": {
-  //     "labels": versions,
-  //     "datasets": data
-  //   },
-  //   "options": {
-  //     "title": { "display": true, "text": title },
-  //     "scales": {
-  //       "xAxes": [
-  //         { "scaleLabel": {
-  //             "display": true,
-  //             "labelString": "Month"
-  //         } }
-  //       ],
-  //       "yAxes": [
-  //         { "stacked": false,
-  //           "scaleLabel": { "display": true, "labelString": ylabel } }
-  //       ]
-  //     }
-  //   }
-  // }) // Line chart
-  //   .backgroundColor('white')
-  //   .width(1800)
-  //   .height(1200);
-
-  // await line_chart.toFile(fname); // Promise<()>
+  const image = canvasRenderService.renderToBufferSync(chart_configuration);
+  writeFileSync(fname, image);
 
 };
+
 
 
 
@@ -184,13 +156,12 @@ to_image_unhandled();
 
 
 
-module.exports = {
+export {
   log,
   versions, version_count,
   full_set, styles,
   r63,
   fcolors,
   toRowRelative,
-  toRowAbsolute,
-  uphi
+  toRowAbsolute
 };

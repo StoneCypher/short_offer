@@ -7465,8 +7465,6 @@ var short_offer = (function (exports) {
     exports.parse = parse;
     exports.unpack = unpack;
 
-    Object.defineProperty(exports, '__esModule', { value: true });
-
     return exports;
 
-}({}));
+})({});

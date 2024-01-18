@@ -24,29 +24,6 @@ var so_viewer = (function (exports) {
         ubu_ff_90_host,
         ubu_ff_90_client
     };
-    var example_beacons = {
-        full_set,
-        win_10_chrome_92_host,
-        win_10_chrome_92_client,
-        win_10_edge_92_client,
-        win_10_edge_92_host,
-        win_10_ff_90_client,
-        win_10_ff_90_host,
-        lin_chr_92_host,
-        lin_chr_92_client,
-        mac_saf_14_host,
-        mac_saf_14_client,
-        mac_chrome_92_host,
-        mac_chrome_92_client,
-        mac_ff_90_host,
-        mac_ff_90_client,
-        lin_ff_90_host,
-        lin_ff_90_client,
-        and_chr_92_host,
-        and_chr_92_client,
-        ubu_ff_90_host,
-        ubu_ff_90_client
-    };
 
     function peg$subclass$1(child, parent) {
         function ctor() { this.constructor = child; }
@@ -7444,7 +7421,7 @@ var so_viewer = (function (exports) {
         byId('parse').innerHTML = parse_table(parsed);
     }
     function bootstrap() {
-        const oe = Object.entries(example_beacons.full_set);
+        const oe = Object.entries(full_set);
         oe.forEach(([k, v], _i) => {
             const p = parse(v), q = pack(v), c = p.value.filter(val => val.kind === 'unknown_line').length;
             const a = el('a', {
@@ -7466,8 +7443,6 @@ var so_viewer = (function (exports) {
 
     exports.bootstrap = bootstrap;
 
-    Object.defineProperty(exports, '__esModule', { value: true });
-
     return exports;
 
-}({}));
+})({});

@@ -1,7 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 function peg$subclass$1(child, parent) {
     function ctor() { this.constructor = child; }
     ctor.prototype = parent.prototype;

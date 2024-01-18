@@ -11,7 +11,7 @@ const es6_config = {
   input   : 'build/typescript/index.js',
 
   output  : {
-    file   : 'build/rollup/index.esm.js',
+    file   : 'build/rollup/index.js',
     format : 'es',
     name   : 'short_offer'
   },
@@ -39,7 +39,7 @@ const cjs_config = {
   input   : 'build/typescript/index.js',
 
   output  : {
-    file   : 'build/rollup/index.cjs.js',
+    file   : 'build/rollup/index.cjs',
     format : 'cjs',
     name   : 'short_offer'
   },

@@ -1,17 +1,20 @@
 {
   "name": "short_offer",
-  "version": "0.30.0",
+  "version": "0.31.0",
   "description": "Present a shortened WebRTC offer.  Fully tested, typescript double-parser.",
-  "main": "index.js",
+  "type": "module",
+  "module": "index.js",
+  "main": "index.cjs",
   "scripts": {
-    "clean": "rimraf -f docs && mkdir docs && cd docs && mkdir docs && cd .. && rimraf -f build && mkdir build && cd build && mkdir pegjs && mkdir typescript && mkdir rollup && mkdir terser && cd ../src/ts && rimraf -f generated_code && mkdir generated_code && cd ../..",
+    "clean": "rimraf dist && mkdir dist && rimraf docs && mkdir docs && cd docs && mkdir docs && cd .. && rimraf build && mkdir build && cd build && mkdir pegjs && mkdir typescript && mkdir rollup && mkdir terser && cd ../src/ts && rimraf generated_code && mkdir generated_code && cd ../..",
     "pegjs": "pegjs -o src/ts/generated_code/sdp_parser.js --format commonjs src/peg/sdp_parser.pegjs && pegjs -o src/ts/generated_code/decompiler.js --format commonjs src/peg/decompiler.pegjs",
     "typescript": "tsc --build tsconfig.json",
     "rollup": "rollup -c",
     "site": "cp ./src/html/* docs && cp ./build/rollup/viewer.* docs && cp ./src/maintained_artifacts/*.png docs/",
     "report": "node ./src/build_js/record_stats_for_version.js && node ./src/build_js/record_stats_image_for_version.js",
-    "build": "npm run clean && npm run pegjs && npm run typescript && npm run rollup && npm run site && npm run test && npm run report",
-    "test": "jest --verbose"
+    "test": "vitest run --coverage --mode development --reporter=verbose",
+    "dist": "cp ./build/rollup/index.* ./dist",
+    "build": "npm run clean && npm run pegjs && npm run typescript && npm run rollup && npm run site && npm run test && npm run report && npm run dist"
   },
   "repository": {
     "type": "git",
@@ -31,16 +34,16 @@
   },
   "homepage": "https://github.com/StoneCypher/short_offer#readme",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^20.0.0",
-    "@rollup/plugin-node-resolve": "^13.0.4",
-    "@types/jest": "^26.0.24",
-    "chartjs-node-canvas": "^4.1.4",
-    "fast-check": "^2.17.0",
-    "jest": "^27.0.6",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@vitest/coverage-v8": "^1.2.1",
+    "chartjs-node-canvas": "^4.1.6",
+    "fast-check": "^3.15.0",
     "pegjs": "^0.10.0",
-    "rollup": "^2.56.1",
-    "ts-jest": "^27.0.4",
+    "rimraf": "^5.0.5",
+    "rollup": "^4.9.5",
     "typescript": "^4.3.5",
-    "unreasonable_phi": "^0.9.1"
+    "unreasonable_phi": "^0.9.1",
+    "vitest": "^1.2.1"
   }
 }
