@@ -4,7 +4,15 @@
 
 Write a shortened offer claim for WebRTC.  Compress a WebRTC offer so much that you can just put it in a URL, and skip the backend infrastructure entirely.
 
-Offers are returned almost byte-identical.  IP addresses can be slightly altered (leading zeroes removed, and hexadecimal conformed to lower case.)  Otherwise, byte perfect replication is achieved.
+Offers are returned almost byte-identical.  Small concessions are made for compression:
+
+1. The framing JSON can have its whitespace dropped
+2. IPv4 and IPv6 addresses will have leading zeroes dropped
+3. All decimal integers will have leading zeroes dropped
+4. IPv6 addresses will be represented in lower case
+5. SHA fingerprints will be represented in upper case
+
+Other than these, values (including unknown future values and illegal values) will be represented perfectly.
 
 <img src="/src/maintained_artifacts/stats_by_version_relative.png" width="500" />
 

@@ -1,6 +1,7 @@
 import { full_set } from './example_beacons';
 import { parse } from './parsers';
 import { pack } from './pack';
+import { compress } from './compress';
 import { unpack } from './unpack';
 function byId(id) {
     const test = document.getElementById(id);
@@ -64,23 +65,36 @@ function click_an_anchor(e, val) {
     byId('parse').innerHTML = parse_table(parsed);
 }
 function bootstrap() {
+    const header = document.createElement('tr');
+    header.innerHTML = '<th>Old</th><th>New</th><th>Pct</th><th>Comp</th><th>CPct</th><th>Rem</th><th>ID</th>';
+    byId('listtgt')
+        .appendChild(header);
     const oe = Object.entries(full_set);
     oe.forEach(([k, v], _i) => {
-        const p = parse(v), q = pack(v), c = p.value.filter(val => val.kind === 'unknown_line').length;
+        const p = parse(v), q = pack(v), cm = compress(v), c = p.value.filter(val => val.kind === 'unknown_line').length;
         const a = el('a', {
-            inner: `${k} (${c})`,
+            inner: `${k}`,
             href: '#',
             onclick: (e) => click_an_anchor(e, v)
         });
-        const tr = el('tr', {}), btd = el('td', {}), atd = el('td', {}), std = el('td', {});
-        btd.innerHTML = `${q.length.toLocaleString()}b`;
+        const tr = el('tr', {}), btd = el('td', {}), otd = el('td', {}), rtd = el('td', {}), ctd = el('td', {}), ptd = el('td', {}), atd = el('td', {}), std = el('td', {});
+        ctd.className = 'comp';
+        otd.innerHTML = `${v.length.toLocaleString()}<span class="light">b</span>`;
+        tr.appendChild(otd);
+        btd.innerHTML = `${q.length.toLocaleString()}<span class="light">b</span>`;
         tr.appendChild(btd);
-        std.innerHTML = `${((q.length / v.length) * 100).toFixed(1)}%`;
+        std.innerHTML = `${((q.length / v.length) * 100).toFixed(1)}<span class="light">%</span>`;
         tr.appendChild(std);
+        ctd.innerHTML = `${cm.length.toLocaleString()}<span class="light">b</span>`;
+        tr.appendChild(ctd);
+        ptd.innerHTML = `${((cm.length / v.length) * 100).toFixed(1)}<span class="light">%</span>`;
+        tr.appendChild(ptd);
+        rtd.innerHTML = `${c.toLocaleString()}`;
+        tr.appendChild(rtd);
         atd.appendChild(a);
         tr.appendChild(atd);
         byId('listtgt')
-            .append(tr);
+            .appendChild(tr);
     });
 }
 export { bootstrap };
