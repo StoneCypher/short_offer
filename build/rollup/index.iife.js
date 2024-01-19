@@ -7483,6 +7483,23 @@ var short_offer = (function (exports) {
         }
         return ret;
     }
+    function pack_i8(i8) {
+        let val;
+        switch (typeof i8) {
+            case 'number':
+                val = i8;
+                break;
+            case 'string':
+                val = Number(i8);
+                break;
+            case 'bigint':
+                val = Number(i8);
+                break;
+        }
+        const arr = new ArrayBuffer(1), view = new DataView(arr);
+        view.setUint8(0, val);
+        return String.fromCodePoint(view.getUint8(0));
+    }
     function pack_i32(i32) {
         let val;
         switch (typeof i32) {
@@ -7580,7 +7597,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_remote_candidate_ffus') {
                 throw 'impossible';
             }
-            return `${standard_remote_candidate_ffus}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${pack_i32(i1)}${c_terminal}${d4}${c_terminal}${pack_i32(i2)}${c_terminal}${d5}${c_terminal}`;
+            return `${standard_remote_candidate_ffus}${pack_i32(d1)}${c_terminal}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${c_terminal}${pack_i32(i1)}${c_terminal}${d4}${c_terminal}${pack_i32(i2)}${c_terminal}${d5}${c_terminal}`;
         },
         'standard_agen_tcp_candidate': (v) => {
             const { kind, items } = v;
@@ -7588,7 +7605,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_agen_tcp_candidate') {
                 throw 'impossible';
             }
-            return `${standard_agen_tcp_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${pack_i32(i1)}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
+            return `${standard_agen_tcp_candidate}${pack_i32(d1)}${c_terminal}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${c_terminal}${pack_i32(i1)}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
         },
         'standard_agen_tcp6_candidate': (v) => {
             const { kind, items } = v;
@@ -7596,7 +7613,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_agen_tcp6_candidate') {
                 throw 'impossible';
             }
-            return `${standard_agen_tcp6_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${i1}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
+            return `${standard_agen_tcp6_candidate}${pack_i32(d1)}${c_terminal}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${c_terminal}${i1}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
         },
         'standard_agen_udp4_candidate': (v) => {
             const { kind, items } = v;
@@ -7604,7 +7621,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_agen_udp4_candidate') {
                 throw 'impossible';
             }
-            return `${standard_agen_udp4_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${pack_i32(i1)}${c_terminal}${d4}${c_terminal}${pack_i32(i2)}${c_terminal}${d5}${c_terminal}${d6}${c_terminal}`;
+            return `${standard_agen_udp4_candidate}${pack_i32(d1)}${c_terminal}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${c_terminal}${pack_i32(i1)}${c_terminal}${d4}${c_terminal}${pack_i32(i2)}${c_terminal}${d5}${c_terminal}${d6}${c_terminal}`;
         },
         'standard_agen_udp6_host_candidate': (v) => {
             const { kind, items } = v;
@@ -7612,7 +7629,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_agen_udp6_host_candidate') {
                 throw 'impossible';
             }
-            return `${standard_agen_udp6_host_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${i1}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
+            return `${standard_agen_udp6_host_candidate}${pack_i32(d1)}${c_terminal}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${c_terminal}${i1}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
         },
         'unknown_terminate': (v) => `${unknown_terminate}${v.value}`
     };
@@ -7673,6 +7690,10 @@ var short_offer = (function (exports) {
         const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0, c = str.codePointAt(2) ?? 0, d = str.codePointAt(3) ?? 0;
         return ((((((a * 256) + b) * 256) + c) * 256) + d).toString();
     }
+    function unpack_i8(str) {
+        const d = str.codePointAt(0) ?? 0;
+        return (d).toString();
+    }
     function unpack_guid(guid) {
         return `${guid.substring(0, 8)}-${guid.substring(8, 12)}-${guid.substring(12, 16)}-${guid.substring(16, 20)}-${guid.substring(20, 32)}`;
     }
@@ -7698,6 +7719,11 @@ var short_offer = (function (exports) {
             const unpacked = unpacker(bytestring.substring(i + 1, found));
             work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
             i = found;
+        }
+        function scan_forward_one_byte(prefix, unpacker = unpack_none, skip_r_n = false) {
+            const unpacked = unpacker(bytestring.substring(i + 1, i + 2));
+            work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+            i += 2;
         }
         function scan_forward_four_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
             const unpacked = unpacker(bytestring.substring(i + 1, i + 5));
@@ -7827,25 +7853,25 @@ var short_offer = (function (exports) {
                     scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                     break;
                 case standard_agen_tcp_candidate:
-                    scan_forward_to_null(`a=candidate:`, 'standard_guid_candidate_1', undefined, true);
-                    scan_forward_to_null(' ', 'standard_guid_candidate_2', undefined, true);
-                    scan_forward_to_null(' tcp ', 'standard_guid_candidate_3', undefined, true);
+                    scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
+                    scan_forward_one_byte(' ', unpack_i8, true);
+                    scan_forward_four_bytes(' tcp ', unpack_i32, true);
                     scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
                     scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
                     scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                     break;
                 case standard_agen_tcp6_candidate:
-                    scan_forward_to_null(`a=candidate:`, 'standard_guid_candidate_1', undefined, true);
-                    scan_forward_to_null(' ', 'standard_guid_candidate_2', undefined, true);
-                    scan_forward_to_null(' tcp ', 'standard_guid_candidate_3', undefined, true);
+                    scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
+                    scan_forward_one_byte(' ', unpack_i8, true);
+                    scan_forward_four_bytes(' tcp ', unpack_i32, true);
                     scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
                     scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
                     scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                     break;
                 case standard_agen_udp4_candidate:
-                    scan_forward_to_null(`a=candidate:`, 'standard_guid_candidate_1', undefined, true);
-                    scan_forward_to_null(' ', 'standard_guid_candidate_2', undefined, true);
-                    scan_forward_to_null(' udp ', 'standard_guid_candidate_3', undefined, true);
+                    scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
+                    scan_forward_one_byte(' ', unpack_i8, true);
+                    scan_forward_four_bytes(' udp ', unpack_i32, true);
                     scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
                     scan_forward_to_null(' ', 'standard_guid_candidate_5', undefined, true);
                     scan_forward_four_bytes(' typ srflx raddr ', unpack_bytized_ipv4, true);
@@ -7853,9 +7879,9 @@ var short_offer = (function (exports) {
                     scan_forward_to_null(' generation 0 network-id ', 'standard_guid_candidate_8', undefined, false);
                     break;
                 case standard_agen_udp6_host_candidate:
-                    scan_forward_to_null(`a=candidate:`, 'standard_guid_candidate_1', undefined, true);
-                    scan_forward_to_null(' ', 'standard_guid_candidate_2', undefined, true);
-                    scan_forward_to_null(' udp ', 'standard_guid_candidate_3', undefined, true);
+                    scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
+                    scan_forward_one_byte(' ', unpack_i8, true);
+                    scan_forward_four_bytes(' udp ', unpack_i32, true);
                     scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
                     scan_forward_to_null(' ', 'standard_guid_candidate_5', undefined, true);
                     scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_6', undefined, false);
@@ -7872,9 +7898,9 @@ var short_offer = (function (exports) {
                     work += ' network-cost 999\r\n';
                     break;
                 case standard_remote_candidate_ffus:
-                    scan_forward_to_null(`a=candidate:`, 'standard_remote_candidate_1', undefined, true);
-                    scan_forward_to_null(' ', 'standard_remote_candidate_2', undefined, true);
-                    scan_forward_to_null(' UDP ', 'standard_remote_candidate_3', undefined, true);
+                    scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
+                    scan_forward_one_byte(' ', unpack_i8, true);
+                    scan_forward_four_bytes(' UDP ', unpack_i32, true);
                     scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
                     scan_forward_to_null(' ', 'standard_remote_candidate_5', undefined, true);
                     scan_forward_four_bytes(' typ srflx raddr ', unpack_bytized_ipv4, true);

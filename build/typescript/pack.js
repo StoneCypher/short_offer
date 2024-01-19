@@ -11,6 +11,23 @@ function pack_sha256(sha256) {
     }
     return ret;
 }
+function pack_i8(i8) {
+    let val;
+    switch (typeof i8) {
+        case 'number':
+            val = i8;
+            break;
+        case 'string':
+            val = Number(i8);
+            break;
+        case 'bigint':
+            val = Number(i8);
+            break;
+    }
+    const arr = new ArrayBuffer(1), view = new DataView(arr);
+    view.setUint8(0, val);
+    return String.fromCodePoint(view.getUint8(0));
+}
 function pack_i32(i32) {
     let val;
     switch (typeof i32) {
@@ -108,7 +125,7 @@ const parseable = {
         if (kind !== 'standard_remote_candidate_ffus') {
             throw 'impossible';
         }
-        return `${symbols.standard_remote_candidate_ffus}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_remote_candidate_ffus}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
     'standard_agen_tcp_candidate': (v) => {
         const { kind, items } = v;
@@ -116,7 +133,7 @@ const parseable = {
         if (kind !== 'standard_agen_tcp_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_tcp_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_tcp_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
     'standard_agen_tcp6_candidate': (v) => {
         const { kind, items } = v;
@@ -124,7 +141,7 @@ const parseable = {
         if (kind !== 'standard_agen_tcp6_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_tcp6_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_tcp6_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
     'standard_agen_udp4_candidate': (v) => {
         const { kind, items } = v;
@@ -132,7 +149,7 @@ const parseable = {
         if (kind !== 'standard_agen_udp4_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_udp4_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_udp4_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
     },
     'standard_agen_udp6_host_candidate': (v) => {
         const { kind, items } = v;
@@ -140,7 +157,7 @@ const parseable = {
         if (kind !== 'standard_agen_udp6_host_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_udp6_host_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_udp6_host_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
     'unknown_terminate': (v) => `${symbols.unknown_terminate}${v.value}`
 };
