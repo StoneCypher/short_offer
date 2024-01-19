@@ -2,6 +2,8 @@
 
 [Live client](https://stonecypher.github.io/short_offer/)
 
+[Offer detector](https://stonecypher.github.io/peer_detector/)
+
 Write a shortened offer claim for WebRTC.  Compress a WebRTC offer so much that you can just put it in a URL, and skip the backend infrastructure entirely.
 
 Offers are returned almost byte-identical.  Small concessions are made for compression:
