@@ -14,7 +14,15 @@ describe('All beacons are strings', () => {
     'mac_chrome_92_client', 'mac_ff_90_host', 'mac_ff_90_client',
     'lin_ff_90_host', 'lin_ff_90_client', 'and_chr_92_host',
     'and_chr_92_client', 'ubu_ff_90_host', 'ubu_ff_90_client',
-    'win_11_chrome_120_host', 'win_11_chrome_120_client' ];
+    'win_11_chrome_120_host', 'win_11_chrome_120_client',
+    'win_11_edge_120_host', 'win_11_edge_120_client',
+    'win_11_ff_121_host', 'win_11_ff_121_client',
+    'win_11_opr_106_host', 'win_11_opr_106_client',
+    'mac_10_15_ff_121_host', 'mac_10_15_ff_121_client',
+    'ios_17_ff_121_host', 'ios_17_ff_121_client',
+    'ios_17_saf_17_1_host', 'ios_17_saf_17_1_client'
+  ];
+
 
 
   [ beacons.win_10_chrome_92_host,
@@ -48,7 +56,26 @@ describe('All beacons are strings', () => {
     beacons.ubu_ff_90_client,
 
     beacons.win_11_chrome_120_host,
-    beacons.win_11_chrome_120_client
+    beacons.win_11_chrome_120_client,
+
+    beacons.win_11_edge_120_host,
+    beacons.win_11_edge_120_client,
+
+    beacons.win_11_ff_121_host,
+    beacons.win_11_ff_121_client,
+
+    beacons.win_11_opr_106_host,
+    beacons.win_11_opr_106_client,
+
+    beacons.mac_10_15_ff_121_host,
+    beacons.mac_10_15_ff_121_client,
+
+    beacons.ios_17_ff_121_host,
+    beacons.ios_17_ff_121_client,
+
+    beacons.ios_17_saf_17_1_host,
+    beacons.ios_17_saf_17_1_client
+
 
   ].forEach( (s, i) =>
 

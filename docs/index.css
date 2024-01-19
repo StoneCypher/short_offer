@@ -11,7 +11,10 @@ body               { padding: 2em; }
 #list td+td+td+td+td { text-align: left; }
 #list .light         { font-size: 80%; color: #8be; }
 
-#notlist { top: 1em; left: 36em; right: 1em; }
+#notlist        { top: 1em; left: 36em; right: 1em; }
+#notlist h1     { margin: 0; }
+#notlist h2     { margin: 0; }
+#notlist div+h2 { margin-top: 1em; }
 
 #example, #pack, #unpack { padding: 1em; }
 

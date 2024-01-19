@@ -84,7 +84,7 @@ function parse_table(parsed: ParsedSdp) {
 
 
 
-async function click_an_anchor(e: MouseEvent | undefined, val: string) {
+async function click_an_anchor(e: MouseEvent | undefined, val: string, label: string) {
 
   if (e === undefined) { throw "Can't handle an event without an event (click_an_anchor)"; }
 
@@ -98,12 +98,15 @@ async function click_an_anchor(e: MouseEvent | undefined, val: string) {
     }
   }
 
-  const ex  = document.querySelector('#example'),
+  const tit = document.querySelector('#item'),
+        ex  = document.querySelector('#example'),
         exp = document.querySelector('#pack'),
         exc = document.querySelector('#compress'),
         exu = document.querySelector('#unpack');
 
-  if ((ex !== null) && (exp !== null) && (exu !== null) && (exc !== null)) {
+  if ((tit !== null) && (ex !== null) && (exp !== null) && (exu !== null) && (exc !== null)) {
+
+    tit.innerHTML = label;
 
     ex.innerHTML  = val;
 
@@ -145,7 +148,7 @@ function bootstrap() {
 
   const oe = Object.entries(full_set);
 
-  oe.forEach( ([k, v], _i) => {
+  oe.forEach( ([k, v], i) => {
 
     const p  = parse(v),
           q  = pack(v),
@@ -155,8 +158,12 @@ function bootstrap() {
     const a = el('a', {
       inner     : `${k}`,
       href      : '#',
-      onclick   : (e) => click_an_anchor(e, v)
+      onclick   : (e) => click_an_anchor(e, v, k)
     });
+
+    if (i === 0) {
+      setTimeout( () => a.click(), 100 );
+    }
 
     const tr  = el('tr', {}),
           btd = el('td', {}),
@@ -168,6 +175,7 @@ function bootstrap() {
           std = el('td', {});
 
     ctd.className = 'comp';
+    ptd.className = 'comp';
 
     otd.innerHTML = `${v.length.toLocaleString()}<span class="light">b</span>`;
     tr.appendChild(otd);
@@ -175,7 +183,7 @@ function bootstrap() {
     btd.innerHTML = `${q.length.toLocaleString()}<span class="light">b</span>`;
     tr.appendChild(btd);
 
-    std.innerHTML = `${((q.length/v.length)*100).toFixed(1)}<span class="light">%</span>`;
+    std.innerHTML = `${(100-((q.length/v.length)*100)).toFixed(1)}<span class="light">%</span>`;
     tr.appendChild(std);
 
     ctd.innerHTML = `${cm.length.toLocaleString()}<span class="light">b</span>`;

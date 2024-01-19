@@ -40,7 +40,7 @@ function parse_table(parsed) {
   `);
     return result;
 }
-async function click_an_anchor(e, val) {
+async function click_an_anchor(e, val, label) {
     if (e === undefined) {
         throw "Can't handle an event without an event (click_an_anchor)";
     }
@@ -52,8 +52,9 @@ async function click_an_anchor(e, val) {
             src.className = 'sel';
         }
     }
-    const ex = document.querySelector('#example'), exp = document.querySelector('#pack'), exc = document.querySelector('#compress'), exu = document.querySelector('#unpack');
-    if ((ex !== null) && (exp !== null) && (exu !== null) && (exc !== null)) {
+    const tit = document.querySelector('#item'), ex = document.querySelector('#example'), exp = document.querySelector('#pack'), exc = document.querySelector('#compress'), exu = document.querySelector('#unpack');
+    if ((tit !== null) && (ex !== null) && (exp !== null) && (exu !== null) && (exc !== null)) {
+        tit.innerHTML = label;
         ex.innerHTML = val;
         exp.innerHTML = pack(val)
             .split('')
@@ -75,20 +76,24 @@ function bootstrap() {
     byId('listtgt')
         .appendChild(header);
     const oe = Object.entries(full_set);
-    oe.forEach(([k, v], _i) => {
+    oe.forEach(([k, v], i) => {
         const p = parse(v), q = pack(v), cm = compress(v), c = p.value.filter(val => val.kind === 'unknown_line').length;
         const a = el('a', {
             inner: `${k}`,
             href: '#',
-            onclick: (e) => click_an_anchor(e, v)
+            onclick: (e) => click_an_anchor(e, v, k)
         });
+        if (i === 0) {
+            setTimeout(() => a.click(), 100);
+        }
         const tr = el('tr', {}), btd = el('td', {}), otd = el('td', {}), rtd = el('td', {}), ctd = el('td', {}), ptd = el('td', {}), atd = el('td', {}), std = el('td', {});
         ctd.className = 'comp';
+        ptd.className = 'comp';
         otd.innerHTML = `${v.length.toLocaleString()}<span class="light">b</span>`;
         tr.appendChild(otd);
         btd.innerHTML = `${q.length.toLocaleString()}<span class="light">b</span>`;
         tr.appendChild(btd);
-        std.innerHTML = `${((q.length / v.length) * 100).toFixed(1)}<span class="light">%</span>`;
+        std.innerHTML = `${(100 - ((q.length / v.length) * 100)).toFixed(1)}<span class="light">%</span>`;
         tr.appendChild(std);
         ctd.innerHTML = `${cm.length.toLocaleString()}<span class="light">b</span>`;
         tr.appendChild(ctd);

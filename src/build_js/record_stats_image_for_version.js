@@ -15,7 +15,7 @@ const logfile               = './src/maintained_artifacts/stats_by_version.json'
 
 const image_target_filename = './src/maintained_artifacts/stats_by_version';
 
-const r63 = n => Math.floor(n*192)+64;
+const r63 = n => Math.floor(n*192);
 const seq = n => new Array(n).fill(false).map( (_, i) => i );
 
 const fcolors =
