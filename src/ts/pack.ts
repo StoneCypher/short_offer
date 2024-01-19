@@ -55,6 +55,35 @@ function pack_sha256(sha256: string): string {
 
 
 
+function pack_i8(i8: number | string): string {
+
+  let val: number;
+
+  switch (typeof i8) {
+    case 'number':
+      val = i8;
+      break;
+    case 'string':
+      val = Number(i8);
+      break;
+    case 'bigint':
+      val = Number(i8);
+      break;
+  }
+
+  const arr  = new ArrayBuffer(1),
+        view = new DataView(arr);
+
+  view.setUint8(0, val); // byteOffset = 0
+
+  return String.fromCodePoint(view.getUint8(0));
+
+}
+
+
+
+
+
 function pack_i32(i32: number | string): string {
 
   let val: number;
@@ -247,35 +276,35 @@ const parseable = {
     const { kind, items } = (v as StandardRemoteCandidateFfUS);
     const [ d1, d2, d3, i1, d4, i2, d5 ] = items;
     if (kind !== 'standard_remote_candidate_ffus') { throw 'impossible'; }
-    return `${symbols.standard_remote_candidate_ffus}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+    return `${symbols.standard_remote_candidate_ffus}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
   },
 
   'standard_agen_tcp_candidate': (v: ParsedLine) => {
     const { kind, items } = (v as StandardAGenTcpCandidate);
     const [ d1, d2, d3, i1, d4, d5 ] = items;
     if (kind !== 'standard_agen_tcp_candidate') { throw 'impossible'; }
-    return `${symbols.standard_agen_tcp_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+    return `${symbols.standard_agen_tcp_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
   },
 
   'standard_agen_tcp6_candidate': (v: ParsedLine) => {
     const { kind, items } = (v as StandardAGenTcp6Candidate);
     const [ d1, d2, d3, i1, d4, d5 ] = items;
     if (kind !== 'standard_agen_tcp6_candidate') { throw 'impossible'; }
-    return `${symbols.standard_agen_tcp6_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+    return `${symbols.standard_agen_tcp6_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
   },
 
   'standard_agen_udp4_candidate': (v: ParsedLine) => {
     const { kind, items } = (v as StandardAGenUdp4Candidate);
     const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
     if (kind !== 'standard_agen_udp4_candidate') { throw 'impossible'; }
-    return `${symbols.standard_agen_udp4_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+    return `${symbols.standard_agen_udp4_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
   },
 
   'standard_agen_udp6_host_candidate': (v: ParsedLine) => {
     const { kind, items } = (v as StandardAGenUdp6HostCandidate);
     const [ d1, d2, d3, i1, d4, d5 ] = items;
     if (kind !== 'standard_agen_udp6_host_candidate') { throw 'impossible'; }
-    return `${symbols.standard_agen_udp6_host_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+    return `${symbols.standard_agen_udp6_host_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
   },
 
   'unknown_terminate': (v: ParsedLine) =>
