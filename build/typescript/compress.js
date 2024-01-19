@@ -1,4 +1,4 @@
-import { compress as lzc, decompress as lzd } from 'lz-string';
+import { compressToEncodedURIComponent as lzc, decompressFromEncodedURIComponent as lzd } from 'lz-string';
 import { pack } from './pack';
 import { unpack } from './unpack';
 function compress(original) {

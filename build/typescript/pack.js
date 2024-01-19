@@ -20,6 +20,9 @@ function pack_i32(i32) {
         case 'string':
             val = Number(i32);
             break;
+        case 'bigint':
+            val = Number(i32);
+            break;
     }
     const arr = new ArrayBuffer(4), view = new DataView(arr);
     view.setUint32(0, val, false);
@@ -89,7 +92,7 @@ const parseable = {
         if (kind !== 'standard_local_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+        return `${symbols.standard_local_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i32(d2)}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
     },
     'standard_remote_candidate': (v) => {
         const { kind, items } = v;

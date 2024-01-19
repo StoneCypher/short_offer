@@ -1,6 +1,6 @@
 {
   "name": "short_offer",
-  "version": "0.34.0",
+  "version": "0.35.0",
   "description": "Present a shortened WebRTC offer.  Fully tested, typescript double-parser.",
   "type": "module",
   "module": "index.js",

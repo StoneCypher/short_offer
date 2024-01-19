@@ -1,2 +1,4 @@
+import { pack } from './pack';
+import { unpack } from './unpack';
 declare function bootstrap(): void;
-export { bootstrap };
+export { bootstrap, pack, unpack };

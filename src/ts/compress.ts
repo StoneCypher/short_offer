@@ -1,7 +1,7 @@
 
 import {
-  compress   as lzc,
-  decompress as lzd
+  compressToEncodedURIComponent     as lzc,
+  decompressFromEncodedURIComponent as lzd
 } from 'lz-string';
 
 import { pack }   from './pack';

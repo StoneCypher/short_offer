@@ -40,7 +40,7 @@ function parse_table(parsed) {
   `);
     return result;
 }
-function click_an_anchor(e, val) {
+async function click_an_anchor(e, val) {
     if (e === undefined) {
         throw "Can't handle an event without an event (click_an_anchor)";
     }
@@ -52,13 +52,18 @@ function click_an_anchor(e, val) {
             src.className = 'sel';
         }
     }
-    const ex = document.querySelector('#example'), exp = document.querySelector('#pack'), exu = document.querySelector('#unpack');
-    if ((ex !== null) && (exp !== null) && (exu !== null)) {
+    const ex = document.querySelector('#example'), exp = document.querySelector('#pack'), exc = document.querySelector('#compress'), exu = document.querySelector('#unpack');
+    if ((ex !== null) && (exp !== null) && (exu !== null) && (exc !== null)) {
         ex.innerHTML = val;
         exp.innerHTML = pack(val)
             .split('')
             .map(ch => ch.charCodeAt(0) < 33 ? `<span class="ch">[${ch.charCodeAt(0)}]</span>` : ch)
             .join('&#x200b;');
+        const comp = new Uint8ClampedArray(await new Blob([compress(val)]).arrayBuffer()), ecomp = new Array(comp.length);
+        for (let i = 0; i < comp.length; ++i) {
+            ecomp[i] = String.fromCodePoint(Number(comp[i]));
+        }
+        exc.innerHTML = ecomp.join('&#x200B;');
         exu.innerHTML = unpack(pack(val));
     }
     const parsed = parse(val);
@@ -66,7 +71,7 @@ function click_an_anchor(e, val) {
 }
 function bootstrap() {
     const header = document.createElement('tr');
-    header.innerHTML = '<th>Old</th><th>New</th><th>Pct</th><th>Comp</th><th>CPct</th><th>Rem</th><th>ID</th>';
+    header.innerHTML = '<th>Old</th><th>New</th><th>Pct</th><th>URL</th><th>CPct</th><th>Rem</th><th>ID</th>';
     byId('listtgt')
         .appendChild(header);
     const oe = Object.entries(full_set);
@@ -87,7 +92,7 @@ function bootstrap() {
         tr.appendChild(std);
         ctd.innerHTML = `${cm.length.toLocaleString()}<span class="light">b</span>`;
         tr.appendChild(ctd);
-        ptd.innerHTML = `${((cm.length / v.length) * 100).toFixed(1)}<span class="light">%</span>`;
+        ptd.innerHTML = `${(100 - ((cm.length / v.length) * 100)).toFixed(1)}<span class="light">%</span>`;
         tr.appendChild(ptd);
         rtd.innerHTML = `${c.toLocaleString()}`;
         tr.appendChild(rtd);
@@ -97,4 +102,4 @@ function bootstrap() {
             .appendChild(tr);
     });
 }
-export { bootstrap };
+export { bootstrap, pack, unpack };

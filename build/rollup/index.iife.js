@@ -7492,6 +7492,9 @@ var short_offer = (function (exports) {
             case 'string':
                 val = Number(i32);
                 break;
+            case 'bigint':
+                val = Number(i32);
+                break;
         }
         const arr = new ArrayBuffer(4), view = new DataView(arr);
         view.setUint32(0, val, false);
@@ -7561,7 +7564,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_local_candidate') {
                 throw 'impossible';
             }
-            return `${standard_local_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${pack_i32(i1)}${c_terminal}${p}${c_terminal}${d4}${c_terminal}`;
+            return `${standard_local_candidate}${pack_i32(d1)}${c_terminal}${pack_i32(d2)}${c_terminal}${d3}${c_terminal}${pack_i32(i1)}${c_terminal}${p}${c_terminal}${d4}${c_terminal}`;
         },
         'standard_remote_candidate': (v) => {
             const { kind, items } = v;
@@ -7665,6 +7668,10 @@ var short_offer = (function (exports) {
     function unpack_bytized_ipv4(str) {
         const a = str.codePointAt(0), b = str.codePointAt(1), c = str.codePointAt(2), d = str.codePointAt(3);
         return `${a}.${b}.${c}.${d}`;
+    }
+    function unpack_i32(str) {
+        const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0, c = str.codePointAt(2) ?? 0, d = str.codePointAt(3) ?? 0;
+        return ((((((a * 256) + b) * 256) + c) * 256) + d).toString();
     }
     function unpack_guid(guid) {
         return `${guid.substring(0, 8)}-${guid.substring(8, 12)}-${guid.substring(12, 16)}-${guid.substring(16, 20)}-${guid.substring(20, 32)}`;
@@ -7812,8 +7819,8 @@ var short_offer = (function (exports) {
                     work += ' typ host\r\n';
                     break;
                 case standard_local_candidate:
-                    scan_forward_to_null(`a=candidate:`, 'standard_guid_candidate_1', undefined, true);
-                    scan_forward_to_null(' ', 'standard_guid_candidate_2', undefined, true);
+                    scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
+                    scan_forward_four_bytes(' ', unpack_i32, true);
                     scan_forward_to_null(' udp ', 'standard_guid_candidate_3', undefined, true);
                     scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
                     scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
@@ -8411,10 +8418,10 @@ var short_offer = (function (exports) {
     var lzStringExports = lzString.exports;
 
     function compress(original) {
-        return lzStringExports.compress(pack(original));
+        return lzStringExports.compressToEncodedURIComponent(pack(original));
     }
     function decompress(compressed) {
-        return unpack(lzStringExports.decompress(compressed));
+        return unpack(lzStringExports.decompressFromEncodedURIComponent(compressed));
     }
 
     exports.compress = compress;

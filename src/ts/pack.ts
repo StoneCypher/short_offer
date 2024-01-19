@@ -66,13 +66,10 @@ function pack_i32(i32: number | string): string {
     case 'string':
       val = Number(i32);
       break;
+    case 'bigint':
+      val = Number(i32);
+      break;
   }
-
-  // const num = Math.trunc(val) & 0xFFFFFFFF,
-  //       A   = String.fromCodePoint((num & 0xff000000) >> 24),
-  //       B   = String.fromCodePoint((num & 0x00ff0000) >> 16),
-  //       C   = String.fromCodePoint((num & 0x0000ff00) >> 8),
-  //       D   = String.fromCodePoint( num & 0x000000ff );
 
   const arr  = new ArrayBuffer(4),
         view = new DataView(arr);
@@ -87,6 +84,32 @@ function pack_i32(i32: number | string): string {
   return `${A}${B}${C}${D}`;
 
 }
+
+
+
+
+
+// function pack_i64(i64: bigint | string): string {
+
+//   let val = BigInt(i64);
+
+//   const arr  = new ArrayBuffer(8),
+//         view = new DataView(arr);
+
+//   view.setBigUint64(0, val, false); // byteOffset = 0; litteEndian = false
+
+//   const A = String.fromCodePoint(view.getUint8(0)),
+//         B = String.fromCodePoint(view.getUint8(1)),
+//         C = String.fromCodePoint(view.getUint8(2)),
+//         D = String.fromCodePoint(view.getUint8(3)),
+//         E = String.fromCodePoint(view.getUint8(4)),
+//         F = String.fromCodePoint(view.getUint8(5)),
+//         G = String.fromCodePoint(view.getUint8(6)),
+//         H = String.fromCodePoint(view.getUint8(7));
+
+//   return `${A}${B}${C}${D}${E}${F}${G}${H}`;
+
+// }
 
 
 
@@ -210,7 +233,7 @@ const parseable = {
     const { kind, items } = (v as StandardLocalCandidate);
     const [ d1, d2, d3, i1, p, d4 ] = items;
     if (kind !== 'standard_local_candidate') { throw 'impossible'; }
-    return `${symbols.standard_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+    return `${symbols.standard_local_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i32(d2)}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
   },
 
   'standard_remote_candidate': (v: ParsedLine) => {

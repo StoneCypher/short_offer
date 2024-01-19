@@ -53,6 +53,38 @@ function unpack_bytized_ipv4(str: string) {
 
 
 
+function unpack_i32(str: string) {
+
+  const a = str.codePointAt(0) ?? 0,
+        b = str.codePointAt(1) ?? 0,
+        c = str.codePointAt(2) ?? 0,
+        d = str.codePointAt(3) ?? 0;
+
+  return ((((((a * 256) + b) * 256) + c) * 256) + d).toString();
+
+}
+
+
+
+
+
+// function unpack_i64(str: string) {
+
+//   let out = BigInt(0);
+
+//   for (let i=0; i<8; ++i) {
+//     out *= 256n;
+//     out += BigInt(str.codePointAt(i) ?? 0);
+//   }
+
+//   return out;
+
+// }
+
+
+
+
+
 function unpack_guid(guid: string) {
   return `${guid.substring(0,8)}-${guid.substring(8,12)}-${guid.substring(12,16)}-${guid.substring(16,20)}-${guid.substring(20,32)}`;
 }
@@ -259,12 +291,12 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.standard_local_candidate:
-        scan_forward_to_null(`a=candidate:`,                       'standard_guid_candidate_1', undefined,   true);
-        scan_forward_to_null(' ',                                  'standard_guid_candidate_2', undefined,   true);
-        scan_forward_to_null(' udp ',                              'standard_guid_candidate_3', undefined,   true);
-        scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
-        scan_forward_to_null(' ',                                  'standard_guid_candidate_4', undefined,   true);
-        scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined,   false);
+        scan_forward_four_bytes(`a=candidate:`,                                                    unpack_i32,          true);
+        scan_forward_four_bytes(' ',                                                               unpack_i32,          true);
+        scan_forward_to_null(   ' udp ',                              'standard_guid_candidate_3', undefined,           true);
+        scan_forward_four_bytes(' ',                                                               unpack_bytized_ipv4, true);
+        scan_forward_to_null(   ' ',                                  'standard_guid_candidate_4', undefined,           true);
+        scan_forward_to_null(   ' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined,           false);
         break;
 
       case symbols.standard_agen_tcp_candidate:

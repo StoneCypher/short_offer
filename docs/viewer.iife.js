@@ -7393,6 +7393,9 @@ var so_viewer = (function (exports) {
             case 'string':
                 val = Number(i32);
                 break;
+            case 'bigint':
+                val = Number(i32);
+                break;
         }
         const arr = new ArrayBuffer(4), view = new DataView(arr);
         view.setUint32(0, val, false);
@@ -7462,7 +7465,7 @@ var so_viewer = (function (exports) {
             if (kind !== 'standard_local_candidate') {
                 throw 'impossible';
             }
-            return `${standard_local_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${pack_i32(i1)}${c_terminal}${p}${c_terminal}${d4}${c_terminal}`;
+            return `${standard_local_candidate}${pack_i32(d1)}${c_terminal}${pack_i32(d2)}${c_terminal}${d3}${c_terminal}${pack_i32(i1)}${c_terminal}${p}${c_terminal}${d4}${c_terminal}`;
         },
         'standard_remote_candidate': (v) => {
             const { kind, items } = v;
@@ -8079,6 +8082,10 @@ var so_viewer = (function (exports) {
         const a = str.codePointAt(0), b = str.codePointAt(1), c = str.codePointAt(2), d = str.codePointAt(3);
         return `${a}.${b}.${c}.${d}`;
     }
+    function unpack_i32(str) {
+        const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0, c = str.codePointAt(2) ?? 0, d = str.codePointAt(3) ?? 0;
+        return ((((((a * 256) + b) * 256) + c) * 256) + d).toString();
+    }
     function unpack_guid(guid) {
         return `${guid.substring(0, 8)}-${guid.substring(8, 12)}-${guid.substring(12, 16)}-${guid.substring(16, 20)}-${guid.substring(20, 32)}`;
     }
@@ -8225,8 +8232,8 @@ var so_viewer = (function (exports) {
                     work += ' typ host\r\n';
                     break;
                 case standard_local_candidate:
-                    scan_forward_to_null(`a=candidate:`, 'standard_guid_candidate_1', undefined, true);
-                    scan_forward_to_null(' ', 'standard_guid_candidate_2', undefined, true);
+                    scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
+                    scan_forward_four_bytes(' ', unpack_i32, true);
                     scan_forward_to_null(' udp ', 'standard_guid_candidate_3', undefined, true);
                     scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
                     scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
@@ -8312,7 +8319,7 @@ var so_viewer = (function (exports) {
     }
 
     function compress(original) {
-        return lzStringExports.compress(pack(original));
+        return lzStringExports.compressToEncodedURIComponent(pack(original));
     }
 
     function byId(id) {
@@ -8352,7 +8359,7 @@ var so_viewer = (function (exports) {
   `);
         return result;
     }
-    function click_an_anchor(e, val) {
+    async function click_an_anchor(e, val) {
         if (e === undefined) {
             throw "Can't handle an event without an event (click_an_anchor)";
         }
@@ -8364,13 +8371,18 @@ var so_viewer = (function (exports) {
                 src.className = 'sel';
             }
         }
-        const ex = document.querySelector('#example'), exp = document.querySelector('#pack'), exu = document.querySelector('#unpack');
-        if ((ex !== null) && (exp !== null) && (exu !== null)) {
+        const ex = document.querySelector('#example'), exp = document.querySelector('#pack'), exc = document.querySelector('#compress'), exu = document.querySelector('#unpack');
+        if ((ex !== null) && (exp !== null) && (exu !== null) && (exc !== null)) {
             ex.innerHTML = val;
             exp.innerHTML = pack(val)
                 .split('')
                 .map(ch => ch.charCodeAt(0) < 33 ? `<span class="ch">[${ch.charCodeAt(0)}]</span>` : ch)
                 .join('&#x200b;');
+            const comp = new Uint8ClampedArray(await new Blob([compress(val)]).arrayBuffer()), ecomp = new Array(comp.length);
+            for (let i = 0; i < comp.length; ++i) {
+                ecomp[i] = String.fromCodePoint(Number(comp[i]));
+            }
+            exc.innerHTML = ecomp.join('&#x200B;');
             exu.innerHTML = unpack(pack(val));
         }
         const parsed = parse(val);
@@ -8378,7 +8390,7 @@ var so_viewer = (function (exports) {
     }
     function bootstrap() {
         const header = document.createElement('tr');
-        header.innerHTML = '<th>Old</th><th>New</th><th>Pct</th><th>Comp</th><th>CPct</th><th>Rem</th><th>ID</th>';
+        header.innerHTML = '<th>Old</th><th>New</th><th>Pct</th><th>URL</th><th>CPct</th><th>Rem</th><th>ID</th>';
         byId('listtgt')
             .appendChild(header);
         const oe = Object.entries(full_set);
@@ -8399,7 +8411,7 @@ var so_viewer = (function (exports) {
             tr.appendChild(std);
             ctd.innerHTML = `${cm.length.toLocaleString()}<span class="light">b</span>`;
             tr.appendChild(ctd);
-            ptd.innerHTML = `${((cm.length / v.length) * 100).toFixed(1)}<span class="light">%</span>`;
+            ptd.innerHTML = `${(100 - ((cm.length / v.length) * 100)).toFixed(1)}<span class="light">%</span>`;
             tr.appendChild(ptd);
             rtd.innerHTML = `${c.toLocaleString()}`;
             tr.appendChild(rtd);
@@ -8411,6 +8423,8 @@ var so_viewer = (function (exports) {
     }
 
     exports.bootstrap = bootstrap;
+    exports.pack = pack;
+    exports.unpack = unpack;
 
     return exports;
 
