@@ -21,8 +21,6 @@ const logfile = './src/maintained_artifacts/stats_by_version.json',
 
 
 function count_unknowns_in_parse(le_parse) {
-  console.log("Le parse:");
-  console.log(le_parse);
   return (le_parse?.value ?? []).filter(v => v.kind === 'unknown-line').length;
 }
 

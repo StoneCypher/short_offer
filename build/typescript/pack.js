@@ -3,6 +3,14 @@ import * as symbols from './symbols';
 function moz_ver([maj, min, patch]) {
     return `${[maj, min, patch].filter(i => i !== undefined).map(i => i.toString()).join('.')}${symbols.c_terminal}`;
 }
+function pack_sha256(sha256) {
+    let ret = '';
+    for (let cursor = 0; cursor < sha256.length; cursor += 2) {
+        const hi = parseInt(sha256[cursor] ?? '0', 16), lo = parseInt(sha256[cursor + 1] ?? '0', 16), byte = (hi * 16) + lo;
+        ret += String.fromCodePoint(byte);
+    }
+    return ret;
+}
 function pack_i32(i32) {
     let val;
     switch (typeof i32) {
@@ -39,7 +47,7 @@ const parseable = {
     'a_ice_pwd_v': (v) => `${symbols.a_ice_pwd_v}${v.value}${symbols.c_terminal}`,
     'a_ice_ufrag_4': (v) => `${symbols.a_ice_ufrag_4}${v.value}${symbols.c_terminal}`,
     'a_ice_ufrag_8': (v) => `${symbols.a_ice_ufrag_8}${v.value}${symbols.c_terminal}`,
-    'a_fingerprint_sha1_256': (v) => `${symbols.a_fingerprint_sha1_256}${v.value}${symbols.c_terminal}`,
+    'a_fingerprint_sha1_256': (v) => `${symbols.a_fingerprint_sha1_256}${pack_sha256(v.value)}${symbols.c_terminal}`,
     'a_send_recv': (_) => `${symbols.a_send_recv}`,
     'a_end_of_candidates': (_) => `${symbols.a_end_of_candidates}`,
     's_dash': (_) => `${symbols.s_dash}`,

@@ -5,8 +5,33 @@ import * as symbols from './symbols';
 
 
 
+function unpack_sha256(packed_sha256: string): string {
+  // makes F27A3A5409D36B6239A2215E879212907CD99CF6CC9BA462BD99591888F792BD
+  // 32 bytes to 32 pairs of UPPERCASE nybbles
+
+  let ret = '';
+
+  for (let cursor = 0; cursor < packed_sha256.length; ++cursor) {
+
+    const byte = packed_sha256.charCodeAt(cursor),
+          high = (byte & 0xf0) >>> 4,
+          low  = (byte & 0x0f);
+
+    ret += `${high.toString(16)}${low.toString(16)}`;
+
+  }
+
+  return ret.toUpperCase();
+
+}
+
+
+
+
+
 function unpack_sha_colons(str: string) {
-  return (str.match(/.{1,2}/g) || []).join(':');
+  const ustr = unpack_sha256(str);
+  return (ustr.match(/.{1,2}/g) || []).join(':');
 }
 
 
@@ -23,22 +48,6 @@ function unpack_bytized_ipv4(str: string) {
   return `${a}.${b}.${c}.${d}`;
 
 }
-
-
-
-
-
-// function unpack_ipv4(str: string) {
-
-//   const e = BigInt(str),
-//         d = e          % 256n,
-//         c = (e >> 8n)  % 256n,
-//         b = (e >> 16n) % 256n,
-//         a = (e >> 24n) % 256n;
-
-//   return `${a}.${b}.${c}.${d}`;
-
-// }
 
 
 
@@ -94,7 +103,17 @@ function unpack(bytestring: string): string {
     const unpacked = unpacker(bytestring.substring(i+1, i+5));
 
     work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
-    i    += 5;                                           // skip forward to located null
+    i    += 5;
+
+  }
+
+
+  function scan_forward_32_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
+
+    const unpacked = unpacker(bytestring.substring(i+1, i+33));
+
+    work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
+    i    += 33;
 
   }
 
@@ -329,7 +348,7 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.a_fingerprint_sha1_256:
-        scan_forward_to_null(`a=fingerprint:sha-256 `, 'a_fingerprint_sha1_256', unpack_sha_colons, false);
+        scan_forward_32_bytes(`a=fingerprint:sha-256 `, unpack_sha_colons, false);
         break;
 
       default:

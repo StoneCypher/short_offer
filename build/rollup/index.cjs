@@ -7474,6 +7474,14 @@ const unknown_terminate = '\x7f';
 function moz_ver([maj, min, patch]) {
     return `${[maj, min, patch].filter(i => i !== undefined).map(i => i.toString()).join('.')}${c_terminal}`;
 }
+function pack_sha256(sha256) {
+    let ret = '';
+    for (let cursor = 0; cursor < sha256.length; cursor += 2) {
+        const hi = parseInt(sha256[cursor] ?? '0', 16), lo = parseInt(sha256[cursor + 1] ?? '0', 16), byte = (hi * 16) + lo;
+        ret += String.fromCodePoint(byte);
+    }
+    return ret;
+}
 function pack_i32(i32) {
     let val;
     switch (typeof i32) {
@@ -7510,7 +7518,7 @@ const parseable = {
     'a_ice_pwd_v': (v) => `${a_ice_pwd_v}${v.value}${c_terminal}`,
     'a_ice_ufrag_4': (v) => `${a_ice_ufrag_4}${v.value}${c_terminal}`,
     'a_ice_ufrag_8': (v) => `${a_ice_ufrag_8}${v.value}${c_terminal}`,
-    'a_fingerprint_sha1_256': (v) => `${a_fingerprint_sha1_256}${v.value}${c_terminal}`,
+    'a_fingerprint_sha1_256': (v) => `${a_fingerprint_sha1_256}${pack_sha256(v.value)}${c_terminal}`,
     'a_send_recv': (_) => `${a_send_recv}`,
     'a_end_of_candidates': (_) => `${a_end_of_candidates}`,
     's_dash': (_) => `${s_dash}`,
@@ -7641,8 +7649,17 @@ function pack(original) {
     }
 }
 
+function unpack_sha256(packed_sha256) {
+    let ret = '';
+    for (let cursor = 0; cursor < packed_sha256.length; ++cursor) {
+        const byte = packed_sha256.charCodeAt(cursor), high = (byte & 0xf0) >>> 4, low = (byte & 0x0f);
+        ret += `${high.toString(16)}${low.toString(16)}`;
+    }
+    return ret.toUpperCase();
+}
 function unpack_sha_colons(str) {
-    return (str.match(/.{1,2}/g) || []).join(':');
+    const ustr = unpack_sha256(str);
+    return (ustr.match(/.{1,2}/g) || []).join(':');
 }
 function unpack_bytized_ipv4(str) {
     const a = str.codePointAt(0), b = str.codePointAt(1), c = str.codePointAt(2), d = str.codePointAt(3);
@@ -7678,6 +7695,11 @@ function unpack(bytestring) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 5));
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 5;
+    }
+    function scan_forward_32_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
+        const unpacked = unpacker(bytestring.substring(i + 1, i + 33));
+        work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+        i += 33;
     }
     for (i = 0, iC = bytestring.length; i < iC; ++i) {
         switch (bytestring.charAt(i)) {
@@ -7866,7 +7888,7 @@ function unpack(bytestring) {
                 scan_forward_to_null(`a=ice-ufrag:`, 'a_ice_ufrag_8', undefined, false);
                 break;
             case a_fingerprint_sha1_256:
-                scan_forward_to_null(`a=fingerprint:sha-256 `, 'a_fingerprint_sha1_256', unpack_sha_colons, false);
+                scan_forward_32_bytes(`a=fingerprint:sha-256 `, unpack_sha_colons, false);
                 break;
             default:
                 throw new TypeError(`[unpack] Unknown symbol at ${i} '${bytestring.charAt(i)}' [${bytestring.charCodeAt(i)}], corrupt encoding'`);

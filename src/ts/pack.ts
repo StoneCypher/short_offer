@@ -31,6 +31,30 @@ function moz_ver([ maj, min, patch ]: [ number, number, number ]): string {
 
 
 
+function pack_sha256(sha256: string): string {
+  // eg F27A3A5409D36B6239A2215E879212907CD99CF6CC9BA462BD99591888F792BD
+  // 32 pairs of nybbles, or 32 bytes
+
+  let ret = '';
+
+  for (let cursor = 0; cursor < sha256.length; cursor += 2) {
+
+    const hi   = parseInt(sha256[cursor]   ?? '0', 16),
+          lo   = parseInt(sha256[cursor+1] ?? '0', 16),
+          byte = (hi * 16) + lo;
+
+    ret += String.fromCodePoint(byte);
+
+  }
+
+  return ret;
+
+}
+
+
+
+
+
 function pack_i32(i32: number | string): string {
 
   let val: number;
@@ -131,7 +155,7 @@ const parseable = {
     `${symbols.a_ice_ufrag_8}${v.value}${symbols.c_terminal}`,
 
   'a_fingerprint_sha1_256': (v: ParsedLine) =>
-    `${symbols.a_fingerprint_sha1_256}${v.value}${symbols.c_terminal}`,
+    `${symbols.a_fingerprint_sha1_256}${pack_sha256(v.value)}${symbols.c_terminal}`,
 
   'a_send_recv': (_: ParsedLine) =>
     `${symbols.a_send_recv}`,
