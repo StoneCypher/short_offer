@@ -246,6 +246,7 @@ Rule
  / SDash
  / BAs30
  / TZeroZero
+ / IceOptionsTrickle
  / StandardOrigin
  / StandardMozOrigin
  / StandardSctpPort
@@ -389,6 +390,12 @@ StandardMozOrigin
 TZeroZero
   = 't=0 0' CapAtSeparator
   { return ast('t_zero_zero'); }
+
+
+
+IceOptionsTrickle
+  = 'a=ice-options:trickle' CapAtSeparator
+  { return ast('a_ice_options_trickle'); }
 
 
 

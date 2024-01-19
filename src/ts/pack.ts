@@ -231,6 +231,9 @@ const parseable = {
   'standard_m_application': (v: ParsedLine) =>
     `${symbols.standard_m_application}${v.value}${symbols.c_terminal}`,
 
+  'a_ice_options_trickle': (_: ParsedLine) =>
+    `${symbols.a_ice_options_trickle}`,
+
   'standard_origin': (v: ParsedLine) => {
     const { kind, items } = (v as StandardOrigin);
     const [ s, d, i ] = items;

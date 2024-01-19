@@ -75,6 +75,7 @@ const parseable = {
     'b_as_30': (_) => `${symbols.b_as_30}`,
     'c_claim_ip4': (v) => `${symbols.c_claim_ip4}${pack_i32(v.value)}${symbols.c_terminal}`,
     'standard_m_application': (v) => `${symbols.standard_m_application}${v.value}${symbols.c_terminal}`,
+    'a_ice_options_trickle': (_) => `${symbols.a_ice_options_trickle}`,
     'standard_origin': (v) => {
         const { kind, items } = v;
         const [s, d, i] = items;

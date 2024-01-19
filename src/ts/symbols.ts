@@ -45,7 +45,8 @@ const offer                              = '\x01',
       a_send_recv                        = '\x25',
       a_end_of_candidates                = '\x26',
       c_claim_ip4                        = '\x27',
-      standard_m_application             = '\x28';
+      standard_m_application             = '\x28',
+      a_ice_options_trickle              = '\x29';
 
 const short_separator_follows            = '\x7c',
       short_separators_all               = '\x7d';
@@ -76,7 +77,7 @@ export {
   a_ice_ufrag_4, a_ice_ufrag_8, a_fingerprint_sha1_256,
   a_group_bundle_0,
   a_send_recv, a_end_of_candidates,
-  c_claim_ip4, standard_m_application,
+  c_claim_ip4, standard_m_application, a_ice_options_trickle,
   short_separator_follows, short_separators_all,
   unknown_line, unknown_terminate
 };

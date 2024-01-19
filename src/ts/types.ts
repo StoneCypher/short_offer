@@ -15,6 +15,7 @@ type AMidZero                       = { kind: 'a_mid_zero',                     
 type AGroupBundleZero               = { kind: 'a_group_bundle_0',                   value: string, uses_short_nl: boolean };
 type CClaimIp4                      = { kind: 'c_claim_ip4',                        value: string, uses_short_nl: boolean };
 type StandardMApplication           = { kind: 'standard_m_application',             value: string, uses_short_nl: boolean };
+type AIceOptionsTrickle             = { kind: 'a_ice_options_trickle',              value: string, uses_short_nl: boolean };
 
 type SDash                          = { kind: 's_dash',                             value: string, uses_short_nl: boolean };
 type TZeroZero                      = { kind: 't_zero_zero',                        value: string, uses_short_nl: boolean };
@@ -49,6 +50,7 @@ type ParsedLine
   | AStandardMaxMessageSize | ACustomMaxMessageSize
   | ASetupActPass | ASetupActive | AMidZero | AGroupBundleZero
   | CClaimIp4 | StandardMApplication
+  | AIceOptionsTrickle
   | SDash | TZeroZero | BAs30
   | StandardOrigin | StandardMozOrigin
   | StandardLocalCandidate | StandardGuidLocalCandidate
@@ -67,15 +69,17 @@ type ParsedSdp = {
   kind  : 'offer' | 'answer' | 'unknown' | 'unknown_terminate' | 'version_line'
         | 'version_zero_line' | 'a_msid_semantic_ns' | 'a_msid_semantic_ws'
         | 'a_extmap_allow_mixed' | 'a_standard_sctp_port'
-        | 'a_custom_sctp_port' | 'a_standard_max_message_size'
+        | 'a_custom_sctp_port' | 'a_standard_max_message_size' | 'a_custom_max_message_size'
         | 'a_setup_actpass' | 'a_setup_active' | 'a_mid_zero'
+        | 'a_group_bundle_0' | 'c_claim_ip4' | 'standard_m_application'
+        | 'a_ice_options_trickle'
         | 's_dash' | 't_zero_zero' | 'b_as_30'
+        | 'standard_origin'
         | 'standard_moz_origin'
-        | 'standard_local_candidate' | 'standard_guid_local_candidate'
+        | 'standard_local_candidate' | 'standard_guid_local_candidate' | 'standard_guid_local_candidate_ffus'
         | 'standard_remote_candidate' | 'standard_remote_candidate_ffus'
         | 'standard_agen_tcp_candidate' | 'standard_agen_tcp6_candidate'
         | 'standard_agen_udp4_candidate' | 'standard_agen_udp6_host_candidate'
-        | 'a_custom_max_message_size'
         | 'a_ice_pwd' | 'a_ice_pwd_l' | 'a_ice_ufrag_4' | 'a_ice_ufrag_8',
 
   value : ParsedLine[],

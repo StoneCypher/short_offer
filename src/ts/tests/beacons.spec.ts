@@ -20,7 +20,10 @@ describe('All beacons are strings', () => {
     'win_11_opr_106_host', 'win_11_opr_106_client',
     'mac_10_15_ff_121_host', 'mac_10_15_ff_121_client',
     'ios_17_ff_121_host', 'ios_17_ff_121_client',
-    'ios_17_saf_17_1_host', 'ios_17_saf_17_1_client'
+    'ios_17_saf_17_1_host', 'ios_17_saf_17_1_client',
+    'and_12_edge_120_host', 'and_12_edge_120_client',
+    'and_12_chrome_120_host', 'and_12_chrome_120_client'
+
   ];
 
 

@@ -32,6 +32,10 @@ const full_set = {
     ios_17_saf_17_1_client,
     and_chr_92_host,
     and_chr_92_client,
+    and_12_edge_120_host,
+    and_12_edge_120_client,
+    and_12_chrome_120_host,
+    and_12_chrome_120_client,
     ubu_ff_90_host,
     ubu_ff_90_client
 };

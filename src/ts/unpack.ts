@@ -276,6 +276,10 @@ function unpack(bytestring: string): string {
         work += ' UDP/DTLS/SCTP webrtc-datachannel\r\n';
         break;
 
+      case symbols.a_ice_options_trickle:
+        work += 'a=ice-options:trickle\r\n';
+        break;
+
       case symbols.standard_origin:
         scan_forward_to_null('o=- ',     'standard_moz_origin_1', undefined, true);
         scan_forward_to_null(' ',        'standard_moz_origin_2', undefined, true);
