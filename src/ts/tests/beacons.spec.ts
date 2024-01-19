@@ -13,7 +13,8 @@ describe('All beacons are strings', () => {
     'mac_saf_14_host', 'mac_saf_14_client', 'mac_chrome_92_host',
     'mac_chrome_92_client', 'mac_ff_90_host', 'mac_ff_90_client',
     'lin_ff_90_host', 'lin_ff_90_client', 'and_chr_92_host',
-    'and_chr_92_client', 'ubu_ff_90_host', 'ubu_ff_90_client' ];
+    'and_chr_92_client', 'ubu_ff_90_host', 'ubu_ff_90_client',
+    'win_11_chrome_120_host', 'win_11_chrome_120_client' ];
 
 
   [ beacons.win_10_chrome_92_host,
@@ -44,7 +45,10 @@ describe('All beacons are strings', () => {
     beacons.and_chr_92_client,
 
     beacons.ubu_ff_90_host,
-    beacons.ubu_ff_90_client
+    beacons.ubu_ff_90_client,
+
+    beacons.win_11_chrome_120_host,
+    beacons.win_11_chrome_120_client
 
   ].forEach( (s, i) =>
 

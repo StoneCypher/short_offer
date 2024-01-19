@@ -215,14 +215,19 @@ dec_octet
 
 
 
+WS
+  = [ \r\n\t\v]*
+
+
+
 Offer
-  = '{"type":"offer","sdp":"' s:Rule* '"}'
+  = '{' WS '"type"' WS ':' WS '"offer"' WS ',' WS '"sdp"' WS ':' WS '"' s:Rule* '"' WS '}'
   { return ast('offer', s ); }
 
 
 
 Answer
-  = '{"type":"answer","sdp":"' s:Rule* '"}'
+  = '{' WS '"type"' WS ':' WS '"answer"' WS ',' WS '"sdp"' WS ':' WS '"' s:Rule* '"' WS '}'
   { return ast('answer', s ); }
 
 

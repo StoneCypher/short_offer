@@ -35,7 +35,7 @@ const toRowAbsolute = n =>
     borderColor     : fcolors[n],
     backgroundColor : 'transparent',
     data            : versions.map(
-                        v => log[v][styles[n]].final_length )
+                        v => log[v][styles[n]]?.final_length )
   });
 
 const toRowRelative = n =>
@@ -45,9 +45,13 @@ const toRowRelative = n =>
     backgroundColor : 'transparent',
     data            : versions.map(
                         v =>
-                          100
-                          * (log[v][styles[n]].final_length
-                          / log[v][styles[n]].original_length) )
+                          log[v][styles[n]]?.final_length
+                            ?
+                              100
+                              * (log[v][styles[n]].final_length
+                              / log[v][styles[n]].original_length)
+                            : undefined
+                      )
   });
 
 const toRowUnhandled = n =>
@@ -57,8 +61,12 @@ const toRowUnhandled = n =>
     backgroundColor : 'transparent',
     data            : versions.map(
                         v =>
-                          100
-                          * (log[v][styles[n]].failed_claims) )
+                          log[v][styles[n]]?.failed_claims
+                            ?
+                              100
+                              * (log[v][styles[n]].failed_claims)
+                            : undefined
+                      )
   });
 
 

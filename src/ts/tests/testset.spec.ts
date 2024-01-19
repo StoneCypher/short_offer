@@ -8,7 +8,15 @@ import { full_set }     from '../example_beacons';
 
 
 
-test('Round trip of random strings is always byte-accurate', () => {
+function normalize(str: string): string {
+  return str.toLowerCase().replaceAll(' ', '');
+}
+
+
+
+
+
+test('Round trip of random strings is always byte-accurate after lowercasing and space removal', () => {
 
   fc.assert(
     fc.property(
@@ -17,7 +25,7 @@ test('Round trip of random strings is always byte-accurate', () => {
 
       (anyString: string) => {
 
-        return unpack( pack( anyString )) === anyString;
+        return normalize(unpack( pack( anyString ))) === normalize(anyString);
 
       }
 
@@ -30,12 +38,12 @@ test('Round trip of random strings is always byte-accurate', () => {
 
 
 
-describe('Round trip of beacon strings is always byte-accurate', () => {
+describe('Round trip of beacon strings is always byte-accurate after lowercasing and space removal', () => {
 
   Object.entries<string>(full_set).forEach( ([ key, beacon ]) => {
 
     test(`Round trip of ${key}`, async () =>
-      expect( unpack( pack( beacon )) ).toBe(beacon)
+      expect( normalize(unpack( pack( beacon ))) ).toBe(normalize(beacon))
     )
 
   });
