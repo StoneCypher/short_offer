@@ -1,8 +1,5 @@
 
 /*
-      and_12_chrome_120_host        = '{ "type": "offer", "sdp": "v=0\r\no=- 155978072404339633 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:Ekvs\r\na=ice-pwd:h0m4arMSsRLMt0l3ngDlqddt\r\na=ice-options:trickle\r\na=fingerprint:sha-256 35:AF:2E:85:3A:D6:C9:42:57:1F:7F:51:E9:E5:EC:84:0B:64:60:0D:E8:C1:87:7A:43:06:FF:81:FA:E1:1B:7A\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }',
-      and_12_chrome_120_client      = '{ "type": "answer", "sdp": "v=0\r\no=- 7318237576516255092 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:z6qQ\r\na=ice-pwd:kbYxh8kvDAkICiWMq9KuY720\r\na=ice-options:trickle\r\na=fingerprint:sha-256 A1:76:47:F9:59:B4:29:8E:59:67:A5:42:7C:E9:D1:78:9E:23:5F:C8:DB:12:56:28:CD:38:F3:16:C6:59:67:54\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }',
-
       // ty asterick
       lin_chr_92_host               = '{"type":"offer","sdp":"v=0\r\no=- 289338293838051430 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 56494 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 174.76.140.210\r\na=candidate:2124260940 1 udp 2113937151 5aa2112c-8b10-472a-b004-1552ccc8aeb2.local 56494 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 174.76.140.210 56494 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:Y5/M\r\na=ice-pwd:RXGzLLczZGCaCbGpwl7jmogb\r\na=fingerprint:sha-256 8C:6F:89:5E:63:35:D4:4F:23:F3:BB:3D:93:16:7E:52:0F:12:D9:E9:04:87:9A:54:F2:1A:3A:9A:B4:ED:8B:E0\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}',
       lin_chr_92_client             = '{"type":"answer","sdp":"v=0\r\no=- 70000675252925255 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 57450 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 174.76.140.210\r\na=candidate:2124260940 1 udp 2113937151 0a84f1cd-ca83-40ef-a739-9741b4e35692.local 57450 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 174.76.140.210 57450 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:x7ol\r\na=ice-pwd:IHaZv0XVPhvI12dHjRZ4hglz\r\na=fingerprint:sha-256 53:E4:1E:59:75:C6:9D:4B:40:10:D4:A2:33:41:62:AE:27:82:A6:B9:66:B1:E6:D2:E7:D0:08:F6:D6:73:CA:D1\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}',
@@ -141,6 +138,14 @@ const full_set = {
   },
 
 
+  and_12_chrome_120_host: {
+    beacon: '{ "type": "offer", "sdp": "v=0\r\no=- 155978072404339633 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:Ekvs\r\na=ice-pwd:h0m4arMSsRLMt0l3ngDlqddt\r\na=ice-options:trickle\r\na=fingerprint:sha-256 35:AF:2E:85:3A:D6:C9:42:57:1F:7F:51:E9:E5:EC:84:0B:64:60:0D:E8:C1:87:7A:43:06:FF:81:FA:E1:1B:7A\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }'
+  },
+
+  and_12_chrome_120_client: {
+    beacon: '{ "type": "answer", "sdp": "v=0\r\no=- 7318237576516255092 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:z6qQ\r\na=ice-pwd:kbYxh8kvDAkICiWMq9KuY720\r\na=ice-options:trickle\r\na=fingerprint:sha-256 A1:76:47:F9:59:B4:29:8E:59:67:A5:42:7C:E9:D1:78:9E:23:5F:C8:DB:12:56:28:CD:38:F3:16:C6:59:67:54\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }'
+  },
+
 
 /*
 
@@ -170,9 +175,6 @@ const full_set = {
 
   and_chr_92_host,
   and_chr_92_client,
-
-  and_12_chrome_120_host,
-  and_12_chrome_120_client,
 
   mac_10_15_arc_1_26_host,
   mac_10_15_arc_1_26_client,
