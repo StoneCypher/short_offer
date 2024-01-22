@@ -11,7 +11,7 @@ Offers are returned almost byte-identical.  Small concessions are made for compr
 1. The framing JSON can have its whitespace dropped
 2. IPv4 and IPv6 addresses will have leading zeroes dropped
 3. All decimal integers will have leading zeroes dropped
-4. IPv6 addresses will be represented in lower case
+4. IPv6 addresses will be represented in lower case, and double-colon sequences will be expanded
 5. SHA fingerprints will be represented in upper case
 
 Other than these, values (including unknown future values and illegal values) will be represented perfectly.

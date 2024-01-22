@@ -4,14 +4,14 @@ body               { padding: 2em; }
 
 #list, #notlist { position: fixed; }
 
-#list                { padding: 0.25em; box-sizing: border-box; top: 1em; left: 1em; bottom: 1em; width: 34em; background-color: #f0f8ff; }
+#list                { padding: 0.25em; box-sizing: border-box; top: 1em; left: 1em; bottom: 1em; width: 38em; background-color: #f0f8ff; }
 #list table          { border-collapse: collapse; border: 2px solid black; padding: 0; font-family: sans-serif; color: #036; }
 #list th             { background-color: #cde; font-weight: normal; font-size: 85%; text-align: center;  }
 #list td             { padding: 0 0.5em; text-align: center; border: 1px solid #def; }
 #list td+td+td+td+td { text-align: left; }
 #list .light         { font-size: 80%; color: #8be; }
 
-#notlist        { top: 1em; left: 36em; right: 1em; }
+#notlist        { top: 1em; left: 40em; right: 1em; }
 #notlist h1     { margin: 0; }
 #notlist h2     { margin: 0; }
 #notlist div+h2 { margin-top: 1em; }

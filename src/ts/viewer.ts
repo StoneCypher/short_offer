@@ -150,15 +150,15 @@ function bootstrap() {
 
   oe.forEach( ([k, v], i) => {
 
-    const p  = parse(v),
-          q  = pack(v),
-          cm = compress(v),
+    const p  = parse(v.beacon),
+          q  = pack(v.beacon),
+          cm = compress(v.beacon),
           c  = p.value.filter(val => val.kind === 'unknown_line').length;
 
     const a = el('a', {
       inner     : `${k}`,
       href      : '#',
-      onclick   : (e) => click_an_anchor(e, v, k)
+      onclick   : (e) => click_an_anchor(e, v.beacon, k)
     });
 
     if (i === 0) {
@@ -177,19 +177,19 @@ function bootstrap() {
     ctd.className = 'comp';
     ptd.className = 'comp';
 
-    otd.innerHTML = `${v.length.toLocaleString()}<span class="light">b</span>`;
+    otd.innerHTML = `${v.beacon.length.toLocaleString()}<span class="light">b</span>`;
     tr.appendChild(otd);
 
     btd.innerHTML = `${q.length.toLocaleString()}<span class="light">b</span>`;
     tr.appendChild(btd);
 
-    std.innerHTML = `${(100-((q.length/v.length)*100)).toFixed(1)}<span class="light">%</span>`;
+    std.innerHTML = `${(100-((q.length/v.beacon.length)*100)).toFixed(1)}<span class="light">%</span>`;
     tr.appendChild(std);
 
     ctd.innerHTML = `${cm.length.toLocaleString()}<span class="light">b</span>`;
     tr.appendChild(ctd);
 
-    ptd.innerHTML = `${(100-((cm.length/v.length)*100)).toFixed(1)}<span class="light">%</span>`;
+    ptd.innerHTML = `${(100-((cm.length/v.beacon.length)*100)).toFixed(1)}<span class="light">%</span>`;
     tr.appendChild(ptd);
 
     rtd.innerHTML = `${c.toLocaleString()}`;

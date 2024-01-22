@@ -47,6 +47,11 @@
 
 
 
+  function repeat(count, item) {
+    return new Array(count).fill(item);
+  }
+
+
 }
 
 
@@ -166,28 +171,52 @@ IP4
 
 
 
+
+IP6
+  = pre:(quadlet* ':')? post:quadlet* last:up_quad {
+    const lead   = pre? pre[0] : [],
+          follow = [... post, last],
+          gap    = 8 - (lead.length + follow.length);
+    if (gap < 0) { throw new Error('address may have at most 8 segments'); }
+    return (
+      [... lead, ...repeat(gap, 0), ...follow]
+        .map(n => n.toString(16))
+        .join(':')
+        .toLowerCase()
+    );
+  }
+
+quadlet
+  = q:up_quad ':' { return q; }
+
+up_quad
+  = Hex Hex? Hex? Hex? { return parseInt(text(), 16); }
+
+
+
+
 M_h16
   = d:(":" h16) { return `:${d[1]}`; }
 
 
 
 // cribbed from https://git.insoft.cz/insoft/modified-sip.js/-/blob/3081a21bd47215679f7f1dac8c771ae6f3d7193b/src/grammar/src/grammar.pegjs
-IP6
-  = a:h16 ":" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `${a}:${b}:${c}:${d}:${e}:${f}:${g}`; }
-  /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `::${b}:${c}:${d}:${e}:${f}:${g}`; }
-  /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:ls32           { return `::${b}:${c}:${d}:${e}:${f}`; }
-  /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:ls32                     { return `::${b}:${c}:${d}:${e}`; }
-  /      "::" b:h16 ":" c:h16 ":" d:ls32                               { return `::${b}:${c}:${d}`; }
-  /      "::" b:h16 ":" c:ls32                                         { return `::${b}:${c}`; }
-  /      "::" b:ls32                                                   { return `::${b}`; }
-  /      "::" b:h16                                                    { return `::${b}`; }
-  / a:h16                                           "::" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `${a}::${c}:${d}:${e}:${f}:${g}`; }
-  / a:h16 b:h16?                                    "::" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32           { return `${a}:${b}::${d}:${e}:${f}:${g}`; }
-  / a:h16 b:h16? c:h16?                             "::" e:h16 ":" f:h16 ":" g:ls32                     { return `${a}:${b}:${c}::${e}:${f}:${g}`; }
-  / a:h16 b:h16? c:h16? d:h16?                      "::" f:h16 ":" g:ls32                               { return `${a}:${b}:${c}:${d}::${f}:${g}`; }
-  / a:h16 b:h16? c:h16? d:h16? e:h16?               "::" g:ls32                                         { return `${a}:${b}:${c}:${d}:${e}::${g}`; }
-  / a:h16 b:h16? c:h16? d:h16? e:h16? f:h16?        "::" g:h16                                          { return `${a}:${b}:${c}:${d}:${e}::${g}`; }
-  / a:h16 b:h16? c:h16? d:h16? e:h16? f:h16? g:h16? "::"                                                { return `${a}:${b}:${c}:${d}:${e}:${f}:${g}`; }
+// IP6
+//   = a:h16 ":" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `${a}:${b}:${c}:${d}:${e}:${f}:${g}`; }
+//   /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `::${b}:${c}:${d}:${e}:${f}:${g}`; }
+//   /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:ls32           { return `::${b}:${c}:${d}:${e}:${f}`; }
+//   /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:ls32                     { return `::${b}:${c}:${d}:${e}`; }
+//   /      "::" b:h16 ":" c:h16 ":" d:ls32                               { return `::${b}:${c}:${d}`; }
+//   /      "::" b:h16 ":" c:ls32                                         { return `::${b}:${c}`; }
+//   /      "::" b:ls32                                                   { return `::${b}`; }
+//   /      "::" b:h16                                                    { return `::${b}`; }
+//   / a:h16                                           "::" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `${a}::${c}:${d}:${e}:${f}:${g}`; }
+//   / a:h16 b:h16?                                    "::" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32           { return `${a}:${b}::${d}:${e}:${f}:${g}`; }
+//   / a:h16 b:h16? c:h16?                             "::" e:h16 ":" f:h16 ":" g:ls32                     { return `${a}:${b}:${c}::${e}:${f}:${g}`; }
+//   / a:h16 b:h16? c:h16? d:h16?                      "::" f:h16 ":" g:ls32                               { return `${a}:${b}:${c}:${d}::${f}:${g}`; }
+//   / a:h16 b:h16? c:h16? d:h16? e:h16?               "::" g:ls32                                         { return `${a}:${b}:${c}:${d}:${e}::${g}`; }
+//   / a:h16 b:h16? c:h16? d:h16? e:h16? f:h16?        "::" g:h16                                          { return `${a}:${b}:${c}:${d}:${e}::${g}`; }
+//   / a:h16 b:h16? c:h16? d:h16? e:h16? f:h16? g:h16? "::"                                                { return `${a}:${b}:${c}:${d}:${e}:${f}:${g}`; }
 
 
 h16
