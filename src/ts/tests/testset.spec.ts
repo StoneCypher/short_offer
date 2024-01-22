@@ -9,14 +9,14 @@ import { full_set }     from '../example_beacons';
 
 
 function normalize(str: string): string {
-  return str.toLowerCase().replaceAll(' ', '');
+  return str.replaceAll(' ', '');
 }
 
 
 
 
 
-test('Round trip of random strings is always byte-accurate after lowercasing and space removal', () => {
+test('Round trip of random strings is always byte-accurate after space removal', () => {
 
   fc.assert(
     fc.property(
@@ -38,7 +38,7 @@ test('Round trip of random strings is always byte-accurate after lowercasing and
 
 
 
-describe('Round trip of beacon strings is always byte-accurate after lowercasing and space removal', () => {
+describe('Round trip of beacon strings is always byte-accurate after space removal', () => {
 
   Object.entries<string>(full_set).forEach( ([ key, rule ]) => {
 
