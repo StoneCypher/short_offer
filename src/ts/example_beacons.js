@@ -1,33 +1,5 @@
 
 /*
-      // ty asterick
-      lin_chr_92_host               = '{"type":"offer","sdp":"v=0\r\no=- 289338293838051430 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 56494 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 174.76.140.210\r\na=candidate:2124260940 1 udp 2113937151 5aa2112c-8b10-472a-b004-1552ccc8aeb2.local 56494 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 174.76.140.210 56494 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:Y5/M\r\na=ice-pwd:RXGzLLczZGCaCbGpwl7jmogb\r\na=fingerprint:sha-256 8C:6F:89:5E:63:35:D4:4F:23:F3:BB:3D:93:16:7E:52:0F:12:D9:E9:04:87:9A:54:F2:1A:3A:9A:B4:ED:8B:E0\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}',
-      lin_chr_92_client             = '{"type":"answer","sdp":"v=0\r\no=- 70000675252925255 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 57450 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 174.76.140.210\r\na=candidate:2124260940 1 udp 2113937151 0a84f1cd-ca83-40ef-a739-9741b4e35692.local 57450 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 174.76.140.210 57450 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:x7ol\r\na=ice-pwd:IHaZv0XVPhvI12dHjRZ4hglz\r\na=fingerprint:sha-256 53:E4:1E:59:75:C6:9D:4B:40:10:D4:A2:33:41:62:AE:27:82:A6:B9:66:B1:E6:D2:E7:D0:08:F6:D6:73:CA:D1\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}',
-
-      // ty asterick
-      mac_saf_14_host               = '{"type":"offer","sdp":"v=0\r\no=- 7598760969245791746 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 52283 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=candidate:1889231604 1 udp 2113937151 df01c2bb-ec48-4b45-9a3a-2b0035e4af35.local 52283 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 71.202.120.145 52283 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:2xNs\r\na=ice-pwd:zMt6+BOpWZBZtoByUEvVzaTV\r\na=fingerprint:sha-256 6A:38:D2:22:3A:37:30:FB:FD:BB:D9:2D:03:16:86:92:B8:2E:7B:5C:19:A0:07:87:76:94:42:8B:69:19:78:CD\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}',
-      mac_saf_14_client             = '{"type":"answer","sdp":"v=0\r\no=- 4209347552723437851 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 60482 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\nb=AS:30\r\na=candidate:1889231604 1 udp 2113937151 2944e419-e8e0-4cd6-ad95-fdc604568fc0.local 60482 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 71.202.120.145 60482 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:tatN\r\na=ice-pwd:m5a4KagaVEyy5hlkYu8v9BOU\r\na=fingerprint:sha-256 52:4B:3F:3C:31:7C:03:DA:07:CE:2B:72:03:47:3C:DC:80:98:DE:3E:05:CF:EA:CF:EA:70:05:B0:F1:35:2D:E6\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}',
-
-      // ty asterick
-      mac_chrome_92_host            = '{"type":"offer","sdp":"v=0\r\no=- 6764666962177986141 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 63239 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 71.202.120.145\r\na=candidate:1889231604 1 udp 2113937151 e1164bca-b76a-4485-9abb-1e80551037c5.local 63239 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 71.202.120.145 63239 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:xhDx\r\na=ice-pwd:ROMAYuF1l6IsYoHwN9+9pQDy\r\na=fingerprint:sha-256 6C:20:DB:65:F1:17:D2:B4:B9:21:CD:73:86:69:CE:99:5D:98:01:36:B8:2B:60:AF:7A:06:AE:03:1F:86:66:40\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}',
-      mac_chrome_92_client          = '{"type":"answer","sdp":"v=0\r\no=- 4226377727938899149 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 54414 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 71.202.120.145\r\na=candidate:1889231604 1 udp 2113937151 6b13d8ce-9ef1-45e3-9a5a-e6274c9aef13.local 54414 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 71.202.120.145 54414 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:R0fi\r\na=ice-pwd:biCmik4OpSuDAhhUBVKaHqOS\r\na=fingerprint:sha-256 9A:EF:BC:44:7B:5F:87:A6:F6:C7:19:EA:C9:0E:3E:BA:C5:63:34:B6:6D:7D:64:AA:D6:FB:84:29:F4:51:B2:AA\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}',
-
-      // ty aremmell
-      mac_10_15_arc_1_26_host       = '{ "type": "offer", "sdp": "v=0\r\no=- 4779243679514643204 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:E98w\r\na=ice-pwd:q2ESQVw5xlA9gDWtOHynWO/L\r\na=ice-options:trickle\r\na=fingerprint:sha-256 77:D8:46:E3:AF:28:73:4A:CC:E7:23:52:26:35:DA:D0:E6:13:26:C6:07:62:95:86:26:7C:27:94:81:35:6F:3E\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }',
-      mac_10_15_arc_1_26_client     = '{ "type": "answer", "sdp": "v=0\r\no=- 5893445047289023509 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:RLTo\r\na=ice-pwd:iRZpBBUBk1MBP1WQKeNNGS+e\r\na=ice-options:trickle\r\na=fingerprint:sha-256 19:09:44:A3:18:4C:09:E6:DB:E4:5C:85:5C:9F:3B:77:F6:7F:D8:5A:32:4B:D4:68:44:56:68:A1:65:49:B5:EE\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }',
-
-      // ty aremmell
-      r_pi_5_chrome_120_host        = '{ "type": "offer", "sdp": "v=0\r\no=- 5938623485897448230 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:FbuN\r\na=ice-pwd:j/PLYBjRrVgK7bwOuZKIt88+\r\na=ice-options:trickle\r\na=fingerprint:sha-256 2B:DD:93:7D:22:47:BC:CD:44:D9:D8:EC:AD:FD:0A:62:8A:28:CB:59:F2:57:3A:88:06:97:9B:96:3C:9B:04:09\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }',
-      r_pi_5_chrome_120_client      = '{ "type": "answer", "sdp": "v=0\r\no=- 7636279377729593462 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:6lu5\r\na=ice-pwd:m+2oG0WZdzrJVUlITTkqAF4S\r\na=ice-options:trickle\r\na=fingerprint:sha-256 BE:CE:70:42:E1:F5:C2:2C:F7:DE:85:9D:8A:97:F1:5D:17:5F:50:99:C3:85:5C:86:38:8F:E9:8E:FB:F8:86:3A\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }',
-
-      // ty aremmell
-      fbsd_13_2_kde_falkon23_host   = '{ "type": "offer", "sdp": "v=0\r\no=- 8368113761926354517 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\nice-ufrag:JaHm\r\na=ice-pwd:pUUu8yqA96h34g1TvPXYH0JK\r\na=ice-options:trickle\r\na=fingerprint:sha-256 5C:8C:27:25:93:42:83:47:AD:E1:93:12:83:1B:94:9B:0B:15:5D:38:65:5D:D2:A2:5F:A5:5C:A7:48:C6:B1:20\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }',
-      fbsd_13_2_kde_falkon23_server = '{ "type": "answer", "sdp": "v=0\r\no=mozilla...THIS_IS_SDPARTA-99.0 8750675112556966473 0 IN IP4 0.0.0.0\r\ns=-\r\nt=0 0\r\na=sendrecv\r\na=fingerprint:sha-256 0D:05:08:C5:59:85:C8:A4:22:E4:ED:B0:09:BA:9B:60:57:17:F8:08:30:4E:CE:8D:CD:AE:86:41:FC:62:FB:9F\r\na=group:BUNDLE 0\r\na=ice-options:trickle\r\na=msid-semantic:WMS *\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=sendrecv\r\na=ice-pwd:99c5d2645bbf0e93d3ee0d95ec1247f2\r\na=ice-ufrag:6cdd2f4a\r\na=mid:0\r\na=setup:active\r\na=sctp-port:5000\r\na=max-message-size:1073741823\r\n" }',
-
-      // ty aremmell
-      arch_6_4_ff_117_host          = '{ "type": "offer", "sdp": "v=0\r\no=mozilla...THIS_IS_SDPARTA-99.0 3184269940200823856 0 IN IP4 0.0.0.0\r\ns=-\r\nt=0 0\r\na=sendrecv\r\na=fingerprint:sha-256 C0:81:4B:2C:2C:EA:8E:A6:91:8C:8E:B1:AC:1E:F6:82:AB:0C:A2:96:18:1D:B3:BE:8C:E3:00:39:F2:76:8F:86\r\na=group:BUNDLE 0\r\na=ice-options:trickle\r\na=msid-semantic:WMS *\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=sendrecv\r\na=ice-pwd:b026a9183afcce301b3ef2a75986b692\r\na=ice-ufrag:efd7d6b2\r\na=mid:0\r\na=setup:actpass\r\na=sctp-port:5000\r\na=max-message-size:1073741823\r\n" }',
-      arch_6_4_ff_117_server        = '{ "type": "offer", "sdp": "v=0\r\no=mozilla...THIS_IS_SDPARTA-99.0 3184269940200823856 0 IN IP4 0.0.0.0\r\ns=-\r\nt=0 0\r\na=sendrecv\r\na=fingerprint:sha-256 C0:81:4B:2C:2C:EA:8E:A6:91:8C:8E:B1:AC:1E:F6:82:AB:0C:A2:96:18:1D:B3:BE:8C:E3:00:39:F2:76:8F:86\r\na=group:BUNDLE 0\r\na=ice-options:trickle\r\na=msid-semantic:WMS *\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=sendrecv\r\na=ice-pwd:b026a9183afcce301b3ef2a75986b692\r\na=ice-ufrag:efd7d6b2\r\na=mid:0\r\na=setup:actpass\r\na=sctp-port:5000\r\na=max-message-size:1073741823\r\n" }',
-
       // ty shlee
       mac_10_15_ff_121_host         = '{ "type": "offer", "sdp": "v=0\r\no=mozilla...THIS_IS_SDPARTA-99.0 2934449328706449925 0 IN IP4 0.0.0.0\r\ns=-\r\nt=0 0\r\na=sendrecv\r\na=fingerprint:sha-256 A0:83:6B:95:F6:0B:C7:8E:3A:C5:D8:69:F6:82:EB:B5:A6:5F:8E:F5:3C:84:AD:BF:5A:06:9D:32:98:8F:BE:BC\r\na=group:BUNDLE 0\r\na=ice-options:trickle\r\na=msid-semantic:WMS *\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=sendrecv\r\na=ice-pwd:26885a3b683bf26809c230e3a0626ac3\r\na=ice-ufrag:080cfb2c\r\na=mid:0\r\na=setup:actpass\r\na=sctp-port:5000\r\na=max-message-size:1073741823\r\n" }',
       mac_10_15_ff_121_client       = '{ "type": "answer", "sdp": "v=0\r\no=mozilla...THIS_IS_SDPARTA-99.0 2750278302785386281 0 IN IP4 0.0.0.0\r\ns=-\r\nt=0 0\r\na=sendrecv\r\na=fingerprint:sha-256 64:8B:C7:B3:08:B3:90:9A:33:7F:68:D7:7F:DC:CC:EF:EC:7F:2B:FC:6C:C2:8F:65:53:19:9C:5A:FE:9D:41:A6\r\na=group:BUNDLE 0\r\na=ice-options:trickle\r\na=msid-semantic:WMS *\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=sendrecv\r\na=ice-pwd:69930a8699447968d7e8a9f96e545663\r\na=ice-ufrag:cf11dd9c\r\na=mid:0\r\na=setup:active\r\na=sctp-port:5000\r\na=max-message-size:1073741823\r\n" }',
@@ -147,16 +119,77 @@ const full_set = {
   },
 
 
+  // ty asterick
+  lin_chr_92_client: {
+    beacon: '{"type":"answer","sdp":"v=0\r\no=- 70000675252925255 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 57450 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 174.76.140.210\r\na=candidate:2124260940 1 udp 2113937151 0a84f1cd-ca83-40ef-a739-9741b4e35692.local 57450 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 174.76.140.210 57450 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:x7ol\r\na=ice-pwd:IHaZv0XVPhvI12dHjRZ4hglz\r\na=fingerprint:sha-256 53:E4:1E:59:75:C6:9D:4B:40:10:D4:A2:33:41:62:AE:27:82:A6:B9:66:B1:E6:D2:E7:D0:08:F6:D6:73:CA:D1\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}'
+  },
+
+  lin_chr_92_host: {
+    beacon: '{"type":"offer","sdp":"v=0\r\no=- 289338293838051430 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 56494 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 174.76.140.210\r\na=candidate:2124260940 1 udp 2113937151 5aa2112c-8b10-472a-b004-1552ccc8aeb2.local 56494 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 174.76.140.210 56494 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:Y5/M\r\na=ice-pwd:RXGzLLczZGCaCbGpwl7jmogb\r\na=fingerprint:sha-256 8C:6F:89:5E:63:35:D4:4F:23:F3:BB:3D:93:16:7E:52:0F:12:D9:E9:04:87:9A:54:F2:1A:3A:9A:B4:ED:8B:E0\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}'
+  },
+
+
+  // ty asterick
+  mac_saf_14_host: {
+    beacon: '{"type":"offer","sdp":"v=0\r\no=- 7598760969245791746 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 52283 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=candidate:1889231604 1 udp 2113937151 df01c2bb-ec48-4b45-9a3a-2b0035e4af35.local 52283 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 71.202.120.145 52283 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:2xNs\r\na=ice-pwd:zMt6+BOpWZBZtoByUEvVzaTV\r\na=fingerprint:sha-256 6A:38:D2:22:3A:37:30:FB:FD:BB:D9:2D:03:16:86:92:B8:2E:7B:5C:19:A0:07:87:76:94:42:8B:69:19:78:CD\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}'
+  },
+
+  mac_saf_14_client: {
+    beacon: '{"type":"answer","sdp":"v=0\r\no=- 4209347552723437851 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 60482 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\nb=AS:30\r\na=candidate:1889231604 1 udp 2113937151 2944e419-e8e0-4cd6-ad95-fdc604568fc0.local 60482 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 71.202.120.145 60482 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:tatN\r\na=ice-pwd:m5a4KagaVEyy5hlkYu8v9BOU\r\na=fingerprint:sha-256 52:4B:3F:3C:31:7C:03:DA:07:CE:2B:72:03:47:3C:DC:80:98:DE:3E:05:CF:EA:CF:EA:70:05:B0:F1:35:2D:E6\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}'
+  },
+
+
+  // ty asterick
+  mac_chrome_92_host: {
+    beacon: '{"type":"offer","sdp":"v=0\r\no=- 6764666962177986141 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 63239 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 71.202.120.145\r\na=candidate:1889231604 1 udp 2113937151 e1164bca-b76a-4485-9abb-1e80551037c5.local 63239 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 71.202.120.145 63239 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:xhDx\r\na=ice-pwd:ROMAYuF1l6IsYoHwN9+9pQDy\r\na=fingerprint:sha-256 6C:20:DB:65:F1:17:D2:B4:B9:21:CD:73:86:69:CE:99:5D:98:01:36:B8:2B:60:AF:7A:06:AE:03:1F:86:66:40\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}'
+  },
+
+  mac_chrome_92_client: {
+    beacon: '{"type":"answer","sdp":"v=0\r\no=- 4226377727938899149 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 54414 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 71.202.120.145\r\na=candidate:1889231604 1 udp 2113937151 6b13d8ce-9ef1-45e3-9a5a-e6274c9aef13.local 54414 typ host generation 0 network-cost 999\r\na=candidate:842163049 1 udp 1677729535 71.202.120.145 54414 typ srflx raddr 0.0.0.0 rport 0 generation 0 network-cost 999\r\na=ice-ufrag:R0fi\r\na=ice-pwd:biCmik4OpSuDAhhUBVKaHqOS\r\na=fingerprint:sha-256 9A:EF:BC:44:7B:5F:87:A6:F6:C7:19:EA:C9:0E:3E:BA:C5:63:34:B6:6D:7D:64:AA:D6:FB:84:29:F4:51:B2:AA\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}'
+  },
+
+
+  // ty aremmell
+  mac_10_15_arc_1_26_client: {
+    beacon: '{ "type": "answer", "sdp": "v=0\r\no=- 5893445047289023509 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:RLTo\r\na=ice-pwd:iRZpBBUBk1MBP1WQKeNNGS+e\r\na=ice-options:trickle\r\na=fingerprint:sha-256 19:09:44:A3:18:4C:09:E6:DB:E4:5C:85:5C:9F:3B:77:F6:7F:D8:5A:32:4B:D4:68:44:56:68:A1:65:49:B5:EE\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }'
+  },
+
+  mac_10_15_arc_1_26_host: {
+    beacon: '{ "type": "offer", "sdp": "v=0\r\no=- 4779243679514643204 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:E98w\r\na=ice-pwd:q2ESQVw5xlA9gDWtOHynWO/L\r\na=ice-options:trickle\r\na=fingerprint:sha-256 77:D8:46:E3:AF:28:73:4A:CC:E7:23:52:26:35:DA:D0:E6:13:26:C6:07:62:95:86:26:7C:27:94:81:35:6F:3E\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }'
+  },
+
+
+  // ty aremmell
+  r_pi_5_chrome_120_client: {
+    beacon: '{ "type": "answer", "sdp": "v=0\r\no=- 7636279377729593462 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:6lu5\r\na=ice-pwd:m+2oG0WZdzrJVUlITTkqAF4S\r\na=ice-options:trickle\r\na=fingerprint:sha-256 BE:CE:70:42:E1:F5:C2:2C:F7:DE:85:9D:8A:97:F1:5D:17:5F:50:99:C3:85:5C:86:38:8F:E9:8E:FB:F8:86:3A\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }'
+  },
+
+  r_pi_5_chrome_120_host: {
+    beacon: '{ "type": "offer", "sdp": "v=0\r\no=- 5938623485897448230 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=ice-ufrag:FbuN\r\na=ice-pwd:j/PLYBjRrVgK7bwOuZKIt88+\r\na=ice-options:trickle\r\na=fingerprint:sha-256 2B:DD:93:7D:22:47:BC:CD:44:D9:D8:EC:AD:FD:0A:62:8A:28:CB:59:F2:57:3A:88:06:97:9B:96:3C:9B:04:09\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }'
+  },
+
+
+  // ty aremmell
+  fbsd_13_2_kde_falkon23_client: {
+    beacon: '{ "type": "answer", "sdp": "v=0\r\no=mozilla...THIS_IS_SDPARTA-99.0 8750675112556966473 0 IN IP4 0.0.0.0\r\ns=-\r\nt=0 0\r\na=sendrecv\r\na=fingerprint:sha-256 0D:05:08:C5:59:85:C8:A4:22:E4:ED:B0:09:BA:9B:60:57:17:F8:08:30:4E:CE:8D:CD:AE:86:41:FC:62:FB:9F\r\na=group:BUNDLE 0\r\na=ice-options:trickle\r\na=msid-semantic:WMS *\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=sendrecv\r\na=ice-pwd:99c5d2645bbf0e93d3ee0d95ec1247f2\r\na=ice-ufrag:6cdd2f4a\r\na=mid:0\r\na=setup:active\r\na=sctp-port:5000\r\na=max-message-size:1073741823\r\n" }'
+  },
+
+  fbsd_13_2_kde_falkon23_host: {
+    beacon: '{ "type": "offer", "sdp": "v=0\r\no=- 8368113761926354517 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\nice-ufrag:JaHm\r\na=ice-pwd:pUUu8yqA96h34g1TvPXYH0JK\r\na=ice-options:trickle\r\na=fingerprint:sha-256 5C:8C:27:25:93:42:83:47:AD:E1:93:12:83:1B:94:9B:0B:15:5D:38:65:5D:D2:A2:5F:A5:5C:A7:48:C6:B1:20\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n" }'
+  },
+
+
+  // ty aremmell
+  arch_6_4_ff_117_client: {
+    beacon: '{ "type": "answer", "sdp": "v=0\r\no=mozilla...THIS_IS_SDPARTA-99.0 8750675112556966473 0 IN IP4 0.0.0.0\r\ns=-\r\nt=0 0\r\na=sendrecv\r\na=fingerprint:sha-256 0D:05:08:C5:59:85:C8:A4:22:E4:ED:B0:09:BA:9B:60:57:17:F8:08:30:4E:CE:8D:CD:AE:86:41:FC:62:FB:9F\r\na=group:BUNDLE 0\r\na=ice-options:trickle\r\na=msid-semantic:WMS *\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=sendrecv\r\na=ice-pwd:99c5d2645bbf0e93d3ee0d95ec1247f2\r\na=ice-ufrag:6cdd2f4a\r\na=mid:0\r\na=setup:active\r\na=sctp-port:5000\r\na=max-message-size:1073741823\r\n" }'
+  },
+
+  arch_6_4_ff_117_host: {
+    beacon: '{ "type": "offer", "sdp": "v=0\r\no=mozilla...THIS_IS_SDPARTA-99.0 3184269940200823856 0 IN IP4 0.0.0.0\r\ns=-\r\nt=0 0\r\na=sendrecv\r\na=fingerprint:sha-256 C0:81:4B:2C:2C:EA:8E:A6:91:8C:8E:B1:AC:1E:F6:82:AB:0C:A2:96:18:1D:B3:BE:8C:E3:00:39:F2:76:8F:86\r\na=group:BUNDLE 0\r\na=ice-options:trickle\r\na=msid-semantic:WMS *\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 0.0.0.0\r\na=sendrecv\r\na=ice-pwd:b026a9183afcce301b3ef2a75986b692\r\na=ice-ufrag:efd7d6b2\r\na=mid:0\r\na=setup:actpass\r\na=sctp-port:5000\r\na=max-message-size:1073741823\r\n" }'
+  },
+
+
 /*
-
-  lin_chr_92_host,
-  lin_chr_92_client,
-
-  mac_saf_14_host,
-  mac_saf_14_client,
-
-  mac_chrome_92_host,
-  mac_chrome_92_client,
 
   mac_ff_90_host,
   mac_ff_90_client,
