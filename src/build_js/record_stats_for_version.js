@@ -63,11 +63,11 @@ function generate_test_log() {
   styles.map( s => {
 
     const start_time      = new Date().getTime(),
-          le_parse        = parse(full_set[s]),
-          le_pack         = pack(full_set[s]),
+          le_parse        = parse(full_set[s].beacon),
+          le_pack         = pack(full_set[s].beacon),
           end_time        = new Date().getTime();
 
-    const original_length = full_set[s].length,
+    const original_length = full_set[s].beacon.length,
           final_length    = le_pack.length,
           failed_claims   = count_unknowns_in_parse(le_parse),
           ltime           = end_time - start_time;
