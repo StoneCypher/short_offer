@@ -22,7 +22,11 @@ describe('All beacons are strings', () => {
     'ios_17_ff_121_host', 'ios_17_ff_121_client',
     'ios_17_saf_17_1_host', 'ios_17_saf_17_1_client',
     'and_12_edge_120_host', 'and_12_edge_120_client',
-    'and_12_chrome_120_host', 'and_12_chrome_120_client'
+    'and_12_chrome_120_host', 'and_12_chrome_120_client',
+    'mac_10_15_arc_1_26_host', 'mac_10_15_arc_1_26_client',
+    'r_pi_5_chrome_120_host', 'r_pi_5_chrome_120_client',
+    'fbsd_13_2_kde_falkon23_host', 'fbsd_13_2_kde_falkon23_server',
+    'arch_6_4_ff_117_host', 'arch_6_4_ff_117_server'
 
   ];
 
@@ -75,6 +79,18 @@ describe('All beacons are strings', () => {
 
     beacons.ios_17_ff_121_host,
     beacons.ios_17_ff_121_client,
+
+    beacons.mac_10_15_arc_1_26_host,
+    beacons.mac_10_15_arc_1_26_client,
+
+    beacons.r_pi_5_chrome_120_host,
+    beacons.r_pi_5_chrome_120_client,
+
+    beacons.fbsd_13_2_kde_falkon23_host,
+    beacons.fbsd_13_2_kde_falkon23_server,
+
+    beacons.arch_6_4_ff_117_host,
+    beacons.arch_6_4_ff_117_server,
 
     beacons.ios_17_saf_17_1_host,
     beacons.ios_17_saf_17_1_client
