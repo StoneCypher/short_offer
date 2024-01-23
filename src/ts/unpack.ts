@@ -108,18 +108,18 @@ function unpack_i8(str: string) {
 
 
 
-function unpack_i64(str: string) {
+// function unpack_i64(str: string) {
 
-  let out = BigInt(0);
+//   let out = BigInt(0);
 
-  for (let i=0; i<8; ++i) {
-    out *= 256n;
-    out += BigInt(str.codePointAt(i) ?? 0);
-  }
+//   for (let i=0; i<8; ++i) {
+//     out *= 256n;
+//     out += BigInt(str.codePointAt(i) ?? 0);
+//   }
 
-  return out.toString();
+//   return out.toString();
 
-}
+// }
 
 
 
@@ -175,7 +175,7 @@ function unpack(bytestring: string): string {
     const unpacked = unpacker(bytestring.substring(i+1, i+2));
 
     work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
-    i    += 2;
+    i    += 1;
 
   }
 
@@ -190,14 +190,14 @@ function unpack(bytestring: string): string {
   }
 
 
-  function scan_forward_eight_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
+  // function scan_forward_eight_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
 
-    const unpacked = unpacker(bytestring.substring(i+9, i+9));
+  //   const unpacked = unpacker(bytestring.substring(i+9, i+9));
 
-    work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
-    i    += 9;
+  //   work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
+  //   i    += 8;
 
-  }
+  // }
 
 
   function scan_forward_32_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
@@ -205,7 +205,7 @@ function unpack(bytestring: string): string {
     const unpacked = unpacker(bytestring.substring(i+1, i+33));
 
     work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
-    i    += 33;
+    i    += 32;
 
   }
 
@@ -319,7 +319,8 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.standard_origin:
-        scan_forward_eight_bytes('o=- ', unpack_i64, true);
+//        scan_forward_eight_bytes('o=- ', unpack_i64, true);
+        scan_forward_to_null('o=- ', 'standard_moz_origin_1', undefined, true);
         scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
         scan_forward_four_bytes(' IN IP4 ', unpack_bytized_ipv4, true);
         work += '\r\n';
