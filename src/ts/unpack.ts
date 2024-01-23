@@ -185,7 +185,7 @@ function unpack(bytestring: string): string {
     const unpacked = unpacker(bytestring.substring(i+1, i+5));
 
     work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
-    i    += 5;
+    i    += 4;
 
   }
 
