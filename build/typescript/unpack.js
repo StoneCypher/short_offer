@@ -23,6 +23,14 @@ function unpack_i8(str) {
     const d = str.codePointAt(0) ?? 0;
     return (d).toString();
 }
+function unpack_i64(str) {
+    let out = BigInt(0);
+    for (let i = 0; i < 8; ++i) {
+        out *= 256n;
+        out += BigInt(str.codePointAt(i) ?? 0);
+    }
+    return out.toString();
+}
 function unpack_guid(guid) {
     return `${guid.substring(0, 8)}-${guid.substring(8, 12)}-${guid.substring(12, 16)}-${guid.substring(16, 20)}-${guid.substring(20, 32)}`;
 }
@@ -58,6 +66,11 @@ function unpack(bytestring) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 5));
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 5;
+    }
+    function scan_forward_eight_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
+        const unpacked = unpacker(bytestring.substring(i + 9, i + 9));
+        work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+        i += 9;
     }
     function scan_forward_32_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 33));
@@ -146,7 +159,7 @@ function unpack(bytestring) {
                 work += 'a=ice-options:trickle\r\n';
                 break;
             case symbols.standard_origin:
-                scan_forward_to_null('o=- ', 'standard_moz_origin_1', undefined, true);
+                scan_forward_eight_bytes('o=- ', unpack_i64, true);
                 scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
                 scan_forward_four_bytes(' IN IP4 ', unpack_bytized_ipv4, true);
                 work += '\r\n';

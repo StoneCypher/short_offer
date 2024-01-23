@@ -68,6 +68,26 @@ function unpack_i32(str: string) {
 
 
 
+// function unpack_i64(str: string) {
+
+//   const a = BigInt(str.codePointAt(0) ?? 0),
+//         b = BigInt(str.codePointAt(1) ?? 0),
+//         c = BigInt(str.codePointAt(2) ?? 0),
+//         d = BigInt(str.codePointAt(3) ?? 0),
+//         e = BigInt(str.codePointAt(4) ?? 0),
+//         f = BigInt(str.codePointAt(5) ?? 0),
+//         g = BigInt(str.codePointAt(6) ?? 0),
+//         h = BigInt(str.codePointAt(7) ?? 0);
+
+//   return ((((((((((((((a * 256n) + b) * 256n) + c) * 256n) + d) * 256n)
+//                     + e) * 256n) + f) * 256n) + g) * 256n) + h).toString();
+
+// }
+
+
+
+
+
 function unpack_i8(str: string) {
 
   const d = str.codePointAt(0) ?? 0;
@@ -80,18 +100,26 @@ function unpack_i8(str: string) {
 
 
 
-// function unpack_i64(str: string) {
-
-//   let out = BigInt(0);
-
-//   for (let i=0; i<8; ++i) {
-//     out *= 256n;
-//     out += BigInt(str.codePointAt(i) ?? 0);
-//   }
-
-//   return out;
-
+// function unpack_i64(_str: string) {
+//   return 'PIZAZZ!'
 // }
+
+
+
+
+
+function unpack_i64(str: string) {
+
+  let out = BigInt(0);
+
+  for (let i=0; i<8; ++i) {
+    out *= 256n;
+    out += BigInt(str.codePointAt(i) ?? 0);
+  }
+
+  return out.toString();
+
+}
 
 
 
@@ -158,6 +186,16 @@ function unpack(bytestring: string): string {
 
     work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
     i    += 5;
+
+  }
+
+
+  function scan_forward_eight_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
+
+    const unpacked = unpacker(bytestring.substring(i+9, i+9));
+
+    work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
+    i    += 9;
 
   }
 
@@ -281,8 +319,8 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.standard_origin:
-        scan_forward_to_null('o=- ',     'standard_moz_origin_1', undefined, true);
-        scan_forward_to_null(' ',        'standard_moz_origin_2', undefined, true);
+        scan_forward_eight_bytes('o=- ', unpack_i64, true);
+        scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
         scan_forward_four_bytes(' IN IP4 ', unpack_bytized_ipv4, true);
         work += '\r\n';
         break;

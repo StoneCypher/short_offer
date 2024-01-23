@@ -118,27 +118,27 @@ function pack_i32(i32: number | string): string {
 
 
 
-// function pack_i64(i64: bigint | string): string {
+function pack_i64(i64: number | bigint | string): string {
 
-//   let val = BigInt(i64);
+  let val = BigInt(i64);
 
-//   const arr  = new ArrayBuffer(8),
-//         view = new DataView(arr);
+  const arr  = new ArrayBuffer(8),
+        view = new DataView(arr);
 
-//   view.setBigUint64(0, val, false); // byteOffset = 0; litteEndian = false
+  view.setBigUint64(0, val, false); // byteOffset = 0; litteEndian = false
 
-//   const A = String.fromCodePoint(view.getUint8(0)),
-//         B = String.fromCodePoint(view.getUint8(1)),
-//         C = String.fromCodePoint(view.getUint8(2)),
-//         D = String.fromCodePoint(view.getUint8(3)),
-//         E = String.fromCodePoint(view.getUint8(4)),
-//         F = String.fromCodePoint(view.getUint8(5)),
-//         G = String.fromCodePoint(view.getUint8(6)),
-//         H = String.fromCodePoint(view.getUint8(7));
+  const A = String.fromCodePoint(view.getUint8(0)),
+        B = String.fromCodePoint(view.getUint8(1)),
+        C = String.fromCodePoint(view.getUint8(2)),
+        D = String.fromCodePoint(view.getUint8(3)),
+        E = String.fromCodePoint(view.getUint8(4)),
+        F = String.fromCodePoint(view.getUint8(5)),
+        G = String.fromCodePoint(view.getUint8(6)),
+        H = String.fromCodePoint(view.getUint8(7));
 
-//   return `${A}${B}${C}${D}${E}${F}${G}${H}`;
+  return `${A}${B}${C}${D}${E}${F}${G}${H}`;
 
-// }
+}
 
 
 
@@ -238,7 +238,7 @@ const parseable = {
     const { kind, items } = (v as StandardOrigin);
     const [ s, d, i ] = items;
     if (kind !== 'standard_origin') { throw 'impossible'; }
-    return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${pack_i32(i)}${symbols.c_terminal}`;
+    return `${symbols.standard_origin}${pack_i64(s)}${d}${symbols.c_terminal}${pack_i32(i)}${symbols.c_terminal}`;
   },
 
   'standard_moz_origin': (v: ParsedLine) => {

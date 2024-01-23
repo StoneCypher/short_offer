@@ -5995,6 +5995,13 @@ function pack_i32(i32) {
     const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1)), C = String.fromCodePoint(view.getUint8(2)), D = String.fromCodePoint(view.getUint8(3));
     return `${A}${B}${C}${D}`;
 }
+function pack_i64(i64) {
+    let val = BigInt(i64);
+    const arr = new ArrayBuffer(8), view = new DataView(arr);
+    view.setBigUint64(0, val, false);
+    const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1)), C = String.fromCodePoint(view.getUint8(2)), D = String.fromCodePoint(view.getUint8(3)), E = String.fromCodePoint(view.getUint8(4)), F = String.fromCodePoint(view.getUint8(5)), G = String.fromCodePoint(view.getUint8(6)), H = String.fromCodePoint(view.getUint8(7));
+    return `${A}${B}${C}${D}${E}${F}${G}${H}`;
+}
 const parseable = {
     'unknown_line': (v) => `${unknown_line}${v.value}${c_terminal}`,
     'version_zero_line': (_) => `${version_zero_line}`,
@@ -6031,7 +6038,7 @@ const parseable = {
         if (kind !== 'standard_origin') {
             throw 'impossible';
         }
-        return `${standard_origin}${s}${c_terminal}${d}${c_terminal}${pack_i32(i)}${c_terminal}`;
+        return `${standard_origin}${pack_i64(s)}${d}${c_terminal}${pack_i32(i)}${c_terminal}`;
     },
     'standard_moz_origin': (v) => {
         const smo = v, mvs = moz_ver(smo.moz_ver);
@@ -6172,6 +6179,14 @@ function unpack_i8(str) {
     const d = str.codePointAt(0) ?? 0;
     return (d).toString();
 }
+function unpack_i64(str) {
+    let out = BigInt(0);
+    for (let i = 0; i < 8; ++i) {
+        out *= 256n;
+        out += BigInt(str.codePointAt(i) ?? 0);
+    }
+    return out.toString();
+}
 function unpack_guid(guid) {
     return `${guid.substring(0, 8)}-${guid.substring(8, 12)}-${guid.substring(12, 16)}-${guid.substring(16, 20)}-${guid.substring(20, 32)}`;
 }
@@ -6207,6 +6222,11 @@ function unpack(bytestring) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 5));
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 5;
+    }
+    function scan_forward_eight_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
+        const unpacked = unpacker(bytestring.substring(i + 9, i + 9));
+        work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+        i += 9;
     }
     function scan_forward_32_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 33));
@@ -6295,7 +6315,7 @@ function unpack(bytestring) {
                 work += 'a=ice-options:trickle\r\n';
                 break;
             case standard_origin:
-                scan_forward_to_null('o=- ', 'standard_moz_origin_1', undefined, true);
+                scan_forward_eight_bytes('o=- ', unpack_i64, true);
                 scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
                 scan_forward_four_bytes(' IN IP4 ', unpack_bytized_ipv4, true);
                 work += '\r\n';
