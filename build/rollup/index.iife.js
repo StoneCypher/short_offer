@@ -6025,7 +6025,7 @@ var short_offer = (function (exports) {
         's_dash': (_) => `${s_dash}`,
         't_zero_zero': (_) => `${t_zero_zero}`,
         'b_as_30': (_) => `${b_as_30}`,
-        'c_claim_ip4': (v) => `${c_claim_ip4}${pack_i32(v.value)}${c_terminal}`,
+        'c_claim_ip4': (v) => `${c_claim_ip4}${pack_i32(v.value)}`,
         'standard_m_application': (v) => `${standard_m_application}${v.value}${c_terminal}`,
         'a_ice_options_trickle': (_) => `${a_ice_options_trickle}`,
         'standard_origin': (v) => {
@@ -6034,7 +6034,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_origin') {
                 throw 'impossible';
             }
-            return `${standard_origin}${s}${c_terminal}${d}${c_terminal}${pack_i32(i)}${c_terminal}`;
+            return `${standard_origin}${s}${c_terminal}${d}${c_terminal}${pack_i32(i)}`;
         },
         'standard_moz_origin': (v) => {
             const smo = v, mvs = moz_ver(smo.moz_ver);
@@ -6062,7 +6062,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_local_candidate') {
                 throw 'impossible';
             }
-            return `${standard_local_candidate}${pack_i32(d1)}${c_terminal}${pack_i32(d2)}${c_terminal}${d3}${c_terminal}${pack_i32(i1)}${c_terminal}${p}${c_terminal}${d4}${c_terminal}`;
+            return `${standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${d3}${c_terminal}${pack_i32(i1)}${p}${c_terminal}${d4}${c_terminal}`;
         },
         'standard_remote_candidate': (v) => {
             const { kind, items } = v;
@@ -6070,7 +6070,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_remote_candidate') {
                 throw 'impossible';
             }
-            return `${standard_remote_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${pack_i32(i1)}${c_terminal}${d4}${c_terminal}${pack_i32(i2)}${c_terminal}${d5}${c_terminal}${d6}${c_terminal}`;
+            return `${standard_remote_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${pack_i32(i1)}${d4}${c_terminal}${pack_i32(i2)}${d5}${c_terminal}${d6}${c_terminal}`;
         },
         'standard_remote_candidate_ffus': (v) => {
             const { kind, items } = v;
@@ -6078,7 +6078,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_remote_candidate_ffus') {
                 throw 'impossible';
             }
-            return `${standard_remote_candidate_ffus}${pack_i32(d1)}${c_terminal}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${c_terminal}${pack_i32(i1)}${c_terminal}${d4}${c_terminal}${pack_i32(i2)}${c_terminal}${d5}${c_terminal}`;
+            return `${standard_remote_candidate_ffus}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${c_terminal}${pack_i32(i2)}${d5}${c_terminal}`;
         },
         'standard_agen_tcp_candidate': (v) => {
             const { kind, items } = v;
@@ -6086,7 +6086,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_agen_tcp_candidate') {
                 throw 'impossible';
             }
-            return `${standard_agen_tcp_candidate}${pack_i32(d1)}${c_terminal}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${c_terminal}${pack_i32(i1)}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
+            return `${standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${c_terminal}${d5}${c_terminal}`;
         },
         'standard_agen_tcp6_candidate': (v) => {
             const { kind, items } = v;
@@ -6094,7 +6094,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_agen_tcp6_candidate') {
                 throw 'impossible';
             }
-            return `${standard_agen_tcp6_candidate}${pack_i32(d1)}${c_terminal}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${c_terminal}${i1}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
+            return `${standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${i1}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
         },
         'standard_agen_udp4_candidate': (v) => {
             const { kind, items } = v;
@@ -6102,7 +6102,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_agen_udp4_candidate') {
                 throw 'impossible';
             }
-            return `${standard_agen_udp4_candidate}${pack_i32(d1)}${c_terminal}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${c_terminal}${pack_i32(i1)}${c_terminal}${d4}${c_terminal}${pack_i32(i2)}${c_terminal}${d5}${c_terminal}${d6}${c_terminal}`;
+            return `${standard_agen_udp4_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${c_terminal}${pack_i32(i2)}${d5}${c_terminal}${d6}${c_terminal}`;
         },
         'standard_agen_udp6_host_candidate': (v) => {
             const { kind, items } = v;
@@ -6110,7 +6110,7 @@ var short_offer = (function (exports) {
             if (kind !== 'standard_agen_udp6_host_candidate') {
                 throw 'impossible';
             }
-            return `${standard_agen_udp6_host_candidate}${pack_i32(d1)}${c_terminal}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${c_terminal}${i1}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
+            return `${standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${i1}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
         },
         'unknown_terminate': (v) => `${unknown_terminate}${v.value}`
     };
@@ -6209,7 +6209,7 @@ var short_offer = (function (exports) {
         function scan_forward_four_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
             const unpacked = unpacker(bytestring.substring(i + 1, i + 5));
             work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
-            i += 5;
+            i += 4;
         }
         function scan_forward_32_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
             const unpacked = unpacker(bytestring.substring(i + 1, i + 33));
