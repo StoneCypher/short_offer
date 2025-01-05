@@ -34,3 +34,4 @@ tr.unk td { background-color: #fcc; }
 .ch       { color: #060; }
 
 .comp { background-color: #dfe; }
+.warn { font-weight: bold; color: #900; }

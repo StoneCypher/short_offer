@@ -28,6 +28,24 @@ function pack_i8(i8) {
     view.setUint8(0, val);
     return String.fromCodePoint(view.getUint8(0));
 }
+function pack_i16(i16) {
+    let val;
+    switch (typeof i16) {
+        case 'number':
+            val = i16;
+            break;
+        case 'string':
+            val = Number(i16);
+            break;
+        case 'bigint':
+            val = Number(i16);
+            break;
+    }
+    const arr = new ArrayBuffer(2), view = new DataView(arr);
+    view.setUint16(0, val, false);
+    const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1));
+    return `${A}${B}`;
+}
 function pack_i32(i32) {
     let val;
     switch (typeof i32) {
@@ -45,6 +63,25 @@ function pack_i32(i32) {
     view.setUint32(0, val, false);
     const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1)), C = String.fromCodePoint(view.getUint8(2)), D = String.fromCodePoint(view.getUint8(3));
     return `${A}${B}${C}${D}`;
+}
+function pack_i64(i64) {
+    let val = BigInt(i64);
+    const arr = new ArrayBuffer(8), view = new DataView(arr);
+    view.setBigUint64(0, val, false);
+    const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1)), C = String.fromCodePoint(view.getUint8(2)), D = String.fromCodePoint(view.getUint8(3)), E = String.fromCodePoint(view.getUint8(4)), F = String.fromCodePoint(view.getUint8(5)), G = String.fromCodePoint(view.getUint8(6)), H = String.fromCodePoint(view.getUint8(7));
+    return `${A}${B}${C}${D}${E}${F}${G}${H}`;
+}
+function pack_guid(guid_hex_8_4_4_4_12) {
+    const cleaned = (guid_hex_8_4_4_4_12.toString()).replaceAll('-', '');
+    if (typeof cleaned !== 'string') {
+        throw new Error('illegal guid');
+    }
+    const as_u16s = cleaned.match(/.{1,4}/g);
+    if (as_u16s === null) {
+        throw new Error('illegal guid');
+    }
+    const as_int = as_u16s.map(n => parseInt(n, 16));
+    return as_int.map(pack_i16).join('');
 }
 const parseable = {
     'unknown_line': (v) => `${symbols.unknown_line}${v.value}${symbols.c_terminal}`,
@@ -82,11 +119,11 @@ const parseable = {
         if (kind !== 'standard_origin') {
             throw 'impossible';
         }
-        return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${pack_i32(i)}`;
+        return `${symbols.standard_origin}${pack_i64(s)}${d}${symbols.c_terminal}${pack_i32(i)}`;
     },
     'standard_moz_origin': (v) => {
         const smo = v, mvs = moz_ver(smo.moz_ver);
-        return `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}`;
+        return `${symbols.standard_moz_origin}${mvs}${pack_i64(smo.sess)}`;
     },
     'standard_guid_local_candidate': (v) => {
         const { kind, items } = v;
@@ -94,7 +131,7 @@ const parseable = {
         if (kind !== 'standard_guid_local_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_guid_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+        return `${symbols.standard_guid_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_guid(i)}${d4}${symbols.c_terminal}`;
     },
     'standard_guid_local_candidate_ffus': (v) => {
         const { kind, items } = v;
@@ -102,7 +139,7 @@ const parseable = {
         if (kind !== 'standard_guid_local_candidate_ffus') {
             throw 'impossible';
         }
-        return `${symbols.standard_guid_local_candidate_ffus}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+        return `${symbols.standard_guid_local_candidate_ffus}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${pack_i32(d3)}${pack_guid(i)}${pack_i16(d4)}`;
     },
     'standard_local_candidate': (v) => {
         const { kind, items } = v;
@@ -198,4 +235,5 @@ function pack(original) {
         return parsed_to_bytestring(ParseTree);
     }
 }
-export { pack, parsed_to_bytestring };
+export { pack, pack_guid, parsed_to_bytestring };
+export { pack_i64 };

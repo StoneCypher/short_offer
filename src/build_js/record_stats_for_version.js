@@ -127,8 +127,8 @@ function generate_test_log() {
   }
 
   console.log(` - Avg improvement         : ${pct1(1 - (final/orig))} (${orig} to ${final})`);
-  console.log(` - Bytewise least improved : ${worstbS} (${worstbSo} to ${worstbSn}, ${pct1(worstbSn/worstbSo)})`);
-  console.log(` - Pctwise least improved  : ${worstpS} (${worstpSo} to ${worstpSn}, ${pct1(worstpSn/worstpSo)})`);
+  console.log(` - Bytewise least improved : ${worstbS} (${worstbSo} to ${worstbSn}, ${pct1(1 - worstbSn/worstbSo)})`);
+  console.log(` - Pctwise least improved  : ${worstpS} (${worstpSo} to ${worstpSn}, ${pct1(1 - worstpSn/worstpSo)})`);
   console.log(` - Single worst unknown    : ${worstu}`);
 
   return ret;

@@ -53,6 +53,19 @@ function unpack_bytized_ipv4(str: string) {
 
 
 
+function unpack_i16(str: string) {
+
+  const a = str.codePointAt(0) ?? 0,
+        b = str.codePointAt(1) ?? 0;
+
+  return ((a * 256) + b).toString();
+
+}
+
+
+
+
+
 function unpack_i32(str: string) {
 
   const a = str.codePointAt(0) ?? 0,
@@ -68,21 +81,16 @@ function unpack_i32(str: string) {
 
 
 
-// function unpack_i64(str: string) {
+function unpack_i32_hex(str: string) {
 
-//   const a = BigInt(str.codePointAt(0) ?? 0),
-//         b = BigInt(str.codePointAt(1) ?? 0),
-//         c = BigInt(str.codePointAt(2) ?? 0),
-//         d = BigInt(str.codePointAt(3) ?? 0),
-//         e = BigInt(str.codePointAt(4) ?? 0),
-//         f = BigInt(str.codePointAt(5) ?? 0),
-//         g = BigInt(str.codePointAt(6) ?? 0),
-//         h = BigInt(str.codePointAt(7) ?? 0);
+  const a = str.codePointAt(0) ?? 0,
+        b = str.codePointAt(1) ?? 0,
+        c = str.codePointAt(2) ?? 0,
+        d = str.codePointAt(3) ?? 0;
 
-//   return ((((((((((((((a * 256n) + b) * 256n) + c) * 256n) + d) * 256n)
-//                     + e) * 256n) + f) * 256n) + g) * 256n) + h).toString();
+  return ((((((a * 256) + b) * 256) + c) * 256) + d).toString(16);
 
-// }
+}
 
 
 
@@ -100,33 +108,44 @@ function unpack_i8(str: string) {
 
 
 
-// function unpack_i64(_str: string) {
-//   return 'PIZAZZ!'
-// }
+function unpack_i64(str: string) {
+
+  let out = BigInt(0);
+
+  for (let i=0; i<8; ++i) {
+    out *= 256n;
+    out += BigInt(str.codePointAt(i) ?? 0);
+  }
+
+  return out.toString();
+
+}
 
 
 
 
 
-// function unpack_i64(str: string) {
-
-//   let out = BigInt(0);
-
-//   for (let i=0; i<8; ++i) {
-//     out *= 256n;
-//     out += BigInt(str.codePointAt(i) ?? 0);
-//   }
-
-//   return out.toString();
-
-// }
+function leftpad8(str: string) {
+  return str.padStart(8, '0');
+}
 
 
 
 
 
 function unpack_guid(guid: string) {
-  return `${guid.substring(0,8)}-${guid.substring(8,12)}-${guid.substring(12,16)}-${guid.substring(16,20)}-${guid.substring(20,32)}`;
+
+  const as_u16s  = guid.match(/.{1,4}/g);
+  if (as_u16s === null) {
+    throw new Error('illegal unpacking guid');
+  }
+
+  const str_guid = as_u16s.map(unpack_i32_hex)
+                          .map(leftpad8)
+                          .join('');
+
+  return `${str_guid.substring(0,8)}-${str_guid.substring(8,12)}-${str_guid.substring(12,16)}-${str_guid.substring(16,20)}-${str_guid.substring(20,32)}`;
+
 }
 
 
@@ -180,6 +199,16 @@ function unpack(bytestring: string): string {
   }
 
 
+  function scan_forward_two_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
+
+    const unpacked = unpacker(bytestring.substring(i+1, i+3));
+
+    work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
+    i    += 2;
+
+  }
+
+
   function scan_forward_four_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
 
     const unpacked = unpacker(bytestring.substring(i+1, i+5));
@@ -190,14 +219,24 @@ function unpack(bytestring: string): string {
   }
 
 
-  // function scan_forward_eight_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
+  function scan_forward_eight_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
 
-  //   const unpacked = unpacker(bytestring.substring(i+9, i+9));
+    const unpacked = unpacker(bytestring.substring(i+1, i+9));
 
-  //   work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
-  //   i    += 8;
+    work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
+    i    += 8;
 
-  // }
+  }
+
+
+  function scan_forward_sixteen_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
+
+    const unpacked = unpacker(bytestring.substring(i+1, i+17));
+
+    work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
+    i    += 16;
+
+  }
 
 
   function scan_forward_32_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
@@ -319,8 +358,7 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.standard_origin:
-//        scan_forward_eight_bytes('o=- ', unpack_i64, true);
-        scan_forward_to_null('o=- ', 'standard_moz_origin_1', undefined, true);
+        scan_forward_eight_bytes('o=- ', unpack_i64, true);
         scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
         scan_forward_four_bytes(' IN IP4 ', unpack_bytized_ipv4, true);
         work += '\r\n';
@@ -328,7 +366,7 @@ function unpack(bytestring: string): string {
 
       case symbols.standard_moz_origin:
         scan_forward_to_null('o=mozilla...THIS_IS_SDPARTA-', 'standard_moz_origin_1', undefined, true);
-        scan_forward_to_null(' ',                            'standard_moz_origin_2', undefined, true);
+        scan_forward_eight_bytes(' ', unpack_i64, true);
         work += ' 0 IN IP4 0.0.0.0\r\n';
         break;
 
@@ -341,7 +379,7 @@ function unpack(bytestring: string): string {
         scan_forward_to_null(`a=candidate:`,      'standard_local_candidate_1', undefined,   true);
         scan_forward_to_null(' ',                 'standard_local_candidate_2', undefined,   true);
         scan_forward_to_null(' udp ',             'standard_local_candidate_3', undefined,   true);
-        scan_forward_to_null(' ',                 'standard_local_candidate_4', unpack_guid, true);
+        scan_forward_sixteen_bytes(' ', unpack_guid, true);
         scan_forward_to_null('.local ',           'standard_local_candidate_5', undefined,   true);
         work += ' typ host generation 0 network-cost 999\r\n';
         break;
@@ -349,9 +387,9 @@ function unpack(bytestring: string): string {
       case symbols.standard_guid_local_candidate_ffus:
         scan_forward_to_null(`a=candidate:`,      'standard_local_candidate_1', undefined,   true);
         scan_forward_to_null(' ',                 'standard_local_candidate_2', undefined,   true);
-        scan_forward_to_null(' UDP ',             'standard_local_candidate_3', undefined,   true);
-        scan_forward_to_null(' ',                 'standard_local_candidate_4', unpack_guid, true);
-        scan_forward_to_null('.local ',           'standard_local_candidate_5', undefined,   true);
+        scan_forward_four_bytes(' UDP ', unpack_i32, true);
+        scan_forward_sixteen_bytes(' ', unpack_guid, true);
+        scan_forward_two_bytes('.local ', unpack_i16, true);
         work += ' typ host\r\n';
         break;
 
@@ -463,4 +501,17 @@ function unpack(bytestring: string): string {
 
 
 
-export { unpack };
+export {
+  unpack,
+  unpack_guid
+};
+
+
+
+
+
+// temporary
+
+export {
+  unpack_i64
+};

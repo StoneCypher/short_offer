@@ -93,6 +93,8 @@ async function to_image(fname, data, ylabel, title) {
           }
         },
         "yAxis": {
+          "beginAtZero": true,
+          "min": 0,
           "stacked": false,
           "scaleLabel": {
             "display": true,

@@ -5977,6 +5977,24 @@ function pack_i8(i8) {
     view.setUint8(0, val);
     return String.fromCodePoint(view.getUint8(0));
 }
+function pack_i16(i16) {
+    let val;
+    switch (typeof i16) {
+        case 'number':
+            val = i16;
+            break;
+        case 'string':
+            val = Number(i16);
+            break;
+        case 'bigint':
+            val = Number(i16);
+            break;
+    }
+    const arr = new ArrayBuffer(2), view = new DataView(arr);
+    view.setUint16(0, val, false);
+    const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1));
+    return `${A}${B}`;
+}
 function pack_i32(i32) {
     let val;
     switch (typeof i32) {
@@ -5994,6 +6012,25 @@ function pack_i32(i32) {
     view.setUint32(0, val, false);
     const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1)), C = String.fromCodePoint(view.getUint8(2)), D = String.fromCodePoint(view.getUint8(3));
     return `${A}${B}${C}${D}`;
+}
+function pack_i64(i64) {
+    let val = BigInt(i64);
+    const arr = new ArrayBuffer(8), view = new DataView(arr);
+    view.setBigUint64(0, val, false);
+    const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1)), C = String.fromCodePoint(view.getUint8(2)), D = String.fromCodePoint(view.getUint8(3)), E = String.fromCodePoint(view.getUint8(4)), F = String.fromCodePoint(view.getUint8(5)), G = String.fromCodePoint(view.getUint8(6)), H = String.fromCodePoint(view.getUint8(7));
+    return `${A}${B}${C}${D}${E}${F}${G}${H}`;
+}
+function pack_guid(guid_hex_8_4_4_4_12) {
+    const cleaned = (guid_hex_8_4_4_4_12.toString()).replaceAll('-', '');
+    if (typeof cleaned !== 'string') {
+        throw new Error('illegal guid');
+    }
+    const as_u16s = cleaned.match(/.{1,4}/g);
+    if (as_u16s === null) {
+        throw new Error('illegal guid');
+    }
+    const as_int = as_u16s.map(n => parseInt(n, 16));
+    return as_int.map(pack_i16).join('');
 }
 const parseable = {
     'unknown_line': (v) => `${unknown_line}${v.value}${c_terminal}`,
@@ -6031,11 +6068,11 @@ const parseable = {
         if (kind !== 'standard_origin') {
             throw 'impossible';
         }
-        return `${standard_origin}${s}${c_terminal}${d}${c_terminal}${pack_i32(i)}`;
+        return `${standard_origin}${pack_i64(s)}${d}${c_terminal}${pack_i32(i)}`;
     },
     'standard_moz_origin': (v) => {
         const smo = v, mvs = moz_ver(smo.moz_ver);
-        return `${standard_moz_origin}${mvs}${smo.sess}${c_terminal}`;
+        return `${standard_moz_origin}${mvs}${pack_i64(smo.sess)}`;
     },
     'standard_guid_local_candidate': (v) => {
         const { kind, items } = v;
@@ -6043,7 +6080,7 @@ const parseable = {
         if (kind !== 'standard_guid_local_candidate') {
             throw 'impossible';
         }
-        return `${standard_guid_local_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${i}${c_terminal}${d4}${c_terminal}`;
+        return `${standard_guid_local_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${pack_guid(i)}${d4}${c_terminal}`;
     },
     'standard_guid_local_candidate_ffus': (v) => {
         const { kind, items } = v;
@@ -6051,7 +6088,7 @@ const parseable = {
         if (kind !== 'standard_guid_local_candidate_ffus') {
             throw 'impossible';
         }
-        return `${standard_guid_local_candidate_ffus}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${i}${c_terminal}${d4}${c_terminal}`;
+        return `${standard_guid_local_candidate_ffus}${d1}${c_terminal}${d2}${c_terminal}${pack_i32(d3)}${pack_guid(i)}${pack_i16(d4)}`;
     },
     'standard_local_candidate': (v) => {
         const { kind, items } = v;
@@ -6164,16 +6201,42 @@ function unpack_bytized_ipv4(str) {
     const a = str.codePointAt(0), b = str.codePointAt(1), c = str.codePointAt(2), d = str.codePointAt(3);
     return `${a}.${b}.${c}.${d}`;
 }
+function unpack_i16(str) {
+    const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0;
+    return ((a * 256) + b).toString();
+}
 function unpack_i32(str) {
     const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0, c = str.codePointAt(2) ?? 0, d = str.codePointAt(3) ?? 0;
     return ((((((a * 256) + b) * 256) + c) * 256) + d).toString();
+}
+function unpack_i32_hex(str) {
+    const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0, c = str.codePointAt(2) ?? 0, d = str.codePointAt(3) ?? 0;
+    return ((((((a * 256) + b) * 256) + c) * 256) + d).toString(16);
 }
 function unpack_i8(str) {
     const d = str.codePointAt(0) ?? 0;
     return (d).toString();
 }
+function unpack_i64(str) {
+    let out = BigInt(0);
+    for (let i = 0; i < 8; ++i) {
+        out *= 256n;
+        out += BigInt(str.codePointAt(i) ?? 0);
+    }
+    return out.toString();
+}
+function leftpad8(str) {
+    return str.padStart(8, '0');
+}
 function unpack_guid(guid) {
-    return `${guid.substring(0, 8)}-${guid.substring(8, 12)}-${guid.substring(12, 16)}-${guid.substring(16, 20)}-${guid.substring(20, 32)}`;
+    const as_u16s = guid.match(/.{1,4}/g);
+    if (as_u16s === null) {
+        throw new Error('illegal unpacking guid');
+    }
+    const str_guid = as_u16s.map(unpack_i32_hex)
+        .map(leftpad8)
+        .join('');
+    return `${str_guid.substring(0, 8)}-${str_guid.substring(8, 12)}-${str_guid.substring(12, 16)}-${str_guid.substring(16, 20)}-${str_guid.substring(20, 32)}`;
 }
 function unpack(bytestring) {
     if (bytestring === '') {
@@ -6203,10 +6266,25 @@ function unpack(bytestring) {
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 1;
     }
+    function scan_forward_two_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
+        const unpacked = unpacker(bytestring.substring(i + 1, i + 3));
+        work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+        i += 2;
+    }
     function scan_forward_four_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 5));
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 4;
+    }
+    function scan_forward_eight_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
+        const unpacked = unpacker(bytestring.substring(i + 1, i + 9));
+        work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+        i += 8;
+    }
+    function scan_forward_sixteen_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
+        const unpacked = unpacker(bytestring.substring(i + 1, i + 17));
+        work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+        i += 16;
     }
     function scan_forward_32_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 33));
@@ -6295,14 +6373,14 @@ function unpack(bytestring) {
                 work += 'a=ice-options:trickle\r\n';
                 break;
             case standard_origin:
-                scan_forward_to_null('o=- ', 'standard_moz_origin_1', undefined, true);
+                scan_forward_eight_bytes('o=- ', unpack_i64, true);
                 scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
                 scan_forward_four_bytes(' IN IP4 ', unpack_bytized_ipv4, true);
                 work += '\r\n';
                 break;
             case standard_moz_origin:
                 scan_forward_to_null('o=mozilla...THIS_IS_SDPARTA-', 'standard_moz_origin_1', undefined, true);
-                scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
+                scan_forward_eight_bytes(' ', unpack_i64, true);
                 work += ' 0 IN IP4 0.0.0.0\r\n';
                 break;
             case unknown_terminate:
@@ -6313,16 +6391,16 @@ function unpack(bytestring) {
                 scan_forward_to_null(`a=candidate:`, 'standard_local_candidate_1', undefined, true);
                 scan_forward_to_null(' ', 'standard_local_candidate_2', undefined, true);
                 scan_forward_to_null(' udp ', 'standard_local_candidate_3', undefined, true);
-                scan_forward_to_null(' ', 'standard_local_candidate_4', unpack_guid, true);
+                scan_forward_sixteen_bytes(' ', unpack_guid, true);
                 scan_forward_to_null('.local ', 'standard_local_candidate_5', undefined, true);
                 work += ' typ host generation 0 network-cost 999\r\n';
                 break;
             case standard_guid_local_candidate_ffus:
                 scan_forward_to_null(`a=candidate:`, 'standard_local_candidate_1', undefined, true);
                 scan_forward_to_null(' ', 'standard_local_candidate_2', undefined, true);
-                scan_forward_to_null(' UDP ', 'standard_local_candidate_3', undefined, true);
-                scan_forward_to_null(' ', 'standard_local_candidate_4', unpack_guid, true);
-                scan_forward_to_null('.local ', 'standard_local_candidate_5', undefined, true);
+                scan_forward_four_bytes(' UDP ', unpack_i32, true);
+                scan_forward_sixteen_bytes(' ', unpack_guid, true);
+                scan_forward_two_bytes('.local ', unpack_i16, true);
                 work += ' typ host\r\n';
                 break;
             case standard_local_candidate:
@@ -6931,4 +7009,4 @@ function decompress(compressed) {
     return unpack(lzStringExports.decompressFromEncodedURIComponent(compressed));
 }
 
-export { compress, decompress, deparse, pack, parse, unpack };
+export { compress, decompress, deparse, pack, pack_guid, pack_i64, parse, unpack, unpack_guid, unpack_i64 };

@@ -192,7 +192,7 @@ function bootstrap() {
     ptd.innerHTML = `${(100-((cm.length/v.beacon.length)*100)).toFixed(1)}<span class="light">%</span>`;
     tr.appendChild(ptd);
 
-    rtd.innerHTML = `${c.toLocaleString()}`;
+    rtd.innerHTML = `${c === 0? '0' : `<span class="warn">${c.toLocaleString()}</span>`}`;
     tr.appendChild(rtd);
 
     atd.appendChild(a);
