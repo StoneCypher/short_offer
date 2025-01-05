@@ -5,5 +5,5 @@ export { unpack, unpack_guid }  from './unpack';
 export { compress, decompress } from './compress';
 
 // temporary
-export { pack_i64 }   from './pack';
-export { unpack_i64 } from './unpack';
+export { pack_i16,   pack_i64 }                          from './pack';
+export { unpack_i16, unpack_i16_hex_padded, unpack_i64 } from './unpack';

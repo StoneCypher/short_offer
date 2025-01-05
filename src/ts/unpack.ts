@@ -31,7 +31,7 @@ function unpack_sha256(packed_sha256: string): string {
 
 function unpack_sha_colons(str: string) {
   const ustr = unpack_sha256(str);
-  return (ustr.match(/.{1,2}/g) || []).join(':');
+  return (ustr.match(/.{1,2}/gs) || []).join(':');
 }
 
 
@@ -66,6 +66,32 @@ function unpack_i16(str: string) {
 
 
 
+// function unpack_i16_hex(str: string) {
+
+//   const a = str.codePointAt(0) ?? 0,
+//         b = str.codePointAt(1) ?? 0;
+
+//   return ((a * 256) + b).toString(16);
+
+// }
+
+
+
+
+
+function unpack_i16_hex_padded(str: string) {
+
+  const a = str.codePointAt(0) ?? 0,
+        b = str.codePointAt(1) ?? 0;
+
+  return ((a * 256) + b).toString(16).padStart(4, '0');
+
+}
+
+
+
+
+
 function unpack_i32(str: string) {
 
   const a = str.codePointAt(0) ?? 0,
@@ -81,16 +107,16 @@ function unpack_i32(str: string) {
 
 
 
-function unpack_i32_hex(str: string) {
+// function unpack_i32_hex(str: string) {
 
-  const a = str.codePointAt(0) ?? 0,
-        b = str.codePointAt(1) ?? 0,
-        c = str.codePointAt(2) ?? 0,
-        d = str.codePointAt(3) ?? 0;
+//   const a = str.codePointAt(0) ?? 0,
+//         b = str.codePointAt(1) ?? 0,
+//         c = str.codePointAt(2) ?? 0,
+//         d = str.codePointAt(3) ?? 0;
 
-  return ((((((a * 256) + b) * 256) + c) * 256) + d).toString(16);
+//   return ((((((a * 256) + b) * 256) + c) * 256) + d).toString(16);
 
-}
+// }
 
 
 
@@ -125,9 +151,9 @@ function unpack_i64(str: string) {
 
 
 
-function leftpad8(str: string) {
-  return str.padStart(8, '0');
-}
+// function leftpad8(str: string) {
+//   return str.padStart(8, '0');
+// }
 
 
 
@@ -135,13 +161,13 @@ function leftpad8(str: string) {
 
 function unpack_guid(guid: string) {
 
-  const as_u16s  = guid.match(/.{1,4}/g);
+  const as_u16s  = guid.match(/.{1,2}/gs);
   if (as_u16s === null) {
     throw new Error('illegal unpacking guid');
   }
 
-  const str_guid = as_u16s.map(unpack_i32_hex)
-                          .map(leftpad8)
+  const str_guid = as_u16s.map(unpack_i16_hex_padded)
+//                        .map(leftpad8)
                           .join('');
 
   return `${str_guid.substring(0,8)}-${str_guid.substring(8,12)}-${str_guid.substring(12,16)}-${str_guid.substring(16,20)}-${str_guid.substring(20,32)}`;
@@ -513,5 +539,7 @@ export {
 // temporary
 
 export {
+  unpack_i16,
+  unpack_i16_hex_padded,
   unpack_i64
 };

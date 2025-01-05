@@ -76,7 +76,7 @@ function pack_guid(guid_hex_8_4_4_4_12) {
     if (typeof cleaned !== 'string') {
         throw new Error('illegal guid');
     }
-    const as_u16s = cleaned.match(/.{1,4}/g);
+    const as_u16s = cleaned.match(/.{1,4}/gs);
     if (as_u16s === null) {
         throw new Error('illegal guid');
     }
@@ -236,4 +236,4 @@ function pack(original) {
     }
 }
 export { pack, pack_guid, parsed_to_bytestring };
-export { pack_i64 };
+export { pack_i16, pack_i64 };

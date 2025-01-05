@@ -6027,7 +6027,7 @@ function pack_guid(guid_hex_8_4_4_4_12) {
     if (typeof cleaned !== 'string') {
         throw new Error('illegal guid');
     }
-    const as_u16s = cleaned.match(/.{1,4}/g);
+    const as_u16s = cleaned.match(/.{1,4}/gs);
     if (as_u16s === null) {
         throw new Error('illegal guid');
     }
@@ -6197,7 +6197,7 @@ function unpack_sha256(packed_sha256) {
 }
 function unpack_sha_colons(str) {
     const ustr = unpack_sha256(str);
-    return (ustr.match(/.{1,2}/g) || []).join(':');
+    return (ustr.match(/.{1,2}/gs) || []).join(':');
 }
 function unpack_bytized_ipv4(str) {
     const a = str.codePointAt(0), b = str.codePointAt(1), c = str.codePointAt(2), d = str.codePointAt(3);
@@ -6207,13 +6207,13 @@ function unpack_i16(str) {
     const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0;
     return ((a * 256) + b).toString();
 }
+function unpack_i16_hex_padded(str) {
+    const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0;
+    return ((a * 256) + b).toString(16).padStart(4, '0');
+}
 function unpack_i32(str) {
     const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0, c = str.codePointAt(2) ?? 0, d = str.codePointAt(3) ?? 0;
     return ((((((a * 256) + b) * 256) + c) * 256) + d).toString();
-}
-function unpack_i32_hex(str) {
-    const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0, c = str.codePointAt(2) ?? 0, d = str.codePointAt(3) ?? 0;
-    return ((((((a * 256) + b) * 256) + c) * 256) + d).toString(16);
 }
 function unpack_i8(str) {
     const d = str.codePointAt(0) ?? 0;
@@ -6227,16 +6227,12 @@ function unpack_i64(str) {
     }
     return out.toString();
 }
-function leftpad8(str) {
-    return str.padStart(8, '0');
-}
 function unpack_guid(guid) {
-    const as_u16s = guid.match(/.{1,4}/g);
+    const as_u16s = guid.match(/.{1,2}/gs);
     if (as_u16s === null) {
         throw new Error('illegal unpacking guid');
     }
-    const str_guid = as_u16s.map(unpack_i32_hex)
-        .map(leftpad8)
+    const str_guid = as_u16s.map(unpack_i16_hex_padded)
         .join('');
     return `${str_guid.substring(0, 8)}-${str_guid.substring(8, 12)}-${str_guid.substring(12, 16)}-${str_guid.substring(16, 20)}-${str_guid.substring(20, 32)}`;
 }
@@ -7016,8 +7012,11 @@ exports.decompress = decompress;
 exports.deparse = deparse;
 exports.pack = pack;
 exports.pack_guid = pack_guid;
+exports.pack_i16 = pack_i16;
 exports.pack_i64 = pack_i64;
 exports.parse = parse;
 exports.unpack = unpack;
 exports.unpack_guid = unpack_guid;
+exports.unpack_i16 = unpack_i16;
+exports.unpack_i16_hex_padded = unpack_i16_hex_padded;
 exports.unpack_i64 = unpack_i64;

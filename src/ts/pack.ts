@@ -183,7 +183,7 @@ function pack_guid(guid_hex_8_4_4_4_12: string | number): string {
     throw new Error('illegal guid');
   }
 
-  const as_u16s = cleaned.match(/.{1,4}/g);
+  const as_u16s = cleaned.match(/.{1,4}/gs);
   if (as_u16s === null) {
     throw new Error('illegal guid');
   }
@@ -443,5 +443,6 @@ export {
 // temporary
 
 export {
+  pack_i16,
   pack_i64
 };
