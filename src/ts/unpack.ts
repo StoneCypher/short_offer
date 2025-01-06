@@ -109,10 +109,11 @@ function unpack(bytestring: string): string {
 
   if (bytestring === '') { return ''; }
 
-  let i      : number,
-      iC     : number,
-      work   : string = '',
-      at_end : string = '';
+  let i            : number,
+      iC           : number,
+      work         : string = '',
+      at_end       : string = '',
+      stream_start : number = 0;
 
 
   function unpack_none(s: string)    { return s; }
@@ -121,9 +122,9 @@ function unpack(bytestring: string): string {
 
   function scan_forward_to_null(prefix: string, throw_label: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
 
-    let found: false | number = false,
-        end,
-        finished: boolean = false;
+    let found        : false | number = false,
+        end          : number,
+        finished     : boolean        = false;
 
     for (end=i+1; end<iC && (finished === false); ++end) {
       if (bytestring.charAt(end) === symbols.c_terminal) {
@@ -172,7 +173,23 @@ function unpack(bytestring: string): string {
   }
 
 
-  for (i=0, iC = bytestring.length; i<iC; ++i) {
+
+
+  // ipv4 header
+
+  let ipv4_addr_count = bytestring.charCodeAt(0);
+  ++stream_start;
+
+  console.log(`Reading ${ipv4_addr_count} addresses`);
+  stream_start += ipv4_addr_count*4;
+//  TODO
+//  for n = 0 .. < addr_count
+//  ip4_list[n]   = ip4 from bytes from stream at stream_start
+//  stream_start += 4
+
+  // bytestream
+
+  for (i=stream_start, iC = bytestring.length; i<iC; ++i) {
 
     switch (bytestring.charAt(i)) {
 

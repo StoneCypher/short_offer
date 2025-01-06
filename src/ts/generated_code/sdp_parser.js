@@ -260,7 +260,7 @@ function peg$parse(input, options) {
       peg$c105 = peg$literalExpectation(" ", false),
       peg$c106 = " IN IP4 ",
       peg$c107 = peg$literalExpectation(" IN IP4 ", false),
-      peg$c108 = function(msess, d, i) { return ast('standard_origin', [msess, d, i]); },
+      peg$c108 = function(msess, d, i) { return ast('standard_origin', [msess, d, i], [i]); },
       peg$c109 = "o=mozilla...THIS_IS_SDPARTA-",
       peg$c110 = peg$literalExpectation("o=mozilla...THIS_IS_SDPARTA-", false),
       peg$c111 = " 0 IN IP4 0.0.0.0",
@@ -290,7 +290,7 @@ function peg$parse(input, options) {
       peg$c135 = peg$literalExpectation(" udp ", false),
       peg$c136 = " typ host generation 0 network-id ",
       peg$c137 = peg$literalExpectation(" typ host generation 0 network-id ", false),
-      peg$c138 = function(d1, d2, d3, i, p, d4) { return ast('standard_local_candidate', [ d1, d2, d3, i, p, d4 ]); },
+      peg$c138 = function(d1, d2, d3, i, p, d4) { return ast('standard_local_candidate', [ d1, d2, d3, i, p, d4 ], [i]); },
       peg$c139 = ".local ",
       peg$c140 = peg$literalExpectation(".local ", false),
       peg$c141 = " typ host generation 0 network-cost 999",
@@ -309,17 +309,17 @@ function peg$parse(input, options) {
       peg$c154 = peg$literalExpectation(" generation ", false),
       peg$c155 = " network-cost 999",
       peg$c156 = peg$literalExpectation(" network-cost 999", false),
-      peg$c157 = function(d1, d2, d3, i1, d4, i2, d5, d6) { return ast('standard_remote_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); },
-      peg$c158 = function(d1, d2, d3, i1, d4, i2, d5) { return ast('standard_remote_candidate_ffus', [ d1, d2, d3, i1, d4, i2, d5 ]); },
+      peg$c157 = function(d1, d2, d3, i1, d4, i2, d5, d6) { return ast('standard_remote_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ], [i1]); },
+      peg$c158 = function(d1, d2, d3, i1, d4, i2, d5) { return ast('standard_remote_candidate_ffus', [ d1, d2, d3, i1, d4, i2, d5 ], [i1]); },
       peg$c159 = " tcp ",
       peg$c160 = peg$literalExpectation(" tcp ", false),
       peg$c161 = " typ host tcptype active generation 0 network-id ",
       peg$c162 = peg$literalExpectation(" typ host tcptype active generation 0 network-id ", false),
-      peg$c163 = function(d1, d2, d3, i1, d4, d5) { return ast('standard_agen_tcp_candidate', [ d1, d2, d3, i1, d4, d5 ]); },
+      peg$c163 = function(d1, d2, d3, i1, d4, d5) { return ast('standard_agen_tcp_candidate', [ d1, d2, d3, i1, d4, d5 ], [i1]); },
       peg$c164 = function(d1, d2, d3, i1, d4, d5) { return ast('standard_agen_tcp6_candidate', [ d1, d2, d3, i1, d4, d5 ]); },
       peg$c165 = " generation 0 network-id ",
       peg$c166 = peg$literalExpectation(" generation 0 network-id ", false),
-      peg$c167 = function(d1, d2, d3, i1, d4, i2, d5, d6) { return ast('standard_agen_udp4_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); },
+      peg$c167 = function(d1, d2, d3, i1, d4, i2, d5, d6) { return ast('standard_agen_udp4_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ], [i1]); },
       peg$c168 = function(d1, d2, d3, i1, d4, d5) { return ast('standard_agen_udp6_host_candidate', [ d1, d2, d3, i1, d4, d5 ]); },
       peg$c169 = "a=ice-pwd:",
       peg$c170 = peg$literalExpectation("a=ice-pwd:", false),
@@ -338,7 +338,7 @@ function peg$parse(input, options) {
       peg$c183 = function() { return ast('a_group_bundle_0'); },
       peg$c184 = "c=IN IP4 ",
       peg$c185 = peg$literalExpectation("c=IN IP4 ", false),
-      peg$c186 = function(data) { return ast('c_claim_ip4', data); },
+      peg$c186 = function(data) { return ast('c_claim_ip4', data, [data]); },
       peg$c187 = "m=application ",
       peg$c188 = peg$literalExpectation("m=application ", false),
       peg$c189 = " UDP/DTLS/SCTP webrtc-datachannel",
@@ -5527,7 +5527,7 @@ function peg$parse(input, options) {
 
 
 
-    function ast(kind, value) {
+    function ast(kind, value, addresses) {
 
       const uses_short_nl = false; // todo
 
@@ -5535,6 +5535,9 @@ function peg$parse(input, options) {
         kind,
         value,
         uses_short_nl,
+        addresses: {
+          v4: []
+        },
         loc: location()
       };
 
@@ -5557,6 +5560,22 @@ function peg$parse(input, options) {
           ].includes(kind)) {
         retval.items = value;
         retval.value = '';
+      }
+
+      if (addresses !== undefined) {
+        retval.addresses.v4 = [... new Set([ ...retval.addresses.v4, ...addresses ])];
+      }
+
+      if (Array.isArray(value)) {
+        value.forEach(item => {
+          if (typeof item === 'object') {
+            if (item.addresses !== undefined) {
+              if (item.addresses.v4 !== undefined) {
+                retval.addresses.v4 = [... new Set([ ...retval.addresses.v4, ...item.addresses.v4 ])];
+              }
+            }
+          }
+        });
       }
 
       return retval;

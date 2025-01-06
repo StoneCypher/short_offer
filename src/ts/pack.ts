@@ -319,6 +319,16 @@ const parseable = {
 
 
 
+// receives '2130706433', converts to 2130706433, converts to 127.0.0.1, converts to \127\0\0\1, returns
+
+function addr_as_decimal_as_string_to_bytes(_addr_as_decimal_as_string: string): string {
+  return '\0\0\0\0';
+}
+
+
+
+
+
 // todo - we removed the nl or cr/nl thing.  was this right?
 // it still compresses correctly for weird stuff, just not efficiently
 // but nobody uses it?
@@ -328,6 +338,22 @@ function parsed_to_bytestring( parsed: ParsedSdp ): string {
   let work      : string  = '',
       ending    : string  = '',
       skip_iter : boolean = false;
+
+  // ipv4 header
+
+  if (parsed.addresses === undefined) {
+    work += '\0';
+  } else {
+    if (parsed.addresses.v4.length > 255) {
+      throw new Error('Encoding is limited to 255 ipv4 addresses');
+    }
+    work += String.fromCodePoint(parsed.addresses.v4.length);
+    for (let i=0; i<parsed.addresses.v4.length; ++i) {
+      work += addr_as_decimal_as_string_to_bytes(parsed.addresses.v4[i]!);
+    }
+  }
+
+  // pack string
 
   if      (parsed.kind === 'offer')  { work += symbols.offer;  }
   else if (parsed.kind === 'answer') { work += symbols.answer; }

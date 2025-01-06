@@ -1,13 +1,13 @@
 {
   "name": "short_offer",
-  "version": "0.38.0",
+  "version": "0.39.0",
   "description": "Present a shortened WebRTC offer.  Fully tested, typescript double-parser.",
   "type": "module",
-  "module": "index.js",
-  "main": "index.cjs",
+  "module": "dist/index.js",
+  "main": "dist/index.cjs",
   "scripts": {
     "clean": "rimraf dist && mkdir dist && rimraf docs && mkdir docs && cd docs && mkdir docs && cd .. && rimraf build && mkdir build && cd build && mkdir pegjs && mkdir typescript && mkdir rollup && mkdir terser && cd ../src/ts && rimraf generated_code && mkdir generated_code && cd ../..",
-    "pegjs": "pegjs -o src/ts/generated_code/sdp_parser.js --format commonjs src/peg/sdp_parser.pegjs && pegjs -o src/ts/generated_code/decompiler.js --format commonjs src/peg/decompiler.pegjs",
+    "pegjs": "pegjs -o src/ts/generated_code/sdp_parser.js --format commonjs src/peg/sdp_parser.pegjs",
     "typescript": "tsc --build tsconfig.json",
     "rollup": "rollup -c",
     "site": "cp ./src/html/* docs && cp ./build/rollup/viewer.* docs && cp ./src/maintained_artifacts/*.png docs/",

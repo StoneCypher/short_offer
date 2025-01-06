@@ -30,7 +30,7 @@ function unpack(bytestring) {
     if (bytestring === '') {
         return '';
     }
-    let i, iC, work = '', at_end = '';
+    let i, iC, work = '', at_end = '', stream_start = 0;
     function unpack_none(s) { return s; }
     function unpack_decimal(d) { return d; }
     function scan_forward_to_null(prefix, throw_label, unpacker = unpack_none, skip_r_n = false) {
@@ -64,7 +64,11 @@ function unpack(bytestring) {
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 33;
     }
-    for (i = 0, iC = bytestring.length; i < iC; ++i) {
+    let ipv4_addr_count = bytestring.charCodeAt(0);
+    ++stream_start;
+    console.log(`Reading ${ipv4_addr_count} addresses`);
+    stream_start += ipv4_addr_count * 4;
+    for (i = stream_start, iC = bytestring.length; i < iC; ++i) {
         switch (bytestring.charAt(i)) {
             case symbols.offer:
                 work += '{"type":"offer","sdp":"';

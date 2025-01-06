@@ -162,8 +162,23 @@ const parseable = {
     },
     'unknown_terminate': (v) => `${symbols.unknown_terminate}${v.value}`
 };
+function addr_as_decimal_as_string_to_bytes(_addr_as_decimal_as_string) {
+    return '\0\0\0\0';
+}
 function parsed_to_bytestring(parsed) {
     let work = '', ending = '', skip_iter = false;
+    if (parsed.addresses === undefined) {
+        work += '\0';
+    }
+    else {
+        if (parsed.addresses.v4.length > 255) {
+            throw new Error('Encoding is limited to 255 ipv4 addresses');
+        }
+        work += String.fromCodePoint(parsed.addresses.v4.length);
+        for (let i = 0; i < parsed.addresses.v4.length; ++i) {
+            work += addr_as_decimal_as_string_to_bytes(parsed.addresses.v4[i]);
+        }
+    }
     if (parsed.kind === 'offer') {
         work += symbols.offer;
     }

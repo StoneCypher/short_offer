@@ -1,4 +1,10 @@
 
+type IPv4asDecimalAsString = string;
+
+
+
+
+
 type VersionZeroLine                = { kind: 'version_zero_line',                  value: string, uses_short_nl: boolean };
 type VersionLine                    = { kind: 'version_line',                       value: string, uses_short_nl: boolean };
 
@@ -82,9 +88,13 @@ type ParsedSdp = {
         | 'standard_agen_udp4_candidate' | 'standard_agen_udp6_host_candidate'
         | 'a_ice_pwd' | 'a_ice_pwd_l' | 'a_ice_ufrag_4' | 'a_ice_ufrag_8',
 
-  value : ParsedLine[],
+  value      : ParsedLine[],
+  loc        : PegLocation,
 
-  loc   : PegLocation
+  addresses ?: {
+    v4: IPv4asDecimalAsString[]
+  }
+
 
 };
 
