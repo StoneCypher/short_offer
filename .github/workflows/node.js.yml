@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - node-version: 17.x   # fastest, so run first, to error fast
+          - node-version: 20.x   # fastest, so run first, to error fast
             os: ubuntu-latest
 # macosx is super slow and costs 10x, suppress it
 #          - node-version: 17.x   # slowest, so run next. sort by slowest from here to get earliest end through parallelism
