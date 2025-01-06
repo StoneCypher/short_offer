@@ -319,10 +319,35 @@ const parseable = {
 
 
 
+// what?  bigint to character.  what?
+
+function bitch(bi: bigint) {
+  return String.fromCharCode(Number(bi));
+}
+
+
+
+
+
 // receives '2130706433', converts to 2130706433, converts to 127.0.0.1, converts to \127\0\0\1, returns
 
-function addr_as_decimal_as_string_to_bytes(_addr_as_decimal_as_string: string): string {
-  return '\0\0\0\0';
+function addr_as_decimal_as_string_to_bytes(addr_as_decimal_as_string: string): string {
+
+  const addr: bigint    = BigInt(addr_as_decimal_as_string);
+
+  const d   : bigint    = addr % 256n,
+        s8  : bigint    = addr >> 8n,
+
+        c   : bigint    = s8   % 256n,
+        s16 : bigint    = s8   >> 8n,
+
+        b   : bigint    = s16  % 256n,
+        s24 : bigint    = s16  >> 8n,
+
+        a   : bigint    = s24  % 256n;
+
+  return `${bitch(a)}${bitch(b)}${bitch(c)}${bitch(d)}`;
+
 }
 
 

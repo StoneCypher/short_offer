@@ -162,8 +162,13 @@ const parseable = {
     },
     'unknown_terminate': (v) => `${symbols.unknown_terminate}${v.value}`
 };
-function addr_as_decimal_as_string_to_bytes(_addr_as_decimal_as_string) {
-    return '\0\0\0\0';
+function bitch(bi) {
+    return String.fromCharCode(Number(bi));
+}
+function addr_as_decimal_as_string_to_bytes(addr_as_decimal_as_string) {
+    const addr = BigInt(addr_as_decimal_as_string);
+    const d = addr % 256n, s8 = addr >> 8n, c = s8 % 256n, s16 = s8 >> 8n, b = s16 % 256n, s24 = s16 >> 8n, a = s24 % 256n;
+    return `${bitch(a)}${bitch(b)}${bitch(c)}${bitch(d)}`;
 }
 function parsed_to_bytestring(parsed) {
     let work = '', ending = '', skip_iter = false;
