@@ -5835,13 +5835,17 @@ var short_offer = (function (exports) {
         },
         'standard_m_application': (v, _addresses_dsa) => `${standard_m_application}${v.value}${c_terminal}`,
         'a_ice_options_trickle': (_, _addresses_dsa) => `${a_ice_options_trickle}`,
-        'standard_origin': (v, _addresses_dsa) => {
+        'standard_origin': (v, addresses_dsa) => {
             const { kind, items } = v;
             const [s, d, i] = items;
             if (kind !== 'standard_origin') {
                 throw 'impossible';
             }
-            return `${standard_origin}${s}${c_terminal}${d}${c_terminal}${pack_i32(i)}`;
+            let found = addresses_dsa.indexOf(i);
+            if (found === -1) {
+                throw new Error(`FATAL: missing address ${i}`);
+            }
+            return `${standard_origin}${s}${c_terminal}${d}${c_terminal}${pack_i8(found)}`;
         },
         'standard_moz_origin': (v, _addresses_dsa) => {
             const smo = v, mvs = moz_ver(smo.moz_ver);
@@ -6174,7 +6178,7 @@ var short_offer = (function (exports) {
                 case standard_origin:
                     scan_forward_to_null('o=- ', 'standard_moz_origin_1', undefined, true);
                     scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
-                    scan_forward_four_bytes(' IN IP4 ', unpack_bytized_ipv4, true);
+                    scan_forward_exactly_one_byte(' IN IP4 ', unpack_indexed_ipv4_l, true);
                     work += '\r\n';
                     break;
                 case standard_moz_origin:

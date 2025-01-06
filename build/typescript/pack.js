@@ -83,13 +83,17 @@ const parseable = {
     },
     'standard_m_application': (v, _addresses_dsa) => `${symbols.standard_m_application}${v.value}${symbols.c_terminal}`,
     'a_ice_options_trickle': (_, _addresses_dsa) => `${symbols.a_ice_options_trickle}`,
-    'standard_origin': (v, _addresses_dsa) => {
+    'standard_origin': (v, addresses_dsa) => {
         const { kind, items } = v;
         const [s, d, i] = items;
         if (kind !== 'standard_origin') {
             throw 'impossible';
         }
-        return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${pack_i32(i)}`;
+        let found = addresses_dsa.indexOf(i);
+        if (found === -1) {
+            throw new Error(`FATAL: missing address ${i}`);
+        }
+        return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${pack_i8(found)}`;
     },
     'standard_moz_origin': (v, _addresses_dsa) => {
         const smo = v, mvs = moz_ver(smo.moz_ver);

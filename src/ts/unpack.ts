@@ -389,7 +389,7 @@ function unpack(bytestring: string): string {
       case symbols.standard_origin:
         scan_forward_to_null('o=- ',     'standard_moz_origin_1', undefined, true);
         scan_forward_to_null(' ',        'standard_moz_origin_2', undefined, true);
-        scan_forward_four_bytes(' IN IP4 ', unpack_bytized_ipv4, true);
+        scan_forward_exactly_one_byte(' IN IP4 ', unpack_indexed_ipv4_l, true);
         work += '\r\n';
         break;
 

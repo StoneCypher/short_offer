@@ -242,11 +242,13 @@ const parseable = {
   'a_ice_options_trickle': (_: ParsedLine, _addresses_dsa: string[]) =>
     `${symbols.a_ice_options_trickle}`,
 
-  'standard_origin': (v: ParsedLine, _addresses_dsa: string[]) => {
+  'standard_origin': (v: ParsedLine, addresses_dsa: string[]) => {
     const { kind, items } = (v as StandardOrigin);
     const [ s, d, i ] = items;
     if (kind !== 'standard_origin') { throw 'impossible'; }
-    return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${pack_i32(i)}`;
+    let found = addresses_dsa.indexOf(i);
+    if (found === -1) { throw new Error(`FATAL: missing address ${i}`); }
+    return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${pack_i8(found)}`;
   },
 
   'standard_moz_origin': (v: ParsedLine, _addresses_dsa: string[]) => {

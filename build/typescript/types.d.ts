@@ -98,7 +98,7 @@ type StandardOrigin = {
     kind: 'standard_origin';
     value: string;
     uses_short_nl: boolean;
-    items: [s: number, d: number, i: number];
+    items: [s: number, d: number, i: string];
 };
 type StandardMozOrigin = {
     kind: 'standard_moz_origin';
