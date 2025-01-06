@@ -25,8 +25,10 @@ const fcolors =
 const rand = n =>
   Math.floor( Math.random() * n );
 
-const point_bgs    = ['red', 'orange', 'yellow', 'lime', 'green', 'aqua', 'blue', 'navy', 'purple', 'gray', 'black', 'cyan', 'fuchsia', 'maroon'],   // 14
-      point_fgs    = ['red', 'orange', 'yellow', 'green', 'aqua', 'navy', 'purple', 'black', 'cyan', 'fuchsia', 'maroon'],                           // 11 - removed gray, lime, blue
+// const point_fgs    = ["#619ED6", "#6BA547", "#772F67", "#E48F1B", "#B77EA3", "#E64345", "#60CEED", "#9CF168", "#323B81", "#FFC9ED", "#E6696E"],
+//       point_bgs    = ["#619ED6", "#6BA547", "#772F67", "#E48F1B", "#B77EA3", "#E64345", "#60CEED", "#9CF168", "#323B81", "#FFC9ED", "#E6696E", "#077368",  "#111539"],
+const point_fgs    = ["MediumVioletRed", "DarkRed", "Red", "DarkOrange", "Indigo", "MediumPurple", "DarkBlue", "Blue", "SandyBrown", "Teal", "DarkGreen", "LimeGreen", "MediumAquamarine", "Black"],
+      point_bgs    = ["MediumVioletRed", "DarkRed", "Red", "DarkOrange", "Indigo", "MediumPurple", "DarkBlue", "Blue", "SandyBrown", "Teal", "DarkGreen", "LimeGreen", "MediumAquamarine", "DarkTurquoise", "CornflowerBlue", "Purple"],
       point_styles = ['rect', 'circle', 'triangle'];
 
 
@@ -36,11 +38,11 @@ const point_bgs    = ['red', 'orange', 'yellow', 'lime', 'green', 'aqua', 'blue'
 const toRowAbsolute = n =>
   ({
     label                : styles[n],
-    borderColor          : point_fgs[n % point_bgs.length],
+    borderColor          : point_fgs[n % point_fgs.length],
     backgroundColor      : 'transparent',
     pointStyle           : point_styles[(n) % point_styles.length],
-    pointBackgroundColor : point_fgs[n % point_bgs.length],
-    pointBorderColor     : point_bgs[(n+1) % point_bgs.length],
+    pointBackgroundColor : point_fgs[n % point_fgs.length],
+    pointBorderColor     : point_bgs[(n+5) % point_bgs.length],
     data                 : versions.map(
                              v => log[v][styles[n]]?.final_length )
   });
@@ -48,11 +50,11 @@ const toRowAbsolute = n =>
 const toRowRelative = n =>
   ({
     label                : styles[n],
-    borderColor          : point_fgs[n % point_bgs.length],
+    borderColor          : point_fgs[n % point_fgs.length],
     backgroundColor      : 'transparent',
     pointStyle           : point_styles[(n) % point_styles.length],
-    pointBackgroundColor : point_fgs[n % point_bgs.length],
-    pointBorderColor     : point_bgs[(n+1) % point_bgs.length],
+    pointBackgroundColor : point_fgs[n % point_fgs.length],
+    pointBorderColor     : point_bgs[(n+5) % point_bgs.length],
     data                 : versions.map(
                              v =>
                                log[v][styles[n]]?.final_length
@@ -67,11 +69,11 @@ const toRowRelative = n =>
 const toRowUnhandled = n =>
   ({
     label                : styles[n],
-    borderColor          : point_fgs[n % point_bgs.length],
+    borderColor          : point_fgs[n % point_fgs.length],
     backgroundColor      : 'transparent',
     pointStyle           : point_styles[(n) % point_styles.length],
-    pointBackgroundColor : point_fgs[n % point_bgs.length],
-    pointBorderColor     : point_bgs[(n+1) % point_bgs.length],
+    pointBackgroundColor : point_fgs[n % point_fgs.length],
+    pointBorderColor     : point_bgs[(n+5) % point_bgs.length],
     data                 : versions.map(
                              v =>
                                log[v][styles[n]]?.failed_claims
@@ -87,7 +89,7 @@ const toRowUnhandled = n =>
 
 async function to_image(fname, data, ylabel, title) {
 
-  const crs_conf            = { width: 1800, height: 1200, type: 'png' },
+  const crs_conf            = { width: 3600, height: 1800, type: 'png' },
         canvasRenderService = new ChartJSNodeCanvas(crs_conf);
 
   const chart_configuration = {
@@ -103,6 +105,12 @@ async function to_image(fname, data, ylabel, title) {
           "labels": {
             "usePointStyle": true
           }
+        }
+      },
+      "elements": {
+        "point": {
+          "radius": 5,
+          "borderWidth": 2
         }
       },
       "title": { "display": true, "text": title },
