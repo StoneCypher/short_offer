@@ -5950,7 +5950,7 @@
       "original_length": 1068,
       "final_length": 354,
       "failed_claims": 0,
-      "time": 9
+      "time": 8
     },
     "win_10_chrome_92_host": {
       "original_length": 1866,
@@ -5974,31 +5974,31 @@
       "original_length": 1007,
       "final_length": 481,
       "failed_claims": 0,
-      "time": 3
+      "time": 2
     },
     "win_10_ff_90_host": {
       "original_length": 1092,
       "final_length": 502,
       "failed_claims": 0,
-      "time": 2
+      "time": 1
     },
     "win_11_chrome_120_client": {
       "original_length": 488,
       "final_length": 116,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "win_11_chrome_120_host": {
       "original_length": 488,
       "final_length": 116,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "win_11_edge_120_client": {
       "original_length": 487,
       "final_length": 115,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "win_11_edge_120_host": {
       "original_length": 488,
@@ -6064,19 +6064,19 @@
       "original_length": 722,
       "final_length": 222,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "mac_saf_14_host": {
       "original_length": 694,
       "final_length": 222,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "mac_saf_14_client": {
       "original_length": 703,
       "final_length": 223,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "mac_chrome_92_host": {
       "original_length": 723,
@@ -6100,13 +6100,13 @@
       "original_length": 488,
       "final_length": 116,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "r_pi_5_chrome_120_client": {
       "original_length": 488,
       "final_length": 116,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "r_pi_5_chrome_120_host": {
       "original_length": 488,
@@ -6118,13 +6118,13 @@
       "original_length": 534,
       "final_length": 138,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "fbsd_13_2_kde_falkon23_host": {
       "original_length": 464,
       "final_length": 125,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "arch_6_4_ff_117_client": {
       "original_length": 534,
@@ -6172,13 +6172,13 @@
       "original_length": 488,
       "final_length": 116,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "mac_ff_90_host": {
       "original_length": 1003,
       "final_length": 481,
       "failed_claims": 0,
-      "time": 0
+      "time": 1
     },
     "mac_ff_90_client": {
       "original_length": 812,
@@ -6220,14 +6220,14 @@
       "original_length": 816,
       "final_length": 325,
       "failed_claims": 0,
-      "time": 1
+      "time": 0
     },
     "total": {
       "variations": 46,
       "original_length": 30974,
       "final_length": 9998,
       "failed_claims": 0,
-      "time": 34
+      "time": 32
     }
   }
 }
