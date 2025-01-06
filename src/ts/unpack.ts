@@ -38,16 +38,16 @@ function unpack_sha_colons(str: string) {
 
 
 
-function unpack_bytized_ipv4(str: string) {
+// function unpack_bytized_ipv4(str: string) {
 
-  const a = str.codePointAt(0),
-        b = str.codePointAt(1),
-        c = str.codePointAt(2),
-        d = str.codePointAt(3);
+//   const a = str.codePointAt(0),
+//         b = str.codePointAt(1),
+//         c = str.codePointAt(2),
+//         d = str.codePointAt(3);
 
-  return `${a}.${b}.${c}.${d}`;
+//   return `${a}.${b}.${c}.${d}`;
 
-}
+// }
 
 
 

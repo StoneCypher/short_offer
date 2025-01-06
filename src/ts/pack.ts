@@ -319,7 +319,7 @@ const parseable = {
     return `${symbols.standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
   },
 
-  'standard_agen_udp4_candidate': (v: ParsedLine, _addresses_dsa: string[]) => {
+  'standard_agen_udp4_candidate': (v: ParsedLine, addresses_dsa: string[]) => {
     const { kind, items } = (v as StandardAGenUdp4Candidate);
     const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
     let found1 = addresses_dsa.indexOf(i1);

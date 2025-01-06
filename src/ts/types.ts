@@ -35,7 +35,7 @@ type StandardRemoteCandidate        = { kind: 'standard_remote_candidate',      
 type StandardRemoteCandidateFfUS    = { kind: 'standard_remote_candidate_ffus',     value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number ] };
 type StandardAGenTcpCandidate       = { kind: 'standard_agen_tcp_candidate',        value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, d5: number ] };
 type StandardAGenTcp6Candidate      = { kind: 'standard_agen_tcp6_candidate',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
-type StandardAGenUdp4Candidate      = { kind: 'standard_agen_udp4_candidate',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
+type StandardAGenUdp4Candidate      = { kind: 'standard_agen_udp4_candidate',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number, d6: number ] };
 type StandardAGenUdp6HostCandidate  = { kind: 'standard_agen_udp6_host_candidate',  value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
 
 type UnknownLine                    = { kind: 'unknown_line',                       value: string, uses_short_nl: boolean };

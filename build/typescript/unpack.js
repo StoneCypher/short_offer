@@ -11,10 +11,6 @@ function unpack_sha_colons(str) {
     const ustr = unpack_sha256(str);
     return (ustr.match(/.{1,2}/g) || []).join(':');
 }
-function unpack_bytized_ipv4(str) {
-    const a = str.codePointAt(0), b = str.codePointAt(1), c = str.codePointAt(2), d = str.codePointAt(3);
-    return `${a}.${b}.${c}.${d}`;
-}
 function bitnstr(bi) {
     return Number(bi);
 }
@@ -243,9 +239,9 @@ function unpack(bytestring) {
                 scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
                 scan_forward_one_byte(' ', unpack_i8, true);
                 scan_forward_four_bytes(' udp ', unpack_i32, true);
-                scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
+                scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_5', undefined, true);
-                scan_forward_four_bytes(' typ srflx raddr ', unpack_bytized_ipv4, true);
+                scan_forward_exactly_one_byte(' typ srflx raddr ', unpack_indexed_ipv4_l, true);
                 scan_forward_to_null(' rport ', 'standard_guid_candidate_7', undefined, true);
                 scan_forward_to_null(' generation 0 network-id ', 'standard_guid_candidate_8', undefined, false);
                 break;

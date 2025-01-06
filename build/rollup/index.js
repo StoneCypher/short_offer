@@ -5928,13 +5928,21 @@ const parseable = {
         }
         return `${standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${i1}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
     },
-    'standard_agen_udp4_candidate': (v, _addresses_dsa) => {
+    'standard_agen_udp4_candidate': (v, addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, i2, d5, d6] = items;
+        let found1 = addresses_dsa.indexOf(i1);
+        if (found1 === -1) {
+            throw new Error(`FATAL: missing address 1 ${i1}`);
+        }
+        let found2 = addresses_dsa.indexOf(i2);
+        if (found2 === -1) {
+            throw new Error(`FATAL: missing address 2 ${i2}`);
+        }
         if (kind !== 'standard_agen_udp4_candidate') {
             throw 'impossible';
         }
-        return `${standard_agen_udp4_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${c_terminal}${pack_i32(i2)}${d5}${c_terminal}${d6}${c_terminal}`;
+        return `${standard_agen_udp4_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i8(found1)}${d4}${c_terminal}${pack_i8(found2)}${d5}${c_terminal}${d6}${c_terminal}`;
     },
     'standard_agen_udp6_host_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
@@ -6014,10 +6022,6 @@ function unpack_sha256(packed_sha256) {
 function unpack_sha_colons(str) {
     const ustr = unpack_sha256(str);
     return (ustr.match(/.{1,2}/g) || []).join(':');
-}
-function unpack_bytized_ipv4(str) {
-    const a = str.codePointAt(0), b = str.codePointAt(1), c = str.codePointAt(2), d = str.codePointAt(3);
-    return `${a}.${b}.${c}.${d}`;
 }
 function bitnstr(bi) {
     return Number(bi);
@@ -6247,9 +6251,9 @@ function unpack(bytestring) {
                 scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
                 scan_forward_one_byte(' ', unpack_i8, true);
                 scan_forward_four_bytes(' udp ', unpack_i32, true);
-                scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
+                scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_5', undefined, true);
-                scan_forward_four_bytes(' typ srflx raddr ', unpack_bytized_ipv4, true);
+                scan_forward_exactly_one_byte(' typ srflx raddr ', unpack_indexed_ipv4_l, true);
                 scan_forward_to_null(' rport ', 'standard_guid_candidate_7', undefined, true);
                 scan_forward_to_null(' generation 0 network-id ', 'standard_guid_candidate_8', undefined, false);
                 break;
