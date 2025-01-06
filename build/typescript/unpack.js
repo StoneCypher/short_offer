@@ -261,9 +261,9 @@ function unpack(bytestring) {
                 scan_forward_to_null(`a=candidate:`, 'standard_remote_candidate_1', undefined, true);
                 scan_forward_to_null(' ', 'standard_remote_candidate_2', undefined, true);
                 scan_forward_to_null(' udp ', 'standard_remote_candidate_3', undefined, true);
-                scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
+                scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
                 scan_forward_to_null(' ', 'standard_remote_candidate_5', undefined, true);
-                scan_forward_four_bytes(' typ srflx raddr ', unpack_bytized_ipv4, true);
+                scan_forward_exactly_one_byte(' typ srflx raddr ', unpack_indexed_ipv4_l, true);
                 scan_forward_to_null(' rport ', 'standard_remote_candidate_7', undefined, true);
                 scan_forward_to_null(' generation ', 'standard_remote_candidate_8', undefined, true);
                 work += ' network-cost 999\r\n';

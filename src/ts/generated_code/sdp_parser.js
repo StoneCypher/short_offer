@@ -309,7 +309,7 @@ function peg$parse(input, options) {
       peg$c154 = peg$literalExpectation(" generation ", false),
       peg$c155 = " network-cost 999",
       peg$c156 = peg$literalExpectation(" network-cost 999", false),
-      peg$c157 = function(d1, d2, d3, i1, d4, i2, d5, d6) { return ast('standard_remote_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ], [i1]); },
+      peg$c157 = function(d1, d2, d3, i1, d4, i2, d5, d6) { return ast('standard_remote_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ], [i1, i2]); },
       peg$c158 = function(d1, d2, d3, i1, d4, i2, d5) { return ast('standard_remote_candidate_ffus', [ d1, d2, d3, i1, d4, i2, d5 ], [i1]); },
       peg$c159 = " tcp ",
       peg$c160 = peg$literalExpectation(" tcp ", false),

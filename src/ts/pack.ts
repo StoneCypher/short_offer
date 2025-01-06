@@ -281,11 +281,15 @@ const parseable = {
     return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${d3}${symbols.c_terminal}${pack_i8(found)}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
   },
 
-  'standard_remote_candidate': (v: ParsedLine, _addresses_dsa: string[]) => {
+  'standard_remote_candidate': (v: ParsedLine, addresses_dsa: string[]) => {
     const { kind, items } = (v as StandardRemoteCandidate);
     const [ d1, d2, d3, i1, d4, i2, d5, d6 ] = items;
+    let found1 = addresses_dsa.indexOf(i1);
+    if (found1 === -1) { throw new Error(`FATAL: missing address 1 ${i1}`); }
+    let found2 = addresses_dsa.indexOf(i2);
+    if (found2 === -1) { throw new Error(`FATAL: missing address 2 ${i2}`); }
     if (kind !== 'standard_remote_candidate') { throw 'impossible'; }
-    return `${symbols.standard_remote_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${d4}${symbols.c_terminal}${pack_i32(i2)}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+    return `${symbols.standard_remote_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i8(found1)}${d4}${symbols.c_terminal}${pack_i8(found2)}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
   },
 
   'standard_remote_candidate_ffus': (v: ParsedLine, _addresses_dsa: string[]) => {
