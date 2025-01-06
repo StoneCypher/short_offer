@@ -45,5 +45,8 @@
     "typescript": "^4.3.5",
     "unreasonable_phi": "^0.9.1",
     "vitest": "^1.2.1"
+  },
+  "dependencies": {
+    "chartjs-node-canvas": "^4.1.6"
   }
 }
