@@ -5883,13 +5883,17 @@ const parseable = {
         }
         return `${standard_remote_candidate_ffus}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${c_terminal}${pack_i32(i2)}${d5}${c_terminal}`;
     },
-    'standard_agen_tcp_candidate': (v, _addresses_dsa) => {
+    'standard_agen_tcp_candidate': (v, addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, d5] = items;
+        let found = addresses_dsa.indexOf(i1);
+        if (found === -1) {
+            throw new Error(`FATAL: missing address ${i1}`);
+        }
         if (kind !== 'standard_agen_tcp_candidate') {
             throw 'impossible';
         }
-        return `${standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${c_terminal}${d5}${c_terminal}`;
+        return `${standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${c_terminal}${d5}${c_terminal}`;
     },
     'standard_agen_tcp6_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
@@ -6202,7 +6206,7 @@ function unpack(bytestring) {
                 scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
                 scan_forward_one_byte(' ', unpack_i8, true);
                 scan_forward_four_bytes(' tcp ', unpack_i32, true);
-                scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
+                scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
                 scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                 break;

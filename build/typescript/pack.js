@@ -132,13 +132,17 @@ const parseable = {
         }
         return `${symbols.standard_remote_candidate_ffus}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${symbols.c_terminal}${pack_i32(i2)}${d5}${symbols.c_terminal}`;
     },
-    'standard_agen_tcp_candidate': (v, _addresses_dsa) => {
+    'standard_agen_tcp_candidate': (v, addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, d5] = items;
+        let found = addresses_dsa.indexOf(i1);
+        if (found === -1) {
+            throw new Error(`FATAL: missing address ${i1}`);
+        }
         if (kind !== 'standard_agen_tcp_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
     'standard_agen_tcp6_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
