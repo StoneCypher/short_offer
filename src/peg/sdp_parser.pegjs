@@ -504,7 +504,7 @@ AStandardIp4RemoteCandidate
 AStandardIp4RemoteCandidateFfUS
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' UDP ' d3:Decimal ' ' i1:IP4
     ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal CapAtSeparator
-  { return ast('standard_remote_candidate_ffus', [ d1, d2, d3, i1, d4, i2, d5 ], [i1]); }
+  { return ast('standard_remote_candidate_ffus', [ d1, d2, d3, i1, d4, i2, d5 ], [i1, i2]); }
 
 
 
