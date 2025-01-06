@@ -25,7 +25,8 @@ const fcolors =
 const rand = n =>
   Math.floor( Math.random() * n );
 
-const point_bgs    = ['red', 'orange', 'yellow', 'green', 'blue', 'cyan', 'purple'],
+const point_bgs    = ['red', 'orange', 'yellow', 'lime', 'green', 'aqua', 'blue', 'navy', 'purple', 'gray', 'black', 'cyan', 'fuchsia', 'maroon'],   // 14
+      point_fgs    = ['red', 'orange', 'yellow', 'green', 'aqua', 'navy', 'purple', 'black', 'cyan', 'fuchsia', 'maroon'],                           // 11 - removed gray, lime, blue
       point_styles = ['rect', 'circle', 'triangle'];
 
 
@@ -35,10 +36,10 @@ const point_bgs    = ['red', 'orange', 'yellow', 'green', 'blue', 'cyan', 'purpl
 const toRowAbsolute = n =>
   ({
     label                : styles[n],
-    borderColor          : fcolors[n],
+    borderColor          : point_fgs[n % point_bgs.length],
     backgroundColor      : 'transparent',
     pointStyle           : point_styles[(n) % point_styles.length],
-    pointBackgroundColor : fcolors[n],
+    pointBackgroundColor : point_fgs[n % point_bgs.length],
     pointBorderColor     : point_bgs[(n+1) % point_bgs.length],
     data                 : versions.map(
                              v => log[v][styles[n]]?.final_length )
@@ -47,10 +48,10 @@ const toRowAbsolute = n =>
 const toRowRelative = n =>
   ({
     label                : styles[n],
-    borderColor          : fcolors[n],
+    borderColor          : point_fgs[n % point_bgs.length],
     backgroundColor      : 'transparent',
     pointStyle           : point_styles[(n) % point_styles.length],
-    pointBackgroundColor : fcolors[n],
+    pointBackgroundColor : point_fgs[n % point_bgs.length],
     pointBorderColor     : point_bgs[(n+1) % point_bgs.length],
     data                 : versions.map(
                              v =>
@@ -66,10 +67,10 @@ const toRowRelative = n =>
 const toRowUnhandled = n =>
   ({
     label                : styles[n],
-    borderColor          : fcolors[n],
+    borderColor          : point_fgs[n % point_bgs.length],
     backgroundColor      : 'transparent',
     pointStyle           : point_styles[(n) % point_styles.length],
-    pointBackgroundColor : fcolors[n],
+    pointBackgroundColor : point_fgs[n % point_bgs.length],
     pointBorderColor     : point_bgs[(n+1) % point_bgs.length],
     data                 : versions.map(
                              v =>
