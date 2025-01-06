@@ -14,6 +14,7 @@ import {
   StandardAGenTcp6Candidate,
   StandardAGenUdp4Candidate,
   StandardAGenUdp6HostCandidate,
+  CClaimIp4,
   ParsedLine,
   ParsedSdp
 } from './types';
@@ -228,8 +229,12 @@ const parseable = {
     `${symbols.b_as_30}`,
 
   // v.value is the *integer* form of the ipv4
-  'c_claim_ip4': (v: ParsedLine, _addresses_dsa: string[]) =>
-    `${symbols.c_claim_ip4}${pack_i32(v.value)}`,
+  'c_claim_ip4': (v: ParsedLine, addresses_dsa: string[]) => {
+    const { value } = (v as CClaimIp4);
+    let found = addresses_dsa.indexOf(value);
+    if (found === -1) { throw new Error(`FATAL: missing address ${value}`); }
+    return `${symbols.c_claim_ip4}${pack_i8(found)}`;
+  },
 
   'standard_m_application': (v: ParsedLine, _addresses_dsa: string[]) =>
     `${symbols.standard_m_application}${v.value}${symbols.c_terminal}`,

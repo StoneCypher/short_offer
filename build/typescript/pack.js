@@ -73,7 +73,14 @@ const parseable = {
     's_dash': (_, _addresses_dsa) => `${symbols.s_dash}`,
     't_zero_zero': (_, _addresses_dsa) => `${symbols.t_zero_zero}`,
     'b_as_30': (_, _addresses_dsa) => `${symbols.b_as_30}`,
-    'c_claim_ip4': (v, _addresses_dsa) => `${symbols.c_claim_ip4}${pack_i32(v.value)}`,
+    'c_claim_ip4': (v, addresses_dsa) => {
+        const { value } = v;
+        let found = addresses_dsa.indexOf(value);
+        if (found === -1) {
+            throw new Error(`FATAL: missing address ${value}`);
+        }
+        return `${symbols.c_claim_ip4}${pack_i8(found)}`;
+    },
     'standard_m_application': (v, _addresses_dsa) => `${symbols.standard_m_application}${v.value}${symbols.c_terminal}`,
     'a_ice_options_trickle': (_, _addresses_dsa) => `${symbols.a_ice_options_trickle}`,
     'standard_origin': (v, _addresses_dsa) => {

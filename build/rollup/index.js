@@ -5822,7 +5822,14 @@ const parseable = {
     's_dash': (_, _addresses_dsa) => `${s_dash}`,
     't_zero_zero': (_, _addresses_dsa) => `${t_zero_zero}`,
     'b_as_30': (_, _addresses_dsa) => `${b_as_30}`,
-    'c_claim_ip4': (v, _addresses_dsa) => `${c_claim_ip4}${pack_i32(v.value)}`,
+    'c_claim_ip4': (v, addresses_dsa) => {
+        const { value } = v;
+        let found = addresses_dsa.indexOf(value);
+        if (found === -1) {
+            throw new Error(`FATAL: missing address ${value}`);
+        }
+        return `${c_claim_ip4}${pack_i8(found)}`;
+    },
     'standard_m_application': (v, _addresses_dsa) => `${standard_m_application}${v.value}${c_terminal}`,
     'a_ice_options_trickle': (_, _addresses_dsa) => `${a_ice_options_trickle}`,
     'standard_origin': (v, _addresses_dsa) => {
@@ -6151,7 +6158,7 @@ function unpack(bytestring) {
                 work += 'a=end-of-candidates\r\n';
                 break;
             case c_claim_ip4:
-                scan_forward_four_bytes('c=IN IP4 ', unpack_bytized_ipv4, true);
+                scan_forward_exactly_one_byte('c=IN IP4 ', unpack_indexed_ipv4_l, true);
                 work += '\r\n';
                 break;
             case standard_m_application:

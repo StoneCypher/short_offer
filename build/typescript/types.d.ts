@@ -189,4 +189,4 @@ type ParsedSdp = {
         v4: IPv4asDecimalAsString[];
     };
 };
-export { UnknownLine, VersionZeroLine, VersionLine, StandardOrigin, StandardMozOrigin, StandardLocalCandidate, StandardGuidLocalCandidate, StandardGuidLocalCandidateFfUS, StandardRemoteCandidate, StandardRemoteCandidateFfUS, StandardAGenTcpCandidate, StandardAGenTcp6Candidate, StandardAGenUdp4Candidate, StandardAGenUdp6HostCandidate, ParsedLine, PegCoord, PegLocation, ParsedSdp };
+export { UnknownLine, VersionZeroLine, VersionLine, StandardOrigin, StandardMozOrigin, StandardLocalCandidate, StandardGuidLocalCandidate, StandardGuidLocalCandidateFfUS, StandardRemoteCandidate, StandardRemoteCandidateFfUS, StandardAGenTcpCandidate, StandardAGenTcp6Candidate, StandardAGenUdp4Candidate, StandardAGenUdp6HostCandidate, CClaimIp4, ParsedLine, PegCoord, PegLocation, ParsedSdp };

@@ -174,7 +174,7 @@ function unpack(bytestring) {
                 work += 'a=end-of-candidates\r\n';
                 break;
             case symbols.c_claim_ip4:
-                scan_forward_four_bytes('c=IN IP4 ', unpack_bytized_ipv4, true);
+                scan_forward_exactly_one_byte('c=IN IP4 ', unpack_indexed_ipv4_l, true);
                 work += '\r\n';
                 break;
             case symbols.standard_m_application:

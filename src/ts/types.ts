@@ -110,6 +110,7 @@ export {
   StandardRemoteCandidate, StandardRemoteCandidateFfUS,
   StandardAGenTcpCandidate, StandardAGenTcp6Candidate,
   StandardAGenUdp4Candidate, StandardAGenUdp6HostCandidate,
+  CClaimIp4,
   ParsedLine,
   PegCoord, PegLocation,
   ParsedSdp
