@@ -15,6 +15,27 @@ function unpack_bytized_ipv4(str) {
     const a = str.codePointAt(0), b = str.codePointAt(1), c = str.codePointAt(2), d = str.codePointAt(3);
     return `${a}.${b}.${c}.${d}`;
 }
+function bitnstr(bi) {
+    return Number(bi);
+}
+function ipv4_decimal_string_to_string_dotted_quad(str) {
+    const addr = BigInt(str);
+    const d = addr % 256n, s8 = addr >> 8n, c = s8 % 256n, s16 = s8 >> 8n, b = s16 % 256n, s24 = s16 >> 8n, a = s24 % 256n;
+    return `${bitnstr(a)}.${bitnstr(b)}.${bitnstr(c)}.${bitnstr(d)}`;
+}
+function unpack_indexed_ipv4_waddr(addresses) {
+    return function unpack_indexed_ipv4(str) {
+        const idx = str.codePointAt(0);
+        if (idx === undefined) {
+            throw new Error('Index string was empty');
+        }
+        const addr = addresses[idx];
+        if (addr === undefined) {
+            throw new Error(`Referenced index ${idx} for ipv4 addresses doesn't exist`);
+        }
+        return ipv4_decimal_string_to_string_dotted_quad(addr);
+    };
+}
 function unpack_i32(str) {
     const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0, c = str.codePointAt(2) ?? 0, d = str.codePointAt(3) ?? 0;
     return ((((((a * 256) + b) * 256) + c) * 256) + d).toString();
@@ -25,6 +46,10 @@ function unpack_i8(str) {
 }
 function unpack_guid(guid) {
     return `${guid.substring(0, 8)}-${guid.substring(8, 12)}-${guid.substring(12, 16)}-${guid.substring(16, 20)}-${guid.substring(20, 32)}`;
+}
+function four_bytes_to_decimal_ipv4_string(bytes) {
+    const a = bytes.charCodeAt(0), b = bytes.charCodeAt(1), c = bytes.charCodeAt(2), d = bytes.charCodeAt(3);
+    return String((((((a * 256) + b) * 256) + c) * 256) + d);
 }
 function unpack(bytestring) {
     if (bytestring === '') {
@@ -49,6 +74,11 @@ function unpack(bytestring) {
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i = found;
     }
+    function scan_forward_exactly_one_byte(prefix, unpacker = unpack_none, skip_r_n = false) {
+        const unpacked = unpacker(bytestring.substring(i + 1, i + 2));
+        work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+        i += 1;
+    }
     function scan_forward_one_byte(prefix, unpacker = unpack_none, skip_r_n = false) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 2));
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
@@ -64,10 +94,15 @@ function unpack(bytestring) {
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 33;
     }
+    let ipv4_list = [];
     let ipv4_addr_count = bytestring.charCodeAt(0);
     ++stream_start;
     console.log(`Reading ${ipv4_addr_count} addresses`);
-    stream_start += ipv4_addr_count * 4;
+    for (let i = 0; i < ipv4_addr_count; ++i) {
+        ipv4_list[i] = four_bytes_to_decimal_ipv4_string(bytestring.substring(stream_start, stream_start + 4));
+        stream_start += 4;
+    }
+    const unpack_indexed_ipv4_l = unpack_indexed_ipv4_waddr(ipv4_list);
     for (i = stream_start, iC = bytestring.length; i < iC; ++i) {
         switch (bytestring.charAt(i)) {
             case symbols.offer:
@@ -184,7 +219,7 @@ function unpack(bytestring) {
                 scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
                 scan_forward_four_bytes(' ', unpack_i32, true);
                 scan_forward_to_null(' udp ', 'standard_guid_candidate_3', undefined, true);
-                scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
+                scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
                 scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                 break;

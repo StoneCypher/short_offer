@@ -5798,36 +5798,36 @@ function pack_i32(i32) {
     return `${A}${B}${C}${D}`;
 }
 const parseable = {
-    'unknown_line': (v) => `${unknown_line}${v.value}${c_terminal}`,
-    'version_zero_line': (_) => `${version_zero_line}`,
-    'version_line': (v) => `${version_line}${v.value}${c_terminal}`,
-    'a_msid_semantic_ns': (_) => `${a_msid_semantic_ns}`,
-    'a_msid_semantic_star_ns': (_) => `${a_msid_semantic_star_ns}`,
-    'a_msid_semantic_ws': (_) => `${a_msid_semantic_ws}`,
-    'a_extmap_allow_mixed': (_) => `${a_extmap_allow_mixed}`,
-    'a_standard_sctp_port': (_) => `${a_standard_sctp_port}`,
-    'a_custom_sctp_port': (v) => `${a_custom_sctp_port}${v.value}${c_terminal}`,
-    'a_standard_max_message_size': (_) => `${a_standard_max_message_size}`,
-    'a_custom_max_message_size': (v) => `${a_custom_max_message_size}${v.value}${c_terminal}`,
-    'a_setup_actpass': (_) => `${a_setup_actpass}`,
-    'a_setup_active': (_) => `${a_setup_active}`,
-    'a_mid_zero': (_) => `${a_mid_zero}`,
-    'a_group_bundle_0': (_) => `${a_group_bundle_0}`,
-    'a_ice_pwd': (v) => `${a_ice_pwd}${v.value}${c_terminal}`,
-    'a_ice_pwd_l': (v) => `${a_ice_pwd_l}${v.value}${c_terminal}`,
-    'a_ice_pwd_v': (v) => `${a_ice_pwd_v}${v.value}${c_terminal}`,
-    'a_ice_ufrag_4': (v) => `${a_ice_ufrag_4}${v.value}${c_terminal}`,
-    'a_ice_ufrag_8': (v) => `${a_ice_ufrag_8}${v.value}${c_terminal}`,
-    'a_fingerprint_sha1_256': (v) => `${a_fingerprint_sha1_256}${pack_sha256(v.value)}${c_terminal}`,
-    'a_send_recv': (_) => `${a_send_recv}`,
-    'a_end_of_candidates': (_) => `${a_end_of_candidates}`,
-    's_dash': (_) => `${s_dash}`,
-    't_zero_zero': (_) => `${t_zero_zero}`,
-    'b_as_30': (_) => `${b_as_30}`,
-    'c_claim_ip4': (v) => `${c_claim_ip4}${pack_i32(v.value)}`,
-    'standard_m_application': (v) => `${standard_m_application}${v.value}${c_terminal}`,
-    'a_ice_options_trickle': (_) => `${a_ice_options_trickle}`,
-    'standard_origin': (v) => {
+    'unknown_line': (v, _addresses_dsa) => `${unknown_line}${v.value}${c_terminal}`,
+    'version_zero_line': (_, _addresses_dsa) => `${version_zero_line}`,
+    'version_line': (v, _addresses_dsa) => `${version_line}${v.value}${c_terminal}`,
+    'a_msid_semantic_ns': (_, _addresses_dsa) => `${a_msid_semantic_ns}`,
+    'a_msid_semantic_star_ns': (_, _addresses_dsa) => `${a_msid_semantic_star_ns}`,
+    'a_msid_semantic_ws': (_, _addresses_dsa) => `${a_msid_semantic_ws}`,
+    'a_extmap_allow_mixed': (_, _addresses_dsa) => `${a_extmap_allow_mixed}`,
+    'a_standard_sctp_port': (_, _addresses_dsa) => `${a_standard_sctp_port}`,
+    'a_custom_sctp_port': (v, _addresses_dsa) => `${a_custom_sctp_port}${v.value}${c_terminal}`,
+    'a_standard_max_message_size': (_, _addresses_dsa) => `${a_standard_max_message_size}`,
+    'a_custom_max_message_size': (v, _addresses_dsa) => `${a_custom_max_message_size}${v.value}${c_terminal}`,
+    'a_setup_actpass': (_, _addresses_dsa) => `${a_setup_actpass}`,
+    'a_setup_active': (_, _addresses_dsa) => `${a_setup_active}`,
+    'a_mid_zero': (_, _addresses_dsa) => `${a_mid_zero}`,
+    'a_group_bundle_0': (_, _addresses_dsa) => `${a_group_bundle_0}`,
+    'a_ice_pwd': (v, _addresses_dsa) => `${a_ice_pwd}${v.value}${c_terminal}`,
+    'a_ice_pwd_l': (v, _addresses_dsa) => `${a_ice_pwd_l}${v.value}${c_terminal}`,
+    'a_ice_pwd_v': (v, _addresses_dsa) => `${a_ice_pwd_v}${v.value}${c_terminal}`,
+    'a_ice_ufrag_4': (v, _addresses_dsa) => `${a_ice_ufrag_4}${v.value}${c_terminal}`,
+    'a_ice_ufrag_8': (v, _addresses_dsa) => `${a_ice_ufrag_8}${v.value}${c_terminal}`,
+    'a_fingerprint_sha1_256': (v, _addresses_dsa) => `${a_fingerprint_sha1_256}${pack_sha256(v.value)}${c_terminal}`,
+    'a_send_recv': (_, _addresses_dsa) => `${a_send_recv}`,
+    'a_end_of_candidates': (_, _addresses_dsa) => `${a_end_of_candidates}`,
+    's_dash': (_, _addresses_dsa) => `${s_dash}`,
+    't_zero_zero': (_, _addresses_dsa) => `${t_zero_zero}`,
+    'b_as_30': (_, _addresses_dsa) => `${b_as_30}`,
+    'c_claim_ip4': (v, _addresses_dsa) => `${c_claim_ip4}${pack_i32(v.value)}`,
+    'standard_m_application': (v, _addresses_dsa) => `${standard_m_application}${v.value}${c_terminal}`,
+    'a_ice_options_trickle': (_, _addresses_dsa) => `${a_ice_options_trickle}`,
+    'standard_origin': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [s, d, i] = items;
         if (kind !== 'standard_origin') {
@@ -5835,11 +5835,11 @@ const parseable = {
         }
         return `${standard_origin}${s}${c_terminal}${d}${c_terminal}${pack_i32(i)}`;
     },
-    'standard_moz_origin': (v) => {
+    'standard_moz_origin': (v, _addresses_dsa) => {
         const smo = v, mvs = moz_ver(smo.moz_ver);
         return `${standard_moz_origin}${mvs}${smo.sess}${c_terminal}`;
     },
-    'standard_guid_local_candidate': (v) => {
+    'standard_guid_local_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i, d4] = items;
         if (kind !== 'standard_guid_local_candidate') {
@@ -5847,7 +5847,7 @@ const parseable = {
         }
         return `${standard_guid_local_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${i}${c_terminal}${d4}${c_terminal}`;
     },
-    'standard_guid_local_candidate_ffus': (v) => {
+    'standard_guid_local_candidate_ffus': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i, d4] = items;
         if (kind !== 'standard_guid_local_candidate_ffus') {
@@ -5855,15 +5855,19 @@ const parseable = {
         }
         return `${standard_guid_local_candidate_ffus}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${i}${c_terminal}${d4}${c_terminal}`;
     },
-    'standard_local_candidate': (v) => {
+    'standard_local_candidate': (v, addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, p, d4] = items;
+        let found = addresses_dsa.indexOf(i1);
+        if (found === -1) {
+            throw new Error(`FATAL: missing address ${i1}`);
+        }
         if (kind !== 'standard_local_candidate') {
             throw 'impossible';
         }
-        return `${standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${d3}${c_terminal}${pack_i32(i1)}${p}${c_terminal}${d4}${c_terminal}`;
+        return `${standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${d3}${c_terminal}${pack_i8(found)}${p}${c_terminal}${d4}${c_terminal}`;
     },
-    'standard_remote_candidate': (v) => {
+    'standard_remote_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, i2, d5, d6] = items;
         if (kind !== 'standard_remote_candidate') {
@@ -5871,7 +5875,7 @@ const parseable = {
         }
         return `${standard_remote_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${pack_i32(i1)}${d4}${c_terminal}${pack_i32(i2)}${d5}${c_terminal}${d6}${c_terminal}`;
     },
-    'standard_remote_candidate_ffus': (v) => {
+    'standard_remote_candidate_ffus': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, i2, d5] = items;
         if (kind !== 'standard_remote_candidate_ffus') {
@@ -5879,7 +5883,7 @@ const parseable = {
         }
         return `${standard_remote_candidate_ffus}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${c_terminal}${pack_i32(i2)}${d5}${c_terminal}`;
     },
-    'standard_agen_tcp_candidate': (v) => {
+    'standard_agen_tcp_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, d5] = items;
         if (kind !== 'standard_agen_tcp_candidate') {
@@ -5887,7 +5891,7 @@ const parseable = {
         }
         return `${standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${c_terminal}${d5}${c_terminal}`;
     },
-    'standard_agen_tcp6_candidate': (v) => {
+    'standard_agen_tcp6_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, d5] = items;
         if (kind !== 'standard_agen_tcp6_candidate') {
@@ -5895,7 +5899,7 @@ const parseable = {
         }
         return `${standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${i1}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
     },
-    'standard_agen_udp4_candidate': (v) => {
+    'standard_agen_udp4_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, i2, d5, d6] = items;
         if (kind !== 'standard_agen_udp4_candidate') {
@@ -5903,7 +5907,7 @@ const parseable = {
         }
         return `${standard_agen_udp4_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${c_terminal}${pack_i32(i2)}${d5}${c_terminal}${d6}${c_terminal}`;
     },
-    'standard_agen_udp6_host_candidate': (v) => {
+    'standard_agen_udp6_host_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, d5] = items;
         if (kind !== 'standard_agen_udp6_host_candidate') {
@@ -5911,7 +5915,7 @@ const parseable = {
         }
         return `${standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${i1}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
     },
-    'unknown_terminate': (v) => `${unknown_terminate}${v.value}`
+    'unknown_terminate': (v, _addresses_dsa) => `${unknown_terminate}${v.value}`
 };
 function bitch(bi) {
     return String.fromCharCode(Number(bi));
@@ -5951,7 +5955,7 @@ function parsed_to_bytestring(parsed) {
                 throw new TypeError(`[pack] Impossible bytestring symbol found: ${JSON.stringify(v.kind)}`);
             }
             else {
-                work += parseable[v.kind](v);
+                work += parseable[v.kind](v, (parsed?.addresses?.v4 ?? []));
             }
         });
     }
@@ -5986,6 +5990,27 @@ function unpack_bytized_ipv4(str) {
     const a = str.codePointAt(0), b = str.codePointAt(1), c = str.codePointAt(2), d = str.codePointAt(3);
     return `${a}.${b}.${c}.${d}`;
 }
+function bitnstr(bi) {
+    return Number(bi);
+}
+function ipv4_decimal_string_to_string_dotted_quad(str) {
+    const addr = BigInt(str);
+    const d = addr % 256n, s8 = addr >> 8n, c = s8 % 256n, s16 = s8 >> 8n, b = s16 % 256n, s24 = s16 >> 8n, a = s24 % 256n;
+    return `${bitnstr(a)}.${bitnstr(b)}.${bitnstr(c)}.${bitnstr(d)}`;
+}
+function unpack_indexed_ipv4_waddr(addresses) {
+    return function unpack_indexed_ipv4(str) {
+        const idx = str.codePointAt(0);
+        if (idx === undefined) {
+            throw new Error('Index string was empty');
+        }
+        const addr = addresses[idx];
+        if (addr === undefined) {
+            throw new Error(`Referenced index ${idx} for ipv4 addresses doesn't exist`);
+        }
+        return ipv4_decimal_string_to_string_dotted_quad(addr);
+    };
+}
 function unpack_i32(str) {
     const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0, c = str.codePointAt(2) ?? 0, d = str.codePointAt(3) ?? 0;
     return ((((((a * 256) + b) * 256) + c) * 256) + d).toString();
@@ -5996,6 +6021,10 @@ function unpack_i8(str) {
 }
 function unpack_guid(guid) {
     return `${guid.substring(0, 8)}-${guid.substring(8, 12)}-${guid.substring(12, 16)}-${guid.substring(16, 20)}-${guid.substring(20, 32)}`;
+}
+function four_bytes_to_decimal_ipv4_string(bytes) {
+    const a = bytes.charCodeAt(0), b = bytes.charCodeAt(1), c = bytes.charCodeAt(2), d = bytes.charCodeAt(3);
+    return String((((((a * 256) + b) * 256) + c) * 256) + d);
 }
 function unpack(bytestring) {
     if (bytestring === '') {
@@ -6020,6 +6049,11 @@ function unpack(bytestring) {
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i = found;
     }
+    function scan_forward_exactly_one_byte(prefix, unpacker = unpack_none, skip_r_n = false) {
+        const unpacked = unpacker(bytestring.substring(i + 1, i + 2));
+        work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+        i += 1;
+    }
     function scan_forward_one_byte(prefix, unpacker = unpack_none, skip_r_n = false) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 2));
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
@@ -6035,10 +6069,15 @@ function unpack(bytestring) {
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 33;
     }
+    let ipv4_list = [];
     let ipv4_addr_count = bytestring.charCodeAt(0);
     ++stream_start;
     console.log(`Reading ${ipv4_addr_count} addresses`);
-    stream_start += ipv4_addr_count * 4;
+    for (let i = 0; i < ipv4_addr_count; ++i) {
+        ipv4_list[i] = four_bytes_to_decimal_ipv4_string(bytestring.substring(stream_start, stream_start + 4));
+        stream_start += 4;
+    }
+    const unpack_indexed_ipv4_l = unpack_indexed_ipv4_waddr(ipv4_list);
     for (i = stream_start, iC = bytestring.length; i < iC; ++i) {
         switch (bytestring.charAt(i)) {
             case offer:
@@ -6155,7 +6194,7 @@ function unpack(bytestring) {
                 scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
                 scan_forward_four_bytes(' ', unpack_i32, true);
                 scan_forward_to_null(' udp ', 'standard_guid_candidate_3', undefined, true);
-                scan_forward_four_bytes(' ', unpack_bytized_ipv4, true);
+                scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
                 scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                 break;

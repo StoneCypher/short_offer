@@ -47,36 +47,36 @@ function pack_i32(i32) {
     return `${A}${B}${C}${D}`;
 }
 const parseable = {
-    'unknown_line': (v) => `${symbols.unknown_line}${v.value}${symbols.c_terminal}`,
-    'version_zero_line': (_) => `${symbols.version_zero_line}`,
-    'version_line': (v) => `${symbols.version_line}${v.value}${symbols.c_terminal}`,
-    'a_msid_semantic_ns': (_) => `${symbols.a_msid_semantic_ns}`,
-    'a_msid_semantic_star_ns': (_) => `${symbols.a_msid_semantic_star_ns}`,
-    'a_msid_semantic_ws': (_) => `${symbols.a_msid_semantic_ws}`,
-    'a_extmap_allow_mixed': (_) => `${symbols.a_extmap_allow_mixed}`,
-    'a_standard_sctp_port': (_) => `${symbols.a_standard_sctp_port}`,
-    'a_custom_sctp_port': (v) => `${symbols.a_custom_sctp_port}${v.value}${symbols.c_terminal}`,
-    'a_standard_max_message_size': (_) => `${symbols.a_standard_max_message_size}`,
-    'a_custom_max_message_size': (v) => `${symbols.a_custom_max_message_size}${v.value}${symbols.c_terminal}`,
-    'a_setup_actpass': (_) => `${symbols.a_setup_actpass}`,
-    'a_setup_active': (_) => `${symbols.a_setup_active}`,
-    'a_mid_zero': (_) => `${symbols.a_mid_zero}`,
-    'a_group_bundle_0': (_) => `${symbols.a_group_bundle_0}`,
-    'a_ice_pwd': (v) => `${symbols.a_ice_pwd}${v.value}${symbols.c_terminal}`,
-    'a_ice_pwd_l': (v) => `${symbols.a_ice_pwd_l}${v.value}${symbols.c_terminal}`,
-    'a_ice_pwd_v': (v) => `${symbols.a_ice_pwd_v}${v.value}${symbols.c_terminal}`,
-    'a_ice_ufrag_4': (v) => `${symbols.a_ice_ufrag_4}${v.value}${symbols.c_terminal}`,
-    'a_ice_ufrag_8': (v) => `${symbols.a_ice_ufrag_8}${v.value}${symbols.c_terminal}`,
-    'a_fingerprint_sha1_256': (v) => `${symbols.a_fingerprint_sha1_256}${pack_sha256(v.value)}${symbols.c_terminal}`,
-    'a_send_recv': (_) => `${symbols.a_send_recv}`,
-    'a_end_of_candidates': (_) => `${symbols.a_end_of_candidates}`,
-    's_dash': (_) => `${symbols.s_dash}`,
-    't_zero_zero': (_) => `${symbols.t_zero_zero}`,
-    'b_as_30': (_) => `${symbols.b_as_30}`,
-    'c_claim_ip4': (v) => `${symbols.c_claim_ip4}${pack_i32(v.value)}`,
-    'standard_m_application': (v) => `${symbols.standard_m_application}${v.value}${symbols.c_terminal}`,
-    'a_ice_options_trickle': (_) => `${symbols.a_ice_options_trickle}`,
-    'standard_origin': (v) => {
+    'unknown_line': (v, _addresses_dsa) => `${symbols.unknown_line}${v.value}${symbols.c_terminal}`,
+    'version_zero_line': (_, _addresses_dsa) => `${symbols.version_zero_line}`,
+    'version_line': (v, _addresses_dsa) => `${symbols.version_line}${v.value}${symbols.c_terminal}`,
+    'a_msid_semantic_ns': (_, _addresses_dsa) => `${symbols.a_msid_semantic_ns}`,
+    'a_msid_semantic_star_ns': (_, _addresses_dsa) => `${symbols.a_msid_semantic_star_ns}`,
+    'a_msid_semantic_ws': (_, _addresses_dsa) => `${symbols.a_msid_semantic_ws}`,
+    'a_extmap_allow_mixed': (_, _addresses_dsa) => `${symbols.a_extmap_allow_mixed}`,
+    'a_standard_sctp_port': (_, _addresses_dsa) => `${symbols.a_standard_sctp_port}`,
+    'a_custom_sctp_port': (v, _addresses_dsa) => `${symbols.a_custom_sctp_port}${v.value}${symbols.c_terminal}`,
+    'a_standard_max_message_size': (_, _addresses_dsa) => `${symbols.a_standard_max_message_size}`,
+    'a_custom_max_message_size': (v, _addresses_dsa) => `${symbols.a_custom_max_message_size}${v.value}${symbols.c_terminal}`,
+    'a_setup_actpass': (_, _addresses_dsa) => `${symbols.a_setup_actpass}`,
+    'a_setup_active': (_, _addresses_dsa) => `${symbols.a_setup_active}`,
+    'a_mid_zero': (_, _addresses_dsa) => `${symbols.a_mid_zero}`,
+    'a_group_bundle_0': (_, _addresses_dsa) => `${symbols.a_group_bundle_0}`,
+    'a_ice_pwd': (v, _addresses_dsa) => `${symbols.a_ice_pwd}${v.value}${symbols.c_terminal}`,
+    'a_ice_pwd_l': (v, _addresses_dsa) => `${symbols.a_ice_pwd_l}${v.value}${symbols.c_terminal}`,
+    'a_ice_pwd_v': (v, _addresses_dsa) => `${symbols.a_ice_pwd_v}${v.value}${symbols.c_terminal}`,
+    'a_ice_ufrag_4': (v, _addresses_dsa) => `${symbols.a_ice_ufrag_4}${v.value}${symbols.c_terminal}`,
+    'a_ice_ufrag_8': (v, _addresses_dsa) => `${symbols.a_ice_ufrag_8}${v.value}${symbols.c_terminal}`,
+    'a_fingerprint_sha1_256': (v, _addresses_dsa) => `${symbols.a_fingerprint_sha1_256}${pack_sha256(v.value)}${symbols.c_terminal}`,
+    'a_send_recv': (_, _addresses_dsa) => `${symbols.a_send_recv}`,
+    'a_end_of_candidates': (_, _addresses_dsa) => `${symbols.a_end_of_candidates}`,
+    's_dash': (_, _addresses_dsa) => `${symbols.s_dash}`,
+    't_zero_zero': (_, _addresses_dsa) => `${symbols.t_zero_zero}`,
+    'b_as_30': (_, _addresses_dsa) => `${symbols.b_as_30}`,
+    'c_claim_ip4': (v, _addresses_dsa) => `${symbols.c_claim_ip4}${pack_i32(v.value)}`,
+    'standard_m_application': (v, _addresses_dsa) => `${symbols.standard_m_application}${v.value}${symbols.c_terminal}`,
+    'a_ice_options_trickle': (_, _addresses_dsa) => `${symbols.a_ice_options_trickle}`,
+    'standard_origin': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [s, d, i] = items;
         if (kind !== 'standard_origin') {
@@ -84,11 +84,11 @@ const parseable = {
         }
         return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${pack_i32(i)}`;
     },
-    'standard_moz_origin': (v) => {
+    'standard_moz_origin': (v, _addresses_dsa) => {
         const smo = v, mvs = moz_ver(smo.moz_ver);
         return `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}`;
     },
-    'standard_guid_local_candidate': (v) => {
+    'standard_guid_local_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i, d4] = items;
         if (kind !== 'standard_guid_local_candidate') {
@@ -96,7 +96,7 @@ const parseable = {
         }
         return `${symbols.standard_guid_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
     },
-    'standard_guid_local_candidate_ffus': (v) => {
+    'standard_guid_local_candidate_ffus': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i, d4] = items;
         if (kind !== 'standard_guid_local_candidate_ffus') {
@@ -104,15 +104,19 @@ const parseable = {
         }
         return `${symbols.standard_guid_local_candidate_ffus}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
     },
-    'standard_local_candidate': (v) => {
+    'standard_local_candidate': (v, addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, p, d4] = items;
+        let found = addresses_dsa.indexOf(i1);
+        if (found === -1) {
+            throw new Error(`FATAL: missing address ${i1}`);
+        }
         if (kind !== 'standard_local_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${d3}${symbols.c_terminal}${pack_i32(i1)}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+        return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${d3}${symbols.c_terminal}${pack_i8(found)}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
     },
-    'standard_remote_candidate': (v) => {
+    'standard_remote_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, i2, d5, d6] = items;
         if (kind !== 'standard_remote_candidate') {
@@ -120,7 +124,7 @@ const parseable = {
         }
         return `${symbols.standard_remote_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${d4}${symbols.c_terminal}${pack_i32(i2)}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
     },
-    'standard_remote_candidate_ffus': (v) => {
+    'standard_remote_candidate_ffus': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, i2, d5] = items;
         if (kind !== 'standard_remote_candidate_ffus') {
@@ -128,7 +132,7 @@ const parseable = {
         }
         return `${symbols.standard_remote_candidate_ffus}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${symbols.c_terminal}${pack_i32(i2)}${d5}${symbols.c_terminal}`;
     },
-    'standard_agen_tcp_candidate': (v) => {
+    'standard_agen_tcp_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, d5] = items;
         if (kind !== 'standard_agen_tcp_candidate') {
@@ -136,7 +140,7 @@ const parseable = {
         }
         return `${symbols.standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
-    'standard_agen_tcp6_candidate': (v) => {
+    'standard_agen_tcp6_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, d5] = items;
         if (kind !== 'standard_agen_tcp6_candidate') {
@@ -144,7 +148,7 @@ const parseable = {
         }
         return `${symbols.standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
-    'standard_agen_udp4_candidate': (v) => {
+    'standard_agen_udp4_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, i2, d5, d6] = items;
         if (kind !== 'standard_agen_udp4_candidate') {
@@ -152,7 +156,7 @@ const parseable = {
         }
         return `${symbols.standard_agen_udp4_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${symbols.c_terminal}${pack_i32(i2)}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
     },
-    'standard_agen_udp6_host_candidate': (v) => {
+    'standard_agen_udp6_host_candidate': (v, _addresses_dsa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, d5] = items;
         if (kind !== 'standard_agen_udp6_host_candidate') {
@@ -160,7 +164,7 @@ const parseable = {
         }
         return `${symbols.standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
-    'unknown_terminate': (v) => `${symbols.unknown_terminate}${v.value}`
+    'unknown_terminate': (v, _addresses_dsa) => `${symbols.unknown_terminate}${v.value}`
 };
 function bitch(bi) {
     return String.fromCharCode(Number(bi));
@@ -200,7 +204,7 @@ function parsed_to_bytestring(parsed) {
                 throw new TypeError(`[pack] Impossible bytestring symbol found: ${JSON.stringify(v.kind)}`);
             }
             else {
-                work += parseable[v.kind](v);
+                work += parseable[v.kind](v, (parsed?.addresses?.v4 ?? []));
             }
         });
     }
