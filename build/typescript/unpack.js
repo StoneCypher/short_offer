@@ -57,7 +57,7 @@ function unpack(bytestring) {
     function scan_forward_four_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 5));
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
-        i += 5;
+        i += 4;
     }
     function scan_forward_32_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 33));

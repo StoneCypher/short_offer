@@ -73,7 +73,7 @@ const parseable = {
     's_dash': (_) => `${symbols.s_dash}`,
     't_zero_zero': (_) => `${symbols.t_zero_zero}`,
     'b_as_30': (_) => `${symbols.b_as_30}`,
-    'c_claim_ip4': (v) => `${symbols.c_claim_ip4}${pack_i32(v.value)}${symbols.c_terminal}`,
+    'c_claim_ip4': (v) => `${symbols.c_claim_ip4}${pack_i32(v.value)}`,
     'standard_m_application': (v) => `${symbols.standard_m_application}${v.value}${symbols.c_terminal}`,
     'a_ice_options_trickle': (_) => `${symbols.a_ice_options_trickle}`,
     'standard_origin': (v) => {
@@ -82,7 +82,7 @@ const parseable = {
         if (kind !== 'standard_origin') {
             throw 'impossible';
         }
-        return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${pack_i32(i)}${symbols.c_terminal}`;
+        return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${pack_i32(i)}`;
     },
     'standard_moz_origin': (v) => {
         const smo = v, mvs = moz_ver(smo.moz_ver);
@@ -110,7 +110,7 @@ const parseable = {
         if (kind !== 'standard_local_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_local_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i32(d2)}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+        return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${d3}${symbols.c_terminal}${pack_i32(i1)}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
     },
     'standard_remote_candidate': (v) => {
         const { kind, items } = v;
@@ -118,7 +118,7 @@ const parseable = {
         if (kind !== 'standard_remote_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_remote_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+        return `${symbols.standard_remote_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i32(i1)}${d4}${symbols.c_terminal}${pack_i32(i2)}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
     },
     'standard_remote_candidate_ffus': (v) => {
         const { kind, items } = v;
@@ -126,7 +126,7 @@ const parseable = {
         if (kind !== 'standard_remote_candidate_ffus') {
             throw 'impossible';
         }
-        return `${symbols.standard_remote_candidate_ffus}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_remote_candidate_ffus}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${symbols.c_terminal}${pack_i32(i2)}${d5}${symbols.c_terminal}`;
     },
     'standard_agen_tcp_candidate': (v) => {
         const { kind, items } = v;
@@ -134,7 +134,7 @@ const parseable = {
         if (kind !== 'standard_agen_tcp_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_tcp_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
     'standard_agen_tcp6_candidate': (v) => {
         const { kind, items } = v;
@@ -142,7 +142,7 @@ const parseable = {
         if (kind !== 'standard_agen_tcp6_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_tcp6_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
     'standard_agen_udp4_candidate': (v) => {
         const { kind, items } = v;
@@ -150,7 +150,7 @@ const parseable = {
         if (kind !== 'standard_agen_udp4_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_udp4_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${pack_i32(i1)}${symbols.c_terminal}${d4}${symbols.c_terminal}${pack_i32(i2)}${symbols.c_terminal}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_udp4_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i32(i1)}${d4}${symbols.c_terminal}${pack_i32(i2)}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
     },
     'standard_agen_udp6_host_candidate': (v) => {
         const { kind, items } = v;
@@ -158,7 +158,7 @@ const parseable = {
         if (kind !== 'standard_agen_udp6_host_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_udp6_host_candidate}${pack_i32(d1)}${symbols.c_terminal}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${symbols.c_terminal}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${i1}${symbols.c_terminal}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
     'unknown_terminate': (v) => `${symbols.unknown_terminate}${v.value}`
 };
