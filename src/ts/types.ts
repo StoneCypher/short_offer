@@ -6,43 +6,44 @@ type IPv6asCanonBytesAsString = string;
 
 
 
-type VersionZeroLine                     = { kind: 'version_zero_line',                        value: string, uses_short_nl: boolean };
-type VersionLine                         = { kind: 'version_line',                             value: string, uses_short_nl: boolean };
+type VersionZeroLine                         = { kind: 'version_zero_line',                        value: string, uses_short_nl: boolean };
+type VersionLine                             = { kind: 'version_line',                             value: string, uses_short_nl: boolean };
 
-type AMsidSemanticNS                     = { kind: 'a_msid_semantic_ns',                       value: string, uses_short_nl: boolean };
-type AMsidSemanticWS                     = { kind: 'a_msid_semantic_ws',                       value: string, uses_short_nl: boolean };
-type AExtmapAllowMixed                   = { kind: 'a_extmap_allow_mixed',                     value: string, uses_short_nl: boolean };
-type AStandardSctpPort                   = { kind: 'a_standard_sctp_port',                     value: string, uses_short_nl: boolean };
-type ACustomSctpPort                     = { kind: 'a_custom_sctp_port',                       value: string, uses_short_nl: boolean };
-type AStandardMaxMessageSize             = { kind: 'a_standard_max_message_size',              value: string, uses_short_nl: boolean };
-type ACustomMaxMessageSize               = { kind: 'a_custom_max_message_size',                value: string, uses_short_nl: boolean };
-type ASetupActPass                       = { kind: 'a_setup_actpass',                          value: string, uses_short_nl: boolean };
-type ASetupActive                        = { kind: 'a_setup_active',                           value: string, uses_short_nl: boolean };
-type AMidZero                            = { kind: 'a_mid_zero',                               value: string, uses_short_nl: boolean };
-type AGroupBundleZero                    = { kind: 'a_group_bundle_0',                         value: string, uses_short_nl: boolean };
-type CClaimIp4                           = { kind: 'c_claim_ip4',                              value: string, uses_short_nl: boolean };
-type StandardMApplication                = { kind: 'standard_m_application',                   value: string, uses_short_nl: boolean };
-type AIceOptionsTrickle                  = { kind: 'a_ice_options_trickle',                    value: string, uses_short_nl: boolean };
+type AMsidSemanticNS                         = { kind: 'a_msid_semantic_ns',                       value: string, uses_short_nl: boolean };
+type AMsidSemanticWS                         = { kind: 'a_msid_semantic_ws',                       value: string, uses_short_nl: boolean };
+type AExtmapAllowMixed                       = { kind: 'a_extmap_allow_mixed',                     value: string, uses_short_nl: boolean };
+type AStandardSctpPort                       = { kind: 'a_standard_sctp_port',                     value: string, uses_short_nl: boolean };
+type ACustomSctpPort                         = { kind: 'a_custom_sctp_port',                       value: string, uses_short_nl: boolean };
+type AStandardMaxMessageSize                 = { kind: 'a_standard_max_message_size',              value: string, uses_short_nl: boolean };
+type ACustomMaxMessageSize                   = { kind: 'a_custom_max_message_size',                value: string, uses_short_nl: boolean };
+type ASetupActPass                           = { kind: 'a_setup_actpass',                          value: string, uses_short_nl: boolean };
+type ASetupActive                            = { kind: 'a_setup_active',                           value: string, uses_short_nl: boolean };
+type AMidZero                                = { kind: 'a_mid_zero',                               value: string, uses_short_nl: boolean };
+type AGroupBundleZero                        = { kind: 'a_group_bundle_0',                         value: string, uses_short_nl: boolean };
+type CClaimIp4                               = { kind: 'c_claim_ip4',                              value: string, uses_short_nl: boolean };
+type StandardMApplication                    = { kind: 'standard_m_application',                   value: string, uses_short_nl: boolean };
+type AIceOptionsTrickle                      = { kind: 'a_ice_options_trickle',                    value: string, uses_short_nl: boolean };
 
-type SDash                               = { kind: 's_dash',                                   value: string, uses_short_nl: boolean };
-type TZeroZero                           = { kind: 't_zero_zero',                              value: string, uses_short_nl: boolean };
-type BAs30                               = { kind: 'b_as_30',                                  value: string, uses_short_nl: boolean };
-type StandardOrigin                      = { kind: 'standard_origin',                          value: string, uses_short_nl: boolean, items: [ s: bigint, d: number, i: string ] };
-type StandardMozOrigin                   = { kind: 'standard_moz_origin',                      value: string, uses_short_nl: boolean, moz_ver: [number, number, number], sess: bigint };
-type StandardLocalCandidate              = { kind: 'standard_local_candidate',                 value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, p: number,  d4: number ] };
-type StandardGuidLocalCandidate          = { kind: 'standard_guid_local_candidate',            value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
-type StandardIp4LocalCandidateFfUSActive = { kind: 'standard_ip4_local_candidate_ffus_active', value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: string,  d4: number ] };
-type StandardIp4LocalCandidateFfUS       = { kind: 'standard_ip4_local_candidate_ffus',        value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: string,  d4: number ] };
-type StandardGuidLocalCandidateFfUS      = { kind: 'standard_guid_local_candidate_ffus',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
-type StandardRemoteCandidate             = { kind: 'standard_remote_candidate',                value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number, d6: number ] };
-type StandardRemoteCandidateFfUS         = { kind: 'standard_remote_candidate_ffus',           value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number ] };
-type StandardAGenTcpCandidate            = { kind: 'standard_agen_tcp_candidate',              value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, d5: number ] };
-type StandardAGenTcp6Candidate           = { kind: 'standard_agen_tcp6_candidate',             value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, d5: number ] };
-type StandardAGenUdp4Candidate           = { kind: 'standard_agen_udp4_candidate',             value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number, d6: number ] };
-type StandardAGenUdp6HostCandidate       = { kind: 'standard_agen_udp6_host_candidate',        value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, d5: number ] };
+type SDash                                   = { kind: 's_dash',                                   value: string, uses_short_nl: boolean };
+type TZeroZero                               = { kind: 't_zero_zero',                              value: string, uses_short_nl: boolean };
+type BAs30                                   = { kind: 'b_as_30',                                  value: string, uses_short_nl: boolean };
+type StandardOrigin                          = { kind: 'standard_origin',                          value: string, uses_short_nl: boolean, items: [ s: bigint, d: number, i: string ] };
+type StandardMozOrigin                       = { kind: 'standard_moz_origin',                      value: string, uses_short_nl: boolean, moz_ver: [number, number, number], sess: bigint };
+type StandardLocalCandidate                  = { kind: 'standard_local_candidate',                 value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, p: number,  d4: number ] };
+type StandardGuidLocalCandidate              = { kind: 'standard_guid_local_candidate',            value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
+type StandardIp4LocalCandidateFfUSActive     = { kind: 'standard_ip4_local_candidate_ffus_active', value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: string,  d4: number ] };
+type StandardIp4LocalCandidateFfUS           = { kind: 'standard_ip4_local_candidate_ffus',        value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: string,  d4: number ] };
+type StandardTcpGuidLocalCandidateFfUSActive = { kind: 'standard_tcp_guid_local_candidate_ffus_active',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
+type StandardGuidLocalCandidateFfUS          = { kind: 'standard_guid_local_candidate_ffus',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
+type StandardRemoteCandidate                 = { kind: 'standard_remote_candidate',                value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number, d6: number ] };
+type StandardRemoteCandidateFfUS             = { kind: 'standard_remote_candidate_ffus',           value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number ] };
+type StandardAGenTcpCandidate                = { kind: 'standard_agen_tcp_candidate',              value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, d5: number ] };
+type StandardAGenTcp6Candidate               = { kind: 'standard_agen_tcp6_candidate',             value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, d5: number ] };
+type StandardAGenUdp4Candidate               = { kind: 'standard_agen_udp4_candidate',             value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number, d6: number ] };
+type StandardAGenUdp6HostCandidate           = { kind: 'standard_agen_udp6_host_candidate',        value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, d5: number ] };
 
-type UnknownLine                         = { kind: 'unknown_line',                             value: string, uses_short_nl: boolean };
-type UnknownTerminate                    = { kind: 'unknown_terminate',                        value: string, uses_short_nl: boolean };
+type UnknownLine                             = { kind: 'unknown_line',                             value: string, uses_short_nl: boolean };
+type UnknownTerminate                        = { kind: 'unknown_terminate',                        value: string, uses_short_nl: boolean };
 
 type PegCoord                            = { offset: number; line: number; column: number; };
 type PegLocation                         = { start: PegCoord; end: PegCoord };
@@ -63,7 +64,7 @@ type ParsedLine
   | SDash | TZeroZero | BAs30
   | StandardOrigin | StandardMozOrigin
   | StandardLocalCandidate | StandardGuidLocalCandidate
-  | StandardGuidLocalCandidateFfUS
+  | StandardGuidLocalCandidateFfUS | StandardTcpGuidLocalCandidateFfUSActive
   | StandardIp4LocalCandidateFfUSActive | StandardIp4LocalCandidateFfUS
   | StandardRemoteCandidate | StandardRemoteCandidateFfUS
   | StandardAGenTcpCandidate | StandardAGenTcp6Candidate
@@ -88,7 +89,7 @@ type ParsedSdp = {
         | 'standard_moz_origin'
         | 'standard_local_candidate' | 'standard_guid_local_candidate'
         | 'standard_ip4_local_candidate_ffus' | 'standard_ip4_local_candidate_ffus_active'
-        | 'standard_guid_local_candidate_ffus'
+        | 'standard_guid_local_candidate_ffus' | 'standard_tcp_guid_local_candidate_ffus_active'
         | 'standard_remote_candidate' | 'standard_remote_candidate_ffus'
         | 'standard_agen_tcp_candidate' | 'standard_agen_tcp6_candidate'
         | 'standard_agen_udp4_candidate' | 'standard_agen_udp6_host_candidate'
@@ -115,7 +116,7 @@ export {
   StandardOrigin, StandardMozOrigin,
   StandardLocalCandidate, StandardGuidLocalCandidate,
   StandardIp4LocalCandidateFfUSActive, StandardIp4LocalCandidateFfUS,
-  StandardGuidLocalCandidateFfUS,
+  StandardGuidLocalCandidateFfUS, StandardTcpGuidLocalCandidateFfUSActive,
   StandardRemoteCandidate, StandardRemoteCandidateFfUS,
   StandardAGenTcpCandidate, StandardAGenTcp6Candidate,
   StandardAGenUdp4Candidate, StandardAGenUdp6HostCandidate,

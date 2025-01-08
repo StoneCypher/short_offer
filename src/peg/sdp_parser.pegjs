@@ -35,6 +35,7 @@
          'standard_guid_local_candidate',
          'standard_ip4_local_candidate_ffus_active',
          'standard_ip4_local_candidate_ffus',
+         'standard_tcp_guid_local_candidate_ffus_active',
          'standard_guid_local_candidate_ffus',
          'standard_remote_candidate',
          'standard_remote_candidate_ffus',
@@ -274,48 +275,49 @@ Answer
 
 // todo: modify this to tolerate \n instead of \r\n
 Rule
- = ValZeroLine
- / ValLine
- / AttrMsidSemanticWmsClaimNoSpace
- / AttrMsidSemanticWmsClaimStarNoSpace
- / AttrMsidSemanticWmsClaimWithSpace
- / AttrExtmapAllowMixed
- / ASetupActpass
- / ASetupActive
- / AMid0
- / SDash
- / BAs30
- / TZeroZero
- / IceOptionsTrickle
- / StandardOrigin
- / StandardMozOrigin
- / StandardSctpPort
- / CustomSctpPort
- / StandardMaxMessageSize
- / CustomMaxMessageSize
- / CClaimIp4
- / StandardMApplication
- / AStandardLocalCandidate
- / AStandardGuidLocalCandidate
- / AStandardGuidLocalCandidateFfUS
- / AStandardIp4LocalCandidateFfUSActive
- / AStandardIp4LocalCandidateFfUS
- / AStandardIp4RemoteCandidateFfUS
- / AStandardIp4RemoteCandidate
- / AStandardAGenTcpCandidate
- / AStandardAGenTcp6Candidate
- / AStandardAGenUdp4Candidate
- / AStandardAGenUdp6HostCandidate
- / AIcePwdV
- / AIcePwdL
- / AIcePwd
- / AIceUFrag4
- / AIceUFrag8
- / AFingerprint
- / AGroupBundle0
- / ASendRecv
- / AEndOfCandidates
- / UnknownRule
+  = ValZeroLine
+  / ValLine
+  / AttrMsidSemanticWmsClaimNoSpace
+  / AttrMsidSemanticWmsClaimStarNoSpace
+  / AttrMsidSemanticWmsClaimWithSpace
+  / AttrExtmapAllowMixed
+  / ASetupActpass
+  / ASetupActive
+  / AMid0
+  / SDash
+  / BAs30
+  / TZeroZero
+  / IceOptionsTrickle
+  / StandardOrigin
+  / StandardMozOrigin
+  / StandardSctpPort
+  / CustomSctpPort
+  / StandardMaxMessageSize
+  / CustomMaxMessageSize
+  / CClaimIp4
+  / StandardMApplication
+  / AStandardLocalCandidate
+  / AStandardGuidLocalCandidate
+  / AStandardGuidLocalCandidateFfUS
+  / AStandardTcpGuidLocalCandidateFfUSActive
+  / AStandardIp4LocalCandidateFfUSActive
+  / AStandardIp4LocalCandidateFfUS
+  / AStandardIp4RemoteCandidateFfUS
+  / AStandardIp4RemoteCandidate
+  / AStandardAGenTcpCandidate
+  / AStandardAGenTcp6Candidate
+  / AStandardAGenUdp4Candidate
+  / AStandardAGenUdp6HostCandidate
+  / AIcePwdV
+  / AIcePwdL
+  / AIcePwd
+  / AIceUFrag4
+  / AIceUFrag8
+  / AFingerprint
+  / AGroupBundle0
+  / ASendRecv
+  / AEndOfCandidates
+  / UnknownRule
 
 
 
@@ -490,6 +492,14 @@ AStandardIp4LocalCandidateFfUS
 AStandardIp4LocalCandidateFfUSActive
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' TCP ' d3:Decimal ' ' i:IP4 ' ' d4:Decimal ' typ host tcptype active' CapAtSeparator
   { return ast('standard_ip4_local_candidate_ffus_active', [ d1, d2, d3, i, d4 ]); }
+
+
+
+// a=candidate:0 1 UDP 2122187007 221ef227-2e49-4a0b-9b9d-dc8b767523e6.local 51652 typ host
+AStandardTcpGuidLocalCandidateFfUSActive
+  = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' TCP ' d3:Decimal ' ' g:GUID
+    '.local ' d4:Decimal ' typ host tcptype active' CapAtSeparator
+  { return ast('standard_tcp_guid_local_candidate_ffus_active', [ d1, d2, d3, g, d4 ]); }
 
 
 

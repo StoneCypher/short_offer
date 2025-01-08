@@ -10,6 +10,7 @@ import {
   StandardIp4LocalCandidateFfUS,
   StandardGuidLocalCandidate,
   StandardGuidLocalCandidateFfUS,
+  StandardTcpGuidLocalCandidateFfUSActive,
   StandardRemoteCandidate,
   StandardRemoteCandidateFfUS,
   StandardAGenTcpCandidate,
@@ -322,6 +323,13 @@ const parseable = {
     const [ d1, d2, d3, i, d4 ] = items;
     if (kind !== 'standard_guid_local_candidate_ffus') { throw 'impossible'; }
     return `${symbols.standard_guid_local_candidate_ffus}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${i}${symbols.c_terminal}${pack_i16(d4)}`;
+  },
+
+  'standard_tcp_guid_local_candidate_ffus_active': (v: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) => {
+    const { kind, items } = (v as StandardTcpGuidLocalCandidateFfUSActive);
+    const [ d1, d2, d3, i, d4 ] = items;
+    if (kind !== 'standard_tcp_guid_local_candidate_ffus_active') { throw 'impossible'; }
+    return `${symbols.standard_tcp_guid_local_candidate_ffus_active}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${i}${symbols.c_terminal}${pack_i16(d4)}`;
   },
 
   'standard_local_candidate': (v: ParsedLine, addresses4_dsa: string[], _addresses6_csa: string[]) => {

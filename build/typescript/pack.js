@@ -164,6 +164,14 @@ const parseable = {
         }
         return `${symbols.standard_guid_local_candidate_ffus}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${i}${symbols.c_terminal}${pack_i16(d4)}`;
     },
+    'standard_tcp_guid_local_candidate_ffus_active': (v, _addresses4_dsa, _addresses6_csa) => {
+        const { kind, items } = v;
+        const [d1, d2, d3, i, d4] = items;
+        if (kind !== 'standard_tcp_guid_local_candidate_ffus_active') {
+            throw 'impossible';
+        }
+        return `${symbols.standard_tcp_guid_local_candidate_ffus_active}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${i}${symbols.c_terminal}${pack_i16(d4)}`;
+    },
     'standard_local_candidate': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, p, d4] = items;
