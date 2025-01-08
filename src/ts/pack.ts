@@ -287,7 +287,7 @@ const parseable = {
   'standard_moz_origin': (v: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) => {
     const smo = v as StandardMozOrigin,
           mvs = moz_ver(smo.moz_ver);
-    return `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}`;
+    return `${symbols.standard_moz_origin}${mvs}${pack_i64(smo.sess)}`;
   },
 
   'standard_guid_local_candidate': (v: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) => {
@@ -361,7 +361,7 @@ const parseable = {
     let found2 = addresses4_dsa.indexOf(i2);
     if (found2 === -1) { throw new Error(`FATAL: missing address 2 ${i2}`); }
     if (kind !== 'standard_agen_udp4_candidate') { throw 'impossible'; }
-    return `${symbols.standard_agen_udp4_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i8(found1)}${d4}${symbols.c_terminal}${pack_i8(found2)}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+    return `${symbols.standard_agen_udp4_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}${pack_i8(found2)}${pack_i16(d5)}${pack_i8(d6)}`;
   },
 
   'standard_agen_udp6_host_candidate': (v: ParsedLine, _addresses4_dsa: string[], addresses6_csa: string[]) => {

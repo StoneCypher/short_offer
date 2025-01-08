@@ -106,7 +106,7 @@ type StandardMozOrigin = {
     value: string;
     uses_short_nl: boolean;
     moz_ver: [number, number, number];
-    sess: number;
+    sess: bigint;
 };
 type StandardLocalCandidate = {
     kind: 'standard_local_candidate';

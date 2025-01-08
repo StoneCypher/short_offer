@@ -122,7 +122,7 @@ const parseable = {
     },
     'standard_moz_origin': (v, _addresses4_dsa, _addresses6_csa) => {
         const smo = v, mvs = moz_ver(smo.moz_ver);
-        return `${symbols.standard_moz_origin}${mvs}${smo.sess}${symbols.c_terminal}`;
+        return `${symbols.standard_moz_origin}${mvs}${pack_i64(smo.sess)}`;
     },
     'standard_guid_local_candidate': (v, _addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -222,7 +222,7 @@ const parseable = {
         if (kind !== 'standard_agen_udp4_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_udp4_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i8(found1)}${d4}${symbols.c_terminal}${pack_i8(found2)}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_udp4_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}${pack_i8(found2)}${pack_i16(d5)}${pack_i8(d6)}`;
     },
     'standard_agen_udp6_host_candidate': (v, _addresses4_dsa, addresses6_csa) => {
         const { kind, items } = v;

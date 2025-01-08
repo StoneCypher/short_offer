@@ -252,7 +252,7 @@ function unpack(bytestring) {
                 break;
             case symbols.standard_moz_origin:
                 scan_forward_to_null('o=mozilla...THIS_IS_SDPARTA-', 'standard_moz_origin_1', undefined, true);
-                scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
+                scan_forward_exactly_eight_bytes(` `, unpack_i64, true);
                 work += ' 0 IN IP4 0.0.0.0\r\n';
                 break;
             case symbols.unknown_terminate:
@@ -301,13 +301,13 @@ function unpack(bytestring) {
                 break;
             case symbols.standard_agen_udp4_candidate:
                 scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
-                scan_forward_one_byte(' ', unpack_i8, true);
+                scan_forward_exactly_one_byte(' ', unpack_i8, true);
                 scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
-                scan_forward_to_null(' ', 'standard_guid_candidate_5', undefined, true);
+                scan_forward_exactly_two_bytes(' ', unpack_i16, true);
                 scan_forward_exactly_one_byte(' typ srflx raddr ', unpack_indexed_ipv4_l, true);
-                scan_forward_to_null(' rport ', 'standard_guid_candidate_7', undefined, true);
-                scan_forward_to_null(' generation 0 network-id ', 'standard_guid_candidate_8', undefined, false);
+                scan_forward_exactly_two_bytes(' rport ', unpack_i16, true);
+                scan_forward_exactly_one_byte(' generation 0 network-id ', unpack_i8, false);
                 break;
             case symbols.standard_agen_udp6_host_candidate:
                 scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
