@@ -71,6 +71,24 @@
   }
 
 
+
+  function unelide(lAddresses, rAddresses) {
+
+    const addrL = lAddresses.filter(p => p !== null),
+          addrR = rAddresses.filter(p => p !== null);
+
+    const missingCount = 8 - (addrL.length + addrR.length);
+
+    if (missingCount < 0) {
+      throw new Error('More than eight segments found; illegal v6 addr');
+    }
+
+    return [ ... addrL, ... new Array(missingCount).fill(0), ... addrR ];
+
+  }
+
+
+
 }
 
 
@@ -205,6 +223,36 @@ IP6
     );
   }
 
+
+IP6N
+  = IP6N_Full
+  / IP6N_Elided
+
+IP6N_Full
+  = A:NQ ':' B:NQ ':' C:NQ ':' D:NQ ':' E:NQ ':' F:NQ ':' G:NQ ':' H:NQ
+    { return [ Number(A), Number(B), Number(C), Number(D), Number(E), Number(F), Number(G), Number(H) ] }
+
+NQ
+  = a:[0-9a-zA-Z] b:[0-9a-zA-Z]? c:[0-9a-zA-Z]? d:[0-9a-zA-Z]?
+    { return parseInt(`${a}${b??''}${c??''}${d??''}`, 16); }
+
+NQW
+  = a:[0-9a-zA-Z] b:[0-9a-zA-Z]? c:[0-9a-zA-Z]? d:[0-9a-zA-Z]? ':'
+    { return parseInt(`${a}${b??''}${c??''}${d??''}`, 16); }
+
+IP6N_Elided
+  =                                                        '::' A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQW? G:NQW? H:NQ? { return unelide([], [A,B,C,D,E,F,G,H]); }
+  / A:NQ?                                                  '::' B:NQW? C:NQW? D:NQW? E:NQW? F:NQW? G:NQW? H:NQ?        { return unelide([A],  [B,C,D,E,F,G,H]); }
+  / A:NQW? B:NQ?                                           '::' C:NQW? D:NQW? E:NQW? F:NQW? G:NQW? H:NQ?               { return unelide([A,B],  [C,D,E,F,G,H]); }
+  / A:NQW? B:NQW? C:NQ?                                    '::' D:NQW? E:NQW? F:NQW? G:NQW? H:NQ?                      { return unelide([A,B,C],  [D,E,F,G,H]); }
+  / A:NQW? B:NQW? C:NQW? D:NQ?                             '::' E:NQW? F:NQW? G:NQW? H:NQ?                             { return unelide([A,B,C,D],  [E,F,G,H]); }
+  / A:NQW? B:NQW? C:NQW? D:NQW? E:NQ?                      '::' F:NQW? G:NQW? H:NQ?                                    { return unelide([A,B,C,D,E],  [F,G,H]); }
+  / A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQ?               '::' G:NQ?  H:NQ?                                           { return unelide([A,B,C,D,E,F],  [G,H]); }
+  / A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQW? G:NQ?        '::' H:NQ?                                                  { return unelide([A,B,C,D,E,F,G],  [H]); }
+  / A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQW? G:NQW? H:NQ? '::'                                                        { return unelide([A,B,C,D,E,F,G,H], []); }
+
+
+
 quadlet
   = q:up_quad ':' { return q; }
 
@@ -214,10 +262,9 @@ up_quad
 
 
 
+
 M_h16
   = d:(":" h16) { return `:${d[1]}`; }
-
-
 
 // cribbed from https://git.insoft.cz/insoft/modified-sip.js/-/blob/3081a21bd47215679f7f1dac8c771ae6f3d7193b/src/grammar/src/grammar.pegjs
 // IP6
@@ -236,7 +283,6 @@ M_h16
 //   / a:h16 b:h16? c:h16? d:h16? e:h16?               "::" g:ls32                                         { return `${a}:${b}:${c}:${d}:${e}::${g}`; }
 //   / a:h16 b:h16? c:h16? d:h16? e:h16? f:h16?        "::" g:h16                                          { return `${a}:${b}:${c}:${d}:${e}::${g}`; }
 //   / a:h16 b:h16? c:h16? d:h16? e:h16? f:h16? g:h16? "::"                                                { return `${a}:${b}:${c}:${d}:${e}:${f}:${g}`; }
-
 
 h16
   = a:Hex b:Hex? c:Hex? d:Hex? { return `${a}${not_null(b)}${not_null(c)}${not_null(d)}`; }

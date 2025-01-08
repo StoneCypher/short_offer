@@ -7,8 +7,8 @@ import { ParsedSdp }            from './types';
 
 
 
-function parse(code: string) {
-  return peg_parse(code) as ParsedSdp;
+function parse(code: string, options?: any | undefined) {
+  return peg_parse(code, options) as ParsedSdp;
 }
 
 
