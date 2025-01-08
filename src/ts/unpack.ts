@@ -264,9 +264,6 @@ function unpack(bytestring: string): string {
   let ipv4_addr_count = bytestring.charCodeAt(0);
   ++stream_start;
 
-  console.log(`Reading ${ipv4_addr_count} addresses`);
-//  stream_start += ipv4_addr_count*4;
-
   for (let i=0; i<ipv4_addr_count; ++i) {
     // they need to come out as decimal strings - not 127.0.0.1, but '2130706433'
     ipv4_list[i]  = four_bytes_to_decimal_ipv4_string(bytestring.substring(stream_start, stream_start+4));

@@ -6107,7 +6107,6 @@ function unpack(bytestring) {
     let ipv4_list = [];
     let ipv4_addr_count = bytestring.charCodeAt(0);
     ++stream_start;
-    console.log(`Reading ${ipv4_addr_count} addresses`);
     for (let i = 0; i < ipv4_addr_count; ++i) {
         ipv4_list[i] = four_bytes_to_decimal_ipv4_string(bytestring.substring(stream_start, stream_start + 4));
         stream_start += 4;
