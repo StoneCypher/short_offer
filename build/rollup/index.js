@@ -7037,7 +7037,7 @@ const parseable = {
         if (kind !== 'standard_guid_local_candidate_ffus') {
             throw 'impossible';
         }
-        return `${standard_guid_local_candidate_ffus}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${i}${c_terminal}${d4}${c_terminal}`;
+        return `${standard_guid_local_candidate_ffus}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${i}${c_terminal}${pack_i16(d4)}`;
     },
     'standard_local_candidate': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -7489,11 +7489,11 @@ function unpack(bytestring) {
                 work += ' typ host generation 0 network-cost 999\r\n';
                 break;
             case standard_guid_local_candidate_ffus:
-                scan_forward_to_null(`a=candidate:`, 'standard_local_candidate_1', undefined, true);
-                scan_forward_to_null(' ', 'standard_local_candidate_2', undefined, true);
-                scan_forward_to_null(' UDP ', 'standard_local_candidate_3', undefined, true);
+                scan_forward_exactly_one_byte(`a=candidate:`, unpack_i8, true);
+                scan_forward_exactly_one_byte(' ', unpack_i8, true);
+                scan_forward_exactly_four_bytes(' UDP ', unpack_i32, true);
                 scan_forward_to_null(' ', 'standard_local_candidate_4', unpack_guid, true);
-                scan_forward_to_null('.local ', 'standard_local_candidate_5', undefined, true);
+                scan_forward_exactly_two_bytes('.local ', unpack_i16, true);
                 work += ' typ host\r\n';
                 break;
             case standard_local_candidate:
