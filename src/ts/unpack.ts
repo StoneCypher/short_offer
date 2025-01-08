@@ -526,7 +526,6 @@ function unpack(bytestring: string): string {
         scan_forward_one_byte(' ',                                                                             unpack_i8,  true);
         scan_forward_four_bytes(' tcp ',                                                                       unpack_i32, true);
         scan_forward_exactly_one_byte( ' ',                                                                    unpack_indexed_ipv6_l, true);
-        // scan_forward_to_null(' ',                                                 'standard_guid_candidate_4', undefined,  true);
         scan_forward_to_null(' ',                                                 'standard_guid_candidate_4', undefined,  true);
         scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined,  false);
         break;
@@ -543,12 +542,12 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.standard_agen_udp6_host_candidate:
-        scan_forward_four_bytes(`a=candidate:`,                                                 unpack_i32, true);
-        scan_forward_one_byte(' ',                                                              unpack_i8,  true);
-        scan_forward_four_bytes(' udp ',                                                        unpack_i32, true);
-        scan_forward_to_null(' ',                                  'standard_guid_candidate_4', undefined,  true);
-        scan_forward_to_null(' ',                                  'standard_guid_candidate_5', undefined,  true);
-        scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_6', undefined,  false);
+        scan_forward_four_bytes(`a=candidate:`,                                                 unpack_i32,            true);
+        scan_forward_one_byte(' ',                                                              unpack_i8,             true);
+        scan_forward_four_bytes(' udp ',                                                        unpack_i32,            true);
+        scan_forward_exactly_one_byte( ' ',                                                     unpack_indexed_ipv6_l, true);
+        scan_forward_to_null(' ',                                  'standard_guid_candidate_5', undefined,             true);
+        scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_6', undefined,             false);
         break;
 
       case symbols.standard_remote_candidate:
