@@ -541,6 +541,24 @@ function unpack(bytestring: string): string {
         work += ' typ host\r\n';
         break;
 
+      case symbols.standard_ip4_local_candidate_ffus:
+        scan_forward_exactly_one_byte(`a=candidate:`,           unpack_i8,             true);
+        scan_forward_exactly_one_byte(' ',                      unpack_i8,             true);
+        scan_forward_exactly_four_bytes(' UDP ',                unpack_i32,            true);
+        scan_forward_exactly_one_byte( ' ',                     unpack_indexed_ipv4_l, true);
+        scan_forward_exactly_two_bytes(' ',                     unpack_i16,            true);
+        work += ' typ host\r\n';
+        break;
+
+      case symbols.standard_ip4_local_candidate_ffus_active:
+        scan_forward_exactly_one_byte(`a=candidate:`,           unpack_i8,             true);
+        scan_forward_exactly_one_byte(' ',                      unpack_i8,             true);
+        scan_forward_exactly_four_bytes(' TCP ',                unpack_i32,            true);
+        scan_forward_exactly_one_byte( ' ',                     unpack_indexed_ipv4_l, true);
+        scan_forward_exactly_two_bytes(' ',                     unpack_i16,            true);
+        work += ' typ host tcptype active\r\n';
+        break;
+
       case symbols.standard_local_candidate:
         scan_forward_exactly_four_bytes(`a=candidate:`,                                            unpack_i32,            true);
         scan_forward_exactly_one_byte(' ',                                                         unpack_i8,             true);

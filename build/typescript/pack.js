@@ -132,6 +132,30 @@ const parseable = {
         }
         return `${symbols.standard_guid_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${i}${symbols.c_terminal}${pack_i16(d4)}`;
     },
+    'standard_ip4_local_candidate_ffus': (v, addresses4_dsa, _addresses6_csa) => {
+        const { kind, items } = v;
+        const [d1, d2, d3, i, d4] = items;
+        let found1 = addresses4_dsa.indexOf(i);
+        if (found1 === -1) {
+            throw new Error(`FATAL: missing address 1 ${i}`);
+        }
+        if (kind !== 'standard_ip4_local_candidate_ffus') {
+            throw 'impossible';
+        }
+        return `${symbols.standard_ip4_local_candidate_ffus}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}`;
+    },
+    'standard_ip4_local_candidate_ffus_active': (v, addresses4_dsa, _addresses6_csa) => {
+        const { kind, items } = v;
+        const [d1, d2, d3, i, d4] = items;
+        let found1 = addresses4_dsa.indexOf(i);
+        if (found1 === -1) {
+            throw new Error(`FATAL: missing address 1 ${i}`);
+        }
+        if (kind !== 'standard_ip4_local_candidate_ffus_active') {
+            throw 'impossible';
+        }
+        return `${symbols.standard_ip4_local_candidate_ffus_active}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}`;
+    },
     'standard_guid_local_candidate_ffus': (v, _addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i, d4] = items;

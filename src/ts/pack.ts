@@ -6,6 +6,8 @@ import {
   StandardOrigin,
   StandardMozOrigin,
   StandardLocalCandidate,
+  StandardIp4LocalCandidateFfUSActive,
+  StandardIp4LocalCandidateFfUS,
   StandardGuidLocalCandidate,
   StandardGuidLocalCandidateFfUS,
   StandardRemoteCandidate,
@@ -295,6 +297,24 @@ const parseable = {
     const [ d1, d2, d3, i, d4 ] = items;
     if (kind !== 'standard_guid_local_candidate') { throw 'impossible'; }
     return `${symbols.standard_guid_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${i}${symbols.c_terminal}${pack_i16(d4)}`;
+  },
+
+  'standard_ip4_local_candidate_ffus': (v: ParsedLine, addresses4_dsa: string[], _addresses6_csa: string[]) => {
+    const { kind, items } = (v as StandardIp4LocalCandidateFfUS);
+    const [ d1, d2, d3, i, d4 ] = items;
+    let found1 = addresses4_dsa.indexOf(i);
+    if (found1 === -1) { throw new Error(`FATAL: missing address 1 ${i}`); }
+    if (kind !== 'standard_ip4_local_candidate_ffus') { throw 'impossible'; }
+    return `${symbols.standard_ip4_local_candidate_ffus}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}`;
+  },
+
+  'standard_ip4_local_candidate_ffus_active': (v: ParsedLine, addresses4_dsa: string[], _addresses6_csa: string[]) => {
+    const { kind, items } = (v as StandardIp4LocalCandidateFfUSActive);
+    const [ d1, d2, d3, i, d4 ] = items;
+    let found1 = addresses4_dsa.indexOf(i);
+    if (found1 === -1) { throw new Error(`FATAL: missing address 1 ${i}`); }
+    if (kind !== 'standard_ip4_local_candidate_ffus_active') { throw 'impossible'; }
+    return `${symbols.standard_ip4_local_candidate_ffus_active}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}`;
   },
 
   'standard_guid_local_candidate_ffus': (v: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) => {
