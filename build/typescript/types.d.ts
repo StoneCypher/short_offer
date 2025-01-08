@@ -160,7 +160,7 @@ type StandardAGenUdp6HostCandidate = {
     kind: 'standard_agen_udp6_host_candidate';
     value: string;
     uses_short_nl: boolean;
-    items: [d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number];
+    items: [d1: number, d2: number, d3: number, i1: string, d4: number, d5: number];
 };
 type UnknownLine = {
     kind: 'unknown_line';

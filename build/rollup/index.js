@@ -7098,13 +7098,17 @@ const parseable = {
         }
         return `${standard_agen_udp4_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i8(found1)}${d4}${c_terminal}${pack_i8(found2)}${d5}${c_terminal}${d6}${c_terminal}`;
     },
-    'standard_agen_udp6_host_candidate': (v, _addresses4_dsa, _addresses6_csa) => {
+    'standard_agen_udp6_host_candidate': (v, _addresses4_dsa, addresses6_csa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i1, d4, d5] = items;
+        let found = addresses6_csa.indexOf(i1);
+        if (found === -1) {
+            throw new Error(`FATAL: missing address ${i1}`);
+        }
         if (kind !== 'standard_agen_udp6_host_candidate') {
             throw 'impossible';
         }
-        return `${standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${i1}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
+        return `${standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${c_terminal}${d5}${c_terminal}`;
     },
     'unknown_terminate': (v, _addresses4_dsa, _addresses6_csa) => `${unknown_terminate}${v.value}`
 };
@@ -7488,7 +7492,7 @@ function unpack(bytestring) {
                 scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
                 scan_forward_one_byte(' ', unpack_i8, true);
                 scan_forward_four_bytes(' udp ', unpack_i32, true);
-                scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
+                scan_forward_exactly_one_byte(' ', unpack_indexed_ipv6_l, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_5', undefined, true);
                 scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_6', undefined, false);
                 break;
