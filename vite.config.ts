@@ -10,7 +10,7 @@ export default defineConfig({
     include: ["src/ts/**/*.spec.ts"],
 
     coverage: {
-      exclude: ["build/**/*", "docs/**/*", "src/build_js/**/*", "src/ts/generated_code/**/*"]
+      exclude: ["build/**/*", "docs/**/*", "src/build_js/**/*", "src/ts/generated_code/**/*", "src/ts/types.ts", "src/ts/viewer.ts"]
     }
 
   }

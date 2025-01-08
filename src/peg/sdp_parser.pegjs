@@ -263,52 +263,6 @@ up_quad
 
 
 
-M_h16
-  = d:(":" h16) { return `:${d[1]}`; }
-
-// cribbed from https://git.insoft.cz/insoft/modified-sip.js/-/blob/3081a21bd47215679f7f1dac8c771ae6f3d7193b/src/grammar/src/grammar.pegjs
-// IP6
-//   = a:h16 ":" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `${a}:${b}:${c}:${d}:${e}:${f}:${g}`; }
-//   /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `::${b}:${c}:${d}:${e}:${f}:${g}`; }
-//   /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:ls32           { return `::${b}:${c}:${d}:${e}:${f}`; }
-//   /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:ls32                     { return `::${b}:${c}:${d}:${e}`; }
-//   /      "::" b:h16 ":" c:h16 ":" d:ls32                               { return `::${b}:${c}:${d}`; }
-//   /      "::" b:h16 ":" c:ls32                                         { return `::${b}:${c}`; }
-//   /      "::" b:ls32                                                   { return `::${b}`; }
-//   /      "::" b:h16                                                    { return `::${b}`; }
-//   / a:h16                                           "::" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `${a}::${c}:${d}:${e}:${f}:${g}`; }
-//   / a:h16 b:h16?                                    "::" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32           { return `${a}:${b}::${d}:${e}:${f}:${g}`; }
-//   / a:h16 b:h16? c:h16?                             "::" e:h16 ":" f:h16 ":" g:ls32                     { return `${a}:${b}:${c}::${e}:${f}:${g}`; }
-//   / a:h16 b:h16? c:h16? d:h16?                      "::" f:h16 ":" g:ls32                               { return `${a}:${b}:${c}:${d}::${f}:${g}`; }
-//   / a:h16 b:h16? c:h16? d:h16? e:h16?               "::" g:ls32                                         { return `${a}:${b}:${c}:${d}:${e}::${g}`; }
-//   / a:h16 b:h16? c:h16? d:h16? e:h16? f:h16?        "::" g:h16                                          { return `${a}:${b}:${c}:${d}:${e}::${g}`; }
-//   / a:h16 b:h16? c:h16? d:h16? e:h16? f:h16? g:h16? "::"                                                { return `${a}:${b}:${c}:${d}:${e}:${f}:${g}`; }
-
-h16
-  = a:Hex b:Hex? c:Hex? d:Hex? { return `${a}${not_null(b)}${not_null(c)}${not_null(d)}`; }
-
-
-
-ls32
-  = a:( h16 ":" h16 ) { return `${a[0]}:${a[2]}` }
-  / IPv4address
-
-
-
-IPv4address
-  = dec_octet "." dec_octet "." dec_octet "." dec_octet
-
-
-
-dec_octet
-  = "25"                    [\x30-\x35] // 250-255
-  / "2"         [\x30-\x34] Digit       // 200-249
-  / "1"         Digit       Digit       // 100-199
-  / [\x31-\x39] Digit                   //  10-99
-  / Digit                               //   0-9
-
-
-
 WS
   = [ \r\n\t\v]*
 
