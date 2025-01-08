@@ -7073,13 +7073,17 @@ var short_offer = (function (exports) {
             }
             return `${standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${c_terminal}${d5}${c_terminal}`;
         },
-        'standard_agen_tcp6_candidate': (v, _addresses4_dsa, _addresses6_csa) => {
+        'standard_agen_tcp6_candidate': (v, _addresses4_dsa, addresses6_csa) => {
             const { kind, items } = v;
             const [d1, d2, d3, i1, d4, d5] = items;
+            let found = addresses6_csa.indexOf(i1);
+            if (found === -1) {
+                throw new Error(`FATAL: missing address ${i1}`);
+            }
             if (kind !== 'standard_agen_tcp6_candidate') {
                 throw 'impossible';
             }
-            return `${standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${i1}${c_terminal}${d4}${c_terminal}${d5}${c_terminal}`;
+            return `${standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${c_terminal}${d5}${c_terminal}`;
         },
         'standard_agen_udp4_candidate': (v, addresses4_dsa, _addresses6_csa) => {
             const { kind, items } = v;
@@ -7251,9 +7255,27 @@ var short_offer = (function (exports) {
         const a = bytes.charCodeAt(0), b = bytes.charCodeAt(1), c = bytes.charCodeAt(2), d = bytes.charCodeAt(3);
         return String((((((a * 256) + b) * 256) + c) * 256) + d);
     }
+    const hexchars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
+    function byte_to_two_uppercase_nybbles(byte) {
+        const lo = byte % 16, hi = (byte >> 4) % 16;
+        return `${hexchars[hi ?? 'Z']}${hexchars[lo] ?? 'Z'}`;
+    }
+    function even(n) {
+        return ((n % 2) == 0);
+    }
     function sixteen_bytes_to_canon_ipv6_string(bytes) {
-        const a = bytes.charCodeAt(0), b = bytes.charCodeAt(1), c = bytes.charCodeAt(2), d = bytes.charCodeAt(3);
-        return String((((((a * 256) + b) * 256) + c) * 256) + d);
+        let res = '';
+        for (let i = 0; i < 16; ++i) {
+            const thisByte = bytes.charCodeAt(i);
+            if (thisByte === undefined) {
+                throw new Error('string too short');
+            }
+            if (even(i) && (i !== 0)) {
+                res += ':';
+            }
+            res += byte_to_two_uppercase_nybbles(thisByte);
+        }
+        return res;
     }
     function unpack(bytestring) {
         if (bytestring === '') {
@@ -7301,17 +7323,21 @@ var short_offer = (function (exports) {
         let ipv4_list = [];
         let ipv4_addr_count = bytestring.charCodeAt(0);
         ++stream_start;
+        console.log(`Parsing ${ipv4_addr_count} ipv4 addresses at ${stream_start}`);
         for (let i = 0; i < ipv4_addr_count; ++i) {
             ipv4_list[i] = four_bytes_to_decimal_ipv4_string(bytestring.substring(stream_start, stream_start + 4));
             stream_start += 4;
+            console.log(`  - at ${stream_start} - ${ipv4_list[i]}`);
         }
         const unpack_indexed_ipv4_l = unpack_indexed_ipv4_waddr(ipv4_list);
         let ipv6_list = [];
         let ipv6_addr_count = bytestring.charCodeAt(stream_start);
         ++stream_start;
+        console.log(`Parsing ${ipv6_addr_count} ipv6 addresses at ${stream_start}`);
         for (let i = 0; i < ipv6_addr_count; ++i) {
             ipv6_list[i] = sixteen_bytes_to_canon_ipv6_string(bytestring.substring(stream_start, stream_start + 16));
             stream_start += 16;
+            console.log(`  - at ${stream_start} - ${ipv6_list[i]}`);
         }
         const unpack_indexed_ipv6_l = unpack_indexed_ipv6_waddr(ipv6_list);
         console.log(unpack_indexed_ipv6_l);
@@ -7447,7 +7473,7 @@ var short_offer = (function (exports) {
                     scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
                     scan_forward_one_byte(' ', unpack_i8, true);
                     scan_forward_four_bytes(' tcp ', unpack_i32, true);
-                    scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
+                    scan_forward_exactly_one_byte(' ', unpack_indexed_ipv6_l, true);
                     scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
                     scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                     break;

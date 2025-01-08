@@ -191,16 +191,43 @@ function four_bytes_to_decimal_ipv4_string(bytes: string): string {
 
 
 
+const hexchars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
+
+function byte_to_two_uppercase_nybbles(byte: number): string {
+
+  const lo = byte % 16,
+        hi = (byte >> 4) % 16;
+
+  return `${hexchars[hi ?? 'Z']}${hexchars[lo] ?? 'Z'}`;
+
+}
+
+
+
+
+
+function even(n: number): boolean {
+  return ((n%2)==0);
+}
+
+
+
+
+
 // 'AAAA:BBBB:CCCC:DDDD:EEEE:FFFF:0000:1111'
 
 function sixteen_bytes_to_canon_ipv6_string(bytes: string): string {
 
-  const a = bytes.charCodeAt(0),
-        b = bytes.charCodeAt(1),
-        c = bytes.charCodeAt(2),
-        d = bytes.charCodeAt(3);
+  let res = '';
 
-  return String( (((((a*256)+b)*256)+c)*256)+d );
+  for (let i=0; i<16; ++i) {
+    const thisByte = bytes.charCodeAt(i);
+    if (thisByte === undefined) { throw new Error('string too short'); }
+    if (even(i) && (i !== 0)) { res += ':'; }
+    res += byte_to_two_uppercase_nybbles(thisByte);
+  }
+
+  return res;
 
 }
 
@@ -296,10 +323,13 @@ function unpack(bytestring: string): string {
   let ipv4_addr_count = bytestring.charCodeAt(0);
   ++stream_start;
 
+  console.log(`Parsing ${ipv4_addr_count} ipv4 addresses at ${stream_start}`)
+
   for (let i=0; i<ipv4_addr_count; ++i) {
     // they need to come out as decimal strings - not 127.0.0.1, but '2130706433'
     ipv4_list[i]  = four_bytes_to_decimal_ipv4_string(bytestring.substring(stream_start, stream_start+4));
     stream_start += 4;
+    console.log(`  - at ${stream_start} - ${ipv4_list[i]}`)
   }
 
   const unpack_indexed_ipv4_l = unpack_indexed_ipv4_waddr(ipv4_list);
@@ -313,10 +343,13 @@ function unpack(bytestring: string): string {
   let ipv6_addr_count = bytestring.charCodeAt(stream_start);
   ++stream_start;
 
+  console.log(`Parsing ${ipv6_addr_count} ipv6 addresses at ${stream_start}`)
+
   for (let i=0; i<ipv6_addr_count; ++i) {
     // they need to come out as full canon uppercase strings - not '1.2a::3;, but '0001:002A:0000:0000:0000:0000:0000:0003'
     ipv6_list[i]  = sixteen_bytes_to_canon_ipv6_string(bytestring.substring(stream_start, stream_start+16));
     stream_start += 16;
+    console.log(`  - at ${stream_start} - ${ipv6_list[i]}`)
   }
 
   const unpack_indexed_ipv6_l = unpack_indexed_ipv6_waddr(ipv6_list);
@@ -492,8 +525,8 @@ function unpack(bytestring: string): string {
         scan_forward_four_bytes(`a=candidate:`,                                                                unpack_i32, true);
         scan_forward_one_byte(' ',                                                                             unpack_i8,  true);
         scan_forward_four_bytes(' tcp ',                                                                       unpack_i32, true);
-//        scan_forward_exactly_one_byte( ' ',                                                                    unpack_indexed_ipv6_l, true);
-        scan_forward_to_null(' ',                                                 'standard_guid_candidate_4', undefined,  true);
+        scan_forward_exactly_one_byte( ' ',                                                                    unpack_indexed_ipv6_l, true);
+        // scan_forward_to_null(' ',                                                 'standard_guid_candidate_4', undefined,  true);
         scan_forward_to_null(' ',                                                 'standard_guid_candidate_4', undefined,  true);
         scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined,  false);
         break;
