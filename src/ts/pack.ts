@@ -294,7 +294,7 @@ const parseable = {
     const { kind, items } = (v as StandardGuidLocalCandidate);
     const [ d1, d2, d3, i, d4 ] = items;
     if (kind !== 'standard_guid_local_candidate') { throw 'impossible'; }
-    return `${symbols.standard_guid_local_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${i}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+    return `${symbols.standard_guid_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${i}${symbols.c_terminal}${pack_i16(d4)}`;
   },
 
   'standard_guid_local_candidate_ffus': (v: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) => {
@@ -370,7 +370,7 @@ const parseable = {
     let found = addresses6_csa.indexOf(i1);
     if (found === -1) { throw new Error(`FATAL: missing address ${i1}`); }
     if (kind !== 'standard_agen_udp6_host_candidate') { throw 'impossible'; }
-    return `${symbols.standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${d5}${symbols.c_terminal}`;
+    return `${symbols.standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${pack_i8(d5)}`;
   },
 
   'unknown_terminate': (v: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) =>

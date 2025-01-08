@@ -7175,7 +7175,7 @@ var so_viewer = (function (exports) {
             if (kind !== 'standard_guid_local_candidate') {
                 throw 'impossible';
             }
-            return `${standard_guid_local_candidate}${d1}${c_terminal}${d2}${c_terminal}${d3}${c_terminal}${i}${c_terminal}${d4}${c_terminal}`;
+            return `${standard_guid_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${i}${c_terminal}${pack_i16(d4)}`;
         },
         'standard_guid_local_candidate_ffus': (v, _addresses4_dsa, _addresses6_csa) => {
             const { kind, items } = v;
@@ -7279,7 +7279,7 @@ var so_viewer = (function (exports) {
             if (kind !== 'standard_agen_udp6_host_candidate') {
                 throw 'impossible';
             }
-            return `${standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${d5}${c_terminal}`;
+            return `${standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${pack_i8(d5)}`;
         },
         'unknown_terminate': (v, _addresses4_dsa, _addresses6_csa) => `${unknown_terminate}${v.value}`
     };
@@ -8146,11 +8146,11 @@ var so_viewer = (function (exports) {
                     i = iC;
                     break;
                 case standard_guid_local_candidate:
-                    scan_forward_to_null(`a=candidate:`, 'standard_local_candidate_1', undefined, true);
-                    scan_forward_to_null(' ', 'standard_local_candidate_2', undefined, true);
-                    scan_forward_to_null(' udp ', 'standard_local_candidate_3', undefined, true);
+                    scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
+                    scan_forward_exactly_one_byte(' ', unpack_i8, true);
+                    scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                     scan_forward_to_null(' ', 'standard_local_candidate_4', unpack_guid, true);
-                    scan_forward_to_null('.local ', 'standard_local_candidate_5', undefined, true);
+                    scan_forward_exactly_two_bytes('.local ', unpack_i16, true);
                     work += ' typ host generation 0 network-cost 999\r\n';
                     break;
                 case standard_guid_local_candidate_ffus:
@@ -8201,7 +8201,7 @@ var so_viewer = (function (exports) {
                     scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                     scan_forward_exactly_one_byte(' ', unpack_indexed_ipv6_l, true);
                     scan_forward_exactly_two_bytes(' ', unpack_i16, true);
-                    scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_6', undefined, false);
+                    scan_forward_exactly_one_byte(' typ host generation 0 network-id ', unpack_i8, false);
                     break;
                 case standard_remote_candidate:
                     scan_forward_to_null(`a=candidate:`, 'standard_remote_candidate_1', undefined, true);

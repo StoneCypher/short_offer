@@ -260,11 +260,11 @@ function unpack(bytestring) {
                 i = iC;
                 break;
             case symbols.standard_guid_local_candidate:
-                scan_forward_to_null(`a=candidate:`, 'standard_local_candidate_1', undefined, true);
-                scan_forward_to_null(' ', 'standard_local_candidate_2', undefined, true);
-                scan_forward_to_null(' udp ', 'standard_local_candidate_3', undefined, true);
+                scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
+                scan_forward_exactly_one_byte(' ', unpack_i8, true);
+                scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                 scan_forward_to_null(' ', 'standard_local_candidate_4', unpack_guid, true);
-                scan_forward_to_null('.local ', 'standard_local_candidate_5', undefined, true);
+                scan_forward_exactly_two_bytes('.local ', unpack_i16, true);
                 work += ' typ host generation 0 network-cost 999\r\n';
                 break;
             case symbols.standard_guid_local_candidate_ffus:
@@ -315,7 +315,7 @@ function unpack(bytestring) {
                 scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv6_l, true);
                 scan_forward_exactly_two_bytes(' ', unpack_i16, true);
-                scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_6', undefined, false);
+                scan_forward_exactly_one_byte(' typ host generation 0 network-id ', unpack_i8, false);
                 break;
             case symbols.standard_remote_candidate:
                 scan_forward_to_null(`a=candidate:`, 'standard_remote_candidate_1', undefined, true);
