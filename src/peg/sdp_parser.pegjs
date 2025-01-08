@@ -209,6 +209,7 @@ IP4
 
 
 
+
 IP6
   = pre:(quadlet* ':')? post:quadlet* last:up_quad {
     const lead   = pre? pre[0] : [],
@@ -250,6 +251,8 @@ IP6N_Elided
   / A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQ?               '::' G:NQ?  H:NQ?                                           { return unelide([A,B,C,D,E,F],  [G,H]); }
   / A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQW? G:NQ?        '::' H:NQ?                                                  { return unelide([A,B,C,D,E,F,G],  [H]); }
   / A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQW? G:NQW? H:NQ? '::'                                                        { return unelide([A,B,C,D,E,F,G,H], []); }
+
+
 
 
 

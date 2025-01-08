@@ -2,8 +2,9 @@
 type num_v6   = [ number, number, number, number, number, number, number, number ];
 type testcase = [ string, num_v6 ];
 
-import { parse } from '../parsers';
+import * as fc   from 'fast-check';
 
+import { parse } from '../parsers';
 
 
 
@@ -33,10 +34,7 @@ const testaddrs: testcase[] = [
 
 
 function parse_v6(tcase: testcase, tres: string): num_v6 {
-
-//return [ 0, 0, 0, 1, 2, 3, 4, 5 ];
   return parse(tcase, { startRule: "IP6N" });
-
 }
 
 
@@ -66,4 +64,32 @@ describe('Test addrs all parse correctly', () => {
 
 test('Empty string does not parse as IP6', () => {
   expect( () => parse_v6("") ).toThrow();
+});
+
+
+
+
+
+test('can parse random ipv6 array', () => {
+
+  fc.assert(
+    fc.property(
+      fc.record({
+        left  : fc.array(fc.nat({max: 65535}), { minLength: 0, maxLength: 8 } ),
+        right : fc.array(fc.nat({max: 65535}), { minLength: 0, maxLength: 8 } )
+      }),
+      // }).filter(
+      //   ({ left, right }) => {
+      //     left.length + right.length <= 8
+      //   }
+      // ),
+      ({ left, right }: { left: number[], right: number[] }) => {
+        console.log(left);
+        console.log(right);
+        console.log('===========');
+        expect(true).toBe(true);
+      }
+    )
+  );
+
 });
