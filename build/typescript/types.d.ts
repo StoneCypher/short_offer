@@ -1,4 +1,5 @@
 type IPv4asDecimalAsString = string;
+type IPv6asCanonBytesAsString = string;
 type VersionZeroLine = {
     kind: 'version_zero_line';
     value: string;
@@ -187,6 +188,7 @@ type ParsedSdp = {
     loc: PegLocation;
     addresses?: {
         v4: IPv4asDecimalAsString[];
+        v6: IPv6asCanonBytesAsString[];
     };
 };
 export { UnknownLine, VersionZeroLine, VersionLine, StandardOrigin, StandardMozOrigin, StandardLocalCandidate, StandardGuidLocalCandidate, StandardGuidLocalCandidateFfUS, StandardRemoteCandidate, StandardRemoteCandidateFfUS, StandardAGenTcpCandidate, StandardAGenTcp6Candidate, StandardAGenUdp4Candidate, StandardAGenUdp6HostCandidate, CClaimIp4, ParsedLine, PegCoord, PegLocation, ParsedSdp };

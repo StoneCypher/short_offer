@@ -1,5 +1,6 @@
 
-type IPv4asDecimalAsString = string;
+type IPv4asDecimalAsString    = string;
+type IPv6asCanonBytesAsString = string;
 
 
 
@@ -92,7 +93,8 @@ type ParsedSdp = {
   loc        : PegLocation,
 
   addresses ?: {
-    v4: IPv4asDecimalAsString[]
+    v4: IPv4asDecimalAsString[],
+    v6: IPv6asCanonBytesAsString[],
   }
 
 

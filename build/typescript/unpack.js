@@ -32,6 +32,19 @@ function unpack_indexed_ipv4_waddr(addresses) {
         return ipv4_decimal_string_to_string_dotted_quad(addr);
     };
 }
+function unpack_indexed_ipv6_waddr(addresses) {
+    return function unpack_indexed_ipv6(str) {
+        const idx = str.codePointAt(0);
+        if (idx === undefined) {
+            throw new Error('Index string was empty');
+        }
+        const addr = addresses[idx];
+        if (addr === undefined) {
+            throw new Error(`Referenced index ${idx} for ipv6 addresses doesn't exist`);
+        }
+        return addr;
+    };
+}
 function unpack_i32(str) {
     const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0, c = str.codePointAt(2) ?? 0, d = str.codePointAt(3) ?? 0;
     return ((((((a * 256) + b) * 256) + c) * 256) + d).toString();
@@ -44,6 +57,10 @@ function unpack_guid(guid) {
     return `${guid.substring(0, 8)}-${guid.substring(8, 12)}-${guid.substring(12, 16)}-${guid.substring(16, 20)}-${guid.substring(20, 32)}`;
 }
 function four_bytes_to_decimal_ipv4_string(bytes) {
+    const a = bytes.charCodeAt(0), b = bytes.charCodeAt(1), c = bytes.charCodeAt(2), d = bytes.charCodeAt(3);
+    return String((((((a * 256) + b) * 256) + c) * 256) + d);
+}
+function sixteen_bytes_to_canon_ipv6_string(bytes) {
     const a = bytes.charCodeAt(0), b = bytes.charCodeAt(1), c = bytes.charCodeAt(2), d = bytes.charCodeAt(3);
     return String((((((a * 256) + b) * 256) + c) * 256) + d);
 }
@@ -98,6 +115,15 @@ function unpack(bytestring) {
         stream_start += 4;
     }
     const unpack_indexed_ipv4_l = unpack_indexed_ipv4_waddr(ipv4_list);
+    let ipv6_list = [];
+    let ipv6_addr_count = bytestring.charCodeAt(stream_start);
+    ++stream_start;
+    for (let i = 0; i < ipv6_addr_count; ++i) {
+        ipv6_list[i] = sixteen_bytes_to_canon_ipv6_string(bytestring.substring(stream_start, stream_start + 16));
+        stream_start += 16;
+    }
+    const unpack_indexed_ipv6_l = unpack_indexed_ipv6_waddr(ipv6_list);
+    console.log(unpack_indexed_ipv6_l);
     for (i = stream_start, iC = bytestring.length; i < iC; ++i) {
         switch (bytestring.charAt(i)) {
             case symbols.offer:

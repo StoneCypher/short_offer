@@ -9,7 +9,7 @@
 
 
 
-  function ast(kind, value, addresses) {
+  function ast(kind, value, addresses4, addresses6) {
 
     const uses_short_nl = false; // todo
 
@@ -18,7 +18,8 @@
       value,
       uses_short_nl,
       addresses: {
-        v4: []
+        v4: [],
+        v6: []
       },
       loc: location()
     };
@@ -44,8 +45,12 @@
       retval.value = '';
     }
 
-    if (addresses !== undefined) {
-      retval.addresses.v4 = [... new Set([ ...retval.addresses.v4, ...addresses ])];
+    if (addresses4 !== undefined) {
+      retval.addresses.v4 = [... new Set([ ...retval.addresses.v4, ...addresses4 ])];
+    }
+
+    if (addresses6 !== undefined) {
+      retval.addresses.v6 = [... new Set([ ...retval.addresses.v6, ...addresses6 ])];
     }
 
     if (Array.isArray(value)) {
@@ -54,6 +59,9 @@
           if (item.addresses !== undefined) {
             if (item.addresses.v4 !== undefined) {
               retval.addresses.v4 = [... new Set([ ...retval.addresses.v4, ...item.addresses.v4 ])];
+            }
+            if (item.addresses.v6 !== undefined) {
+              retval.addresses.v6 = [... new Set([ ...retval.addresses.v6, ...item.addresses.v6 ])];
             }
           }
         }
@@ -240,16 +248,6 @@ IP6N_Elided
   / A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQ?               '::' G:NQ?  H:NQ?                                           { return unelide([A,B,C,D,E,F],  [G,H]); }
   / A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQW? G:NQ?        '::' H:NQ?                                                  { return unelide([A,B,C,D,E,F,G],  [H]); }
   / A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQW? G:NQW? H:NQ? '::'                                                        { return unelide([A,B,C,D,E,F,G,H], []); }
-
-
-
-
-
-quadlet
-  = q:up_quad ':' { return q; }
-
-up_quad
-  = Hex Hex? Hex? Hex? { return parseInt(text(), 16); }
 
 
 
@@ -510,7 +508,7 @@ AStandardAGenTcpCandidate
 AStandardAGenTcp6Candidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' tcp ' d3:Decimal ' ' i1:IP6
     ' ' d4:Decimal ' typ host tcptype active generation 0 network-id ' d5:Decimal CapAtSeparator
-  { return ast('standard_agen_tcp6_candidate', [ d1, d2, d3, i1, d4, d5 ]); }
+  { return ast('standard_agen_tcp6_candidate', [ d1, d2, d3, i1, d4, d5 ], undefined, [i1]); }
 
 
 
@@ -526,7 +524,7 @@ AStandardAGenUdp4Candidate
 AStandardAGenUdp6HostCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP6
     ' ' d4:Decimal ' typ host generation 0 network-id ' d5:Decimal CapAtSeparator
-  { return ast('standard_agen_udp6_host_candidate', [ d1, d2, d3, i1, d4, d5 ]); }
+  { return ast('standard_agen_udp6_host_candidate', [ d1, d2, d3, i1, d4, d5 ], undefined, [i1]); }
 
 
 

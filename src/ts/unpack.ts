@@ -108,6 +108,20 @@ function unpack_indexed_ipv4_waddr(addresses: string[]) {
 
 
 
+function unpack_indexed_ipv6_waddr(addresses: string[]) {
+  return function unpack_indexed_ipv6(str: string) {
+    const idx = str.codePointAt(0);
+    if (idx === undefined) { throw new Error('Index string was empty'); }
+    const addr = addresses[idx];
+    if (addr === undefined) { throw new Error(`Referenced index ${idx} for ipv6 addresses doesn't exist`); }
+    return addr;  // already in desired format
+  }
+}
+
+
+
+
+
 function unpack_i32(str: string) {
 
   const a = str.codePointAt(0) ?? 0,
@@ -161,7 +175,25 @@ function unpack_guid(guid: string) {
 
 
 // not 127.0.0.1, but '2130706433'
+
 function four_bytes_to_decimal_ipv4_string(bytes: string): string {
+
+  const a = bytes.charCodeAt(0),
+        b = bytes.charCodeAt(1),
+        c = bytes.charCodeAt(2),
+        d = bytes.charCodeAt(3);
+
+  return String( (((((a*256)+b)*256)+c)*256)+d );
+
+}
+
+
+
+
+
+// 'AAAA:BBBB:CCCC:DDDD:EEEE:FFFF:0000:1111'
+
+function sixteen_bytes_to_canon_ipv6_string(bytes: string): string {
 
   const a = bytes.charCodeAt(0),
         b = bytes.charCodeAt(1),
@@ -271,6 +303,25 @@ function unpack(bytestring: string): string {
   }
 
   const unpack_indexed_ipv4_l = unpack_indexed_ipv4_waddr(ipv4_list);
+
+
+
+  // ipv6 header
+
+  let ipv6_list: string[] = [];
+
+  let ipv6_addr_count = bytestring.charCodeAt(stream_start);
+  ++stream_start;
+
+  for (let i=0; i<ipv6_addr_count; ++i) {
+    // they need to come out as full canon uppercase strings - not '1.2a::3;, but '0001:002A:0000:0000:0000:0000:0000:0003'
+    ipv6_list[i]  = sixteen_bytes_to_canon_ipv6_string(bytestring.substring(stream_start, stream_start+16));
+    stream_start += 16;
+  }
+
+  const unpack_indexed_ipv6_l = unpack_indexed_ipv6_waddr(ipv6_list);
+  console.log(unpack_indexed_ipv6_l);
+
 
 
   // bytestream
@@ -420,72 +471,72 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.standard_local_candidate:
-        scan_forward_four_bytes(`a=candidate:`,                                                    unpack_i32,                  true);
-        scan_forward_four_bytes(' ',                                                               unpack_i32,                  true);
-        scan_forward_to_null(   ' udp ',                              'standard_guid_candidate_3', undefined,                   true);
-        scan_forward_exactly_one_byte(  ' ',                                                       unpack_indexed_ipv4_l,       true);
-        scan_forward_to_null(   ' ',                                  'standard_guid_candidate_4', undefined,                   true);
-        scan_forward_to_null(   ' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined,                   false);
+        scan_forward_four_bytes(`a=candidate:`,                                                    unpack_i32,            true);
+        scan_forward_four_bytes(' ',                                                               unpack_i32,            true);
+        scan_forward_to_null(   ' udp ',                              'standard_guid_candidate_3', undefined,             true);
+        scan_forward_exactly_one_byte(  ' ',                                                       unpack_indexed_ipv4_l, true);
+        scan_forward_to_null(   ' ',                                  'standard_guid_candidate_4', undefined,             true);
+        scan_forward_to_null(   ' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined,             false);
         break;
 
       case symbols.standard_agen_tcp_candidate:
-        scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
-        scan_forward_one_byte(' ', unpack_i8, true);
-        scan_forward_four_bytes(' tcp ', unpack_i32, true);
-        scan_forward_exactly_one_byte(  ' ', unpack_indexed_ipv4_l, true);
-        scan_forward_to_null(' ',                                                 'standard_guid_candidate_4', undefined,   true);
-        scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined,   false);
+        scan_forward_four_bytes(`a=candidate:`,                                                                unpack_i32,            true);
+        scan_forward_one_byte(' ',                                                                             unpack_i8,             true);
+        scan_forward_four_bytes(' tcp ',                                                                       unpack_i32,            true);
+        scan_forward_exactly_one_byte( ' ',                                                                    unpack_indexed_ipv4_l, true);
+        scan_forward_to_null(' ',                                                 'standard_guid_candidate_4', undefined,             true);
+        scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined,             false);
         break;
 
       case symbols.standard_agen_tcp6_candidate:
-        scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
-        scan_forward_one_byte(' ', unpack_i8, true);
-        scan_forward_four_bytes(' tcp ', unpack_i32, true);
-        scan_forward_to_null(' ',                                                 'standard_guid_candidate_4', undefined, true);
-        scan_forward_to_null(' ',                                                 'standard_guid_candidate_4', undefined, true);
-        scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
+        scan_forward_four_bytes(`a=candidate:`,                                                                unpack_i32, true);
+        scan_forward_one_byte(' ',                                                                             unpack_i8,  true);
+        scan_forward_four_bytes(' tcp ',                                                                       unpack_i32, true);
+        scan_forward_to_null(' ',                                                 'standard_guid_candidate_4', undefined,  true);
+        scan_forward_to_null(' ',                                                 'standard_guid_candidate_4', undefined,  true);
+        scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined,  false);
         break;
 
       case symbols.standard_agen_udp4_candidate:
-        scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
-        scan_forward_one_byte(' ', unpack_i8, true);
-        scan_forward_four_bytes(' udp ', unpack_i32, true);
-        scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
-        scan_forward_to_null(' ',                         'standard_guid_candidate_5', undefined,   true);
-        scan_forward_exactly_one_byte(' typ srflx raddr ', unpack_indexed_ipv4_l, true);
-        scan_forward_to_null(' rport ',                   'standard_guid_candidate_7', undefined,   true);
-        scan_forward_to_null(' generation 0 network-id ', 'standard_guid_candidate_8', undefined,   false);
+        scan_forward_four_bytes(`a=candidate:`,                                        unpack_i32,            true);
+        scan_forward_one_byte(' ',                                                     unpack_i8,             true);
+        scan_forward_four_bytes(' udp ',                                               unpack_i32,            true);
+        scan_forward_exactly_one_byte(' ',                                             unpack_indexed_ipv4_l, true);
+        scan_forward_to_null(' ',                         'standard_guid_candidate_5', undefined,             true);
+        scan_forward_exactly_one_byte(' typ srflx raddr ',                             unpack_indexed_ipv4_l, true);
+        scan_forward_to_null(' rport ',                   'standard_guid_candidate_7', undefined,             true);
+        scan_forward_to_null(' generation 0 network-id ', 'standard_guid_candidate_8', undefined,             false);
         break;
 
       case symbols.standard_agen_udp6_host_candidate:
-        scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
-        scan_forward_one_byte(' ', unpack_i8, true);
-        scan_forward_four_bytes(' udp ', unpack_i32, true);
-        scan_forward_to_null(' ',                                  'standard_guid_candidate_4', undefined, true);
-        scan_forward_to_null(' ',                                  'standard_guid_candidate_5', undefined, true);
-        scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_6', undefined, false);
+        scan_forward_four_bytes(`a=candidate:`,                                                 unpack_i32, true);
+        scan_forward_one_byte(' ',                                                              unpack_i8,  true);
+        scan_forward_four_bytes(' udp ',                                                        unpack_i32, true);
+        scan_forward_to_null(' ',                                  'standard_guid_candidate_4', undefined,  true);
+        scan_forward_to_null(' ',                                  'standard_guid_candidate_5', undefined,  true);
+        scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_6', undefined,  false);
         break;
 
       case symbols.standard_remote_candidate:
-        scan_forward_to_null(`a=candidate:`,      'standard_remote_candidate_1', undefined,   true);
-        scan_forward_to_null(' ',                 'standard_remote_candidate_2', undefined,   true);
-        scan_forward_to_null(' udp ',             'standard_remote_candidate_3', undefined,   true);
-        scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
-        scan_forward_to_null(' ',                 'standard_remote_candidate_5', undefined,   true);
-        scan_forward_exactly_one_byte(' typ srflx raddr ', unpack_indexed_ipv4_l, true);
-        scan_forward_to_null(' rport ',           'standard_remote_candidate_7', undefined,   true);
-        scan_forward_to_null(' generation ',      'standard_remote_candidate_8', undefined,   true);
+        scan_forward_to_null(`a=candidate:`,      'standard_remote_candidate_1', undefined,             true);
+        scan_forward_to_null(' ',                 'standard_remote_candidate_2', undefined,             true);
+        scan_forward_to_null(' udp ',             'standard_remote_candidate_3', undefined,             true);
+        scan_forward_exactly_one_byte(' ',                                       unpack_indexed_ipv4_l, true);
+        scan_forward_to_null(' ',                 'standard_remote_candidate_5', undefined,             true);
+        scan_forward_exactly_one_byte(' typ srflx raddr ',                       unpack_indexed_ipv4_l, true);
+        scan_forward_to_null(' rport ',           'standard_remote_candidate_7', undefined,             true);
+        scan_forward_to_null(' generation ',      'standard_remote_candidate_8', undefined,             true);
         work += ' network-cost 999\r\n';
         break;
 
       case symbols.standard_remote_candidate_ffus:
-        scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
-        scan_forward_one_byte(  ' ',            unpack_i8,  true);
-        scan_forward_four_bytes(' UDP ',        unpack_i32, true);
-        scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
-        scan_forward_to_null(' ',                 'standard_remote_candidate_5', undefined,   true);
-        scan_forward_exactly_one_byte(' typ srflx raddr ', unpack_indexed_ipv4_l, true);
-        scan_forward_to_null(' rport ',           'standard_remote_candidate_7', undefined,   false);
+        scan_forward_four_bytes(`a=candidate:`,                                  unpack_i32,            true);
+        scan_forward_one_byte(  ' ',                                             unpack_i8,             true);
+        scan_forward_four_bytes(' UDP ',                                         unpack_i32,            true);
+        scan_forward_exactly_one_byte(' ',                                       unpack_indexed_ipv4_l, true);
+        scan_forward_to_null(' ',                 'standard_remote_candidate_5', undefined,             true);
+        scan_forward_exactly_one_byte(' typ srflx raddr ',                       unpack_indexed_ipv4_l, true);
+        scan_forward_to_null(' rport ',           'standard_remote_candidate_7', undefined,             false);
         break;
 
       case symbols.a_ice_pwd:
