@@ -7049,7 +7049,7 @@ const parseable = {
         if (kind !== 'standard_local_candidate') {
             throw 'impossible';
         }
-        return `${standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${d4}${c_terminal}`;
+        return `${standard_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${d4}${c_terminal}`;
     },
     'standard_remote_candidate': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -7498,7 +7498,7 @@ function unpack(bytestring) {
                 break;
             case standard_local_candidate:
                 scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
-                scan_forward_exactly_four_bytes(' ', unpack_i32, true);
+                scan_forward_exactly_one_byte(' ', unpack_i8, true);
                 scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
                 scan_forward_exactly_two_bytes(' ', unpack_i16, true);

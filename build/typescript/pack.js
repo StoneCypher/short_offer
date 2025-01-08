@@ -150,7 +150,7 @@ const parseable = {
         if (kind !== 'standard_local_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${d4}${symbols.c_terminal}`;
+        return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${d4}${symbols.c_terminal}`;
     },
     'standard_remote_candidate': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
