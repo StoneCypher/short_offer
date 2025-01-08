@@ -311,6 +311,7 @@ Rule
   / AIcePwdV
   / AIcePwdL
   / AIcePwd
+  / FalkonAIceUFrag4
   / AIceUFrag4
   / AIceUFrag8
   / AFingerprint
@@ -577,6 +578,12 @@ AIcePwdV
 AIceUFrag4
   = 'a=ice-ufrag:' data:IceChar4 CapAtSeparator
   { return ast('a_ice_ufrag_4', data); }
+
+
+
+FalkonAIceUFrag4
+  = 'ice-ufrag:' data:IceChar4 CapAtSeparator
+  { return ast('falkon_a_ice_ufrag_4', data); }
 
 
 

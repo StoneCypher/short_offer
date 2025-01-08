@@ -90,6 +90,7 @@ const parseable = {
     'a_ice_pwd': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.a_ice_pwd}${v.value}${symbols.c_terminal}`,
     'a_ice_pwd_l': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.a_ice_pwd_l}${v.value}${symbols.c_terminal}`,
     'a_ice_pwd_v': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.a_ice_pwd_v}${v.value}${symbols.c_terminal}`,
+    'falkon_a_ice_ufrag_4': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.falkon_a_ice_ufrag_4}${v.value}${symbols.c_terminal}`,
     'a_ice_ufrag_4': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.a_ice_ufrag_4}${v.value}${symbols.c_terminal}`,
     'a_ice_ufrag_8': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.a_ice_ufrag_8}${v.value}${symbols.c_terminal}`,
     'a_fingerprint_sha1_256': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.a_fingerprint_sha1_256}${pack_sha256(v.value)}${symbols.c_terminal}`,

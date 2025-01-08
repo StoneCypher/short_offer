@@ -370,6 +370,9 @@ function unpack(bytestring) {
             case symbols.a_ice_pwd_v:
                 scan_forward_to_null(`a=ice-pwd:`, 'a_ice_pwd_v', undefined, false);
                 break;
+            case symbols.falkon_a_ice_ufrag_4:
+                scan_forward_to_null(`ice-ufrag:`, 'falkon_a_ice_ufrag_4', undefined, false);
+                break;
             case symbols.a_ice_ufrag_4:
                 scan_forward_to_null(`a=ice-ufrag:`, 'a_ice_ufrag_4', undefined, false);
                 break;

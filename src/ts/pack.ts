@@ -240,6 +240,9 @@ const parseable = {
   'a_ice_pwd_v': (v: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) =>
     `${symbols.a_ice_pwd_v}${v.value}${symbols.c_terminal}`,
 
+  'falkon_a_ice_ufrag_4': (v: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) =>
+    `${symbols.falkon_a_ice_ufrag_4}${v.value}${symbols.c_terminal}`,
+
   'a_ice_ufrag_4': (v: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) =>
     `${symbols.a_ice_ufrag_4}${v.value}${symbols.c_terminal}`,
 
