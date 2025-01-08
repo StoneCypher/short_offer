@@ -164,18 +164,7 @@ function peg$parse(input, options) {
       peg$c20 = ".",
       peg$c21 = peg$literalExpectation(".", false),
       peg$c22 = function(a, b, c, d) { return ((((( (a*256n) +b) *256n) +c) *256n) +d).toString(); },
-      peg$c23 = function(pre, post, last) {
-          const lead   = pre? pre[0] : [],
-                follow = [... post, last],
-                gap    = 8 - (lead.length + follow.length);
-          if (gap < 0) { throw new Error('address may have at most 8 segments'); }
-          return (
-            [... lead, ...repeat(gap, 0), ...follow]
-              .map(n => n.toString(16))
-              .join(':')
-              .toLowerCase()
-          );
-        },
+      peg$c23 = function(Addr) { return Addr.map(n => n.toString(16).toUpperCase().padStart(4, '0') ).join(':'); },
       peg$c24 = function(A, B, C, D, E, F, G, H) { return [ Number(A), Number(B), Number(C), Number(D), Number(E), Number(F), Number(G), Number(H) ] },
       peg$c25 = /^[0-9a-zA-Z]/,
       peg$c26 = peg$classExpectation([["0", "9"], ["a", "z"], ["A", "Z"]], false, false),
@@ -2099,63 +2088,15 @@ function peg$parse(input, options) {
   }
 
   function peg$parseIP6() {
-    var s0, s1, s2, s3;
+    var s0, s1;
 
     s0 = peg$currPos;
-    s1 = peg$currPos;
-    s2 = [];
-    s3 = peg$parsequadlet();
-    while (s3 !== peg$FAILED) {
-      s2.push(s3);
-      s3 = peg$parsequadlet();
-    }
-    if (s2 !== peg$FAILED) {
-      if (input.charCodeAt(peg$currPos) === 58) {
-        s3 = peg$c9;
-        peg$currPos++;
-      } else {
-        s3 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c10); }
-      }
-      if (s3 !== peg$FAILED) {
-        s2 = [s2, s3];
-        s1 = s2;
-      } else {
-        peg$currPos = s1;
-        s1 = peg$FAILED;
-      }
-    } else {
-      peg$currPos = s1;
-      s1 = peg$FAILED;
-    }
-    if (s1 === peg$FAILED) {
-      s1 = null;
-    }
+    s1 = peg$parseIP6N();
     if (s1 !== peg$FAILED) {
-      s2 = [];
-      s3 = peg$parsequadlet();
-      while (s3 !== peg$FAILED) {
-        s2.push(s3);
-        s3 = peg$parsequadlet();
-      }
-      if (s2 !== peg$FAILED) {
-        s3 = peg$parseup_quad();
-        if (s3 !== peg$FAILED) {
-          peg$savedPos = s0;
-          s1 = peg$c23(s1, s2, s3);
-          s0 = s1;
-        } else {
-          peg$currPos = s0;
-          s0 = peg$FAILED;
-        }
-      } else {
-        peg$currPos = s0;
-        s0 = peg$FAILED;
-      }
-    } else {
-      peg$currPos = s0;
-      s0 = peg$FAILED;
+      peg$savedPos = s0;
+      s1 = peg$c23(s1);
     }
+    s0 = s1;
 
     return s0;
   }

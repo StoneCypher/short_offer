@@ -211,18 +211,7 @@ IP4
 
 
 IP6
-  = pre:(quadlet* ':')? post:quadlet* last:up_quad {
-    const lead   = pre? pre[0] : [],
-          follow = [... post, last],
-          gap    = 8 - (lead.length + follow.length);
-    if (gap < 0) { throw new Error('address may have at most 8 segments'); }
-    return (
-      [... lead, ...repeat(gap, 0), ...follow]
-        .map(n => n.toString(16))
-        .join(':')
-        .toLowerCase()
-    );
-  }
+  = Addr:IP6N { return Addr.map(n => n.toString(16).toUpperCase().padStart(4, '0') ).join(':'); }
 
 
 IP6N
