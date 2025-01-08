@@ -1,4 +1,11 @@
 
+type IPv4asDecimalAsString    = string;
+type IPv6asCanonBytesAsString = string;
+
+
+
+
+
 type VersionZeroLine                = { kind: 'version_zero_line',                  value: string, uses_short_nl: boolean };
 type VersionLine                    = { kind: 'version_line',                       value: string, uses_short_nl: boolean };
 
@@ -20,17 +27,17 @@ type AIceOptionsTrickle             = { kind: 'a_ice_options_trickle',          
 type SDash                          = { kind: 's_dash',                             value: string, uses_short_nl: boolean };
 type TZeroZero                      = { kind: 't_zero_zero',                        value: string, uses_short_nl: boolean };
 type BAs30                          = { kind: 'b_as_30',                            value: string, uses_short_nl: boolean };
-type StandardOrigin                 = { kind: 'standard_origin',                    value: string, uses_short_nl: boolean, items: [ s: number, d: number, i: number ] };
+type StandardOrigin                 = { kind: 'standard_origin',                    value: string, uses_short_nl: boolean, items: [ s: number, d: number, i: string ] };
 type StandardMozOrigin              = { kind: 'standard_moz_origin',                value: string, uses_short_nl: boolean, moz_ver: [number, number, number], sess: number };
-type StandardLocalCandidate         = { kind: 'standard_local_candidate',           value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
+type StandardLocalCandidate         = { kind: 'standard_local_candidate',           value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, p: number,  d4: number ] };
 type StandardGuidLocalCandidate     = { kind: 'standard_guid_local_candidate',      value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
 type StandardGuidLocalCandidateFfUS = { kind: 'standard_guid_local_candidate_ffus', value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
-type StandardRemoteCandidate        = { kind: 'standard_remote_candidate',          value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
-type StandardRemoteCandidateFfUS    = { kind: 'standard_remote_candidate_ffus',     value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number ] };
-type StandardAGenTcpCandidate       = { kind: 'standard_agen_tcp_candidate',        value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
-type StandardAGenTcp6Candidate      = { kind: 'standard_agen_tcp6_candidate',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
-type StandardAGenUdp4Candidate      = { kind: 'standard_agen_udp4_candidate',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
-type StandardAGenUdp6HostCandidate  = { kind: 'standard_agen_udp6_host_candidate',  value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number ] };
+type StandardRemoteCandidate        = { kind: 'standard_remote_candidate',          value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number, d6: number ] };
+type StandardRemoteCandidateFfUS    = { kind: 'standard_remote_candidate_ffus',     value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number ] };
+type StandardAGenTcpCandidate       = { kind: 'standard_agen_tcp_candidate',        value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, d5: number ] };
+type StandardAGenTcp6Candidate      = { kind: 'standard_agen_tcp6_candidate',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, d5: number ] };
+type StandardAGenUdp4Candidate      = { kind: 'standard_agen_udp4_candidate',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number, d6: number ] };
+type StandardAGenUdp6HostCandidate  = { kind: 'standard_agen_udp6_host_candidate',  value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, d5: number ] };
 
 type UnknownLine                    = { kind: 'unknown_line',                       value: string, uses_short_nl: boolean };
 type UnknownTerminate               = { kind: 'unknown_terminate',                  value: string, uses_short_nl: boolean };
@@ -82,9 +89,14 @@ type ParsedSdp = {
         | 'standard_agen_udp4_candidate' | 'standard_agen_udp6_host_candidate'
         | 'a_ice_pwd' | 'a_ice_pwd_l' | 'a_ice_ufrag_4' | 'a_ice_ufrag_8',
 
-  value : ParsedLine[],
+  value      : ParsedLine[],
+  loc        : PegLocation,
 
-  loc   : PegLocation
+  addresses ?: {
+    v4: IPv4asDecimalAsString[],
+    v6: IPv6asCanonBytesAsString[],
+  }
+
 
 };
 
@@ -100,6 +112,7 @@ export {
   StandardRemoteCandidate, StandardRemoteCandidateFfUS,
   StandardAGenTcpCandidate, StandardAGenTcp6Candidate,
   StandardAGenUdp4Candidate, StandardAGenUdp6HostCandidate,
+  CClaimIp4,
   ParsedLine,
   PegCoord, PegLocation,
   ParsedSdp

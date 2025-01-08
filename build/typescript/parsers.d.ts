@@ -1,4 +1,3 @@
 import { ParsedSdp } from './types';
-declare function parse(code: string): ParsedSdp;
-declare function deparse(bytecode: string): any;
-export { parse, deparse };
+declare function parse(code: string, options?: any | undefined): ParsedSdp;
+export { parse };

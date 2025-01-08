@@ -9,7 +9,7 @@
 
 
 
-  function ast(kind, value) {
+  function ast(kind, value, addresses4, addresses6) {
 
     const uses_short_nl = false; // todo
 
@@ -17,6 +17,10 @@
       kind,
       value,
       uses_short_nl,
+      addresses: {
+        v4: [],
+        v6: []
+      },
       loc: location()
     };
 
@@ -41,6 +45,29 @@
       retval.value = '';
     }
 
+    if (addresses4 !== undefined) {
+      retval.addresses.v4 = [... new Set([ ...retval.addresses.v4, ...addresses4 ])];
+    }
+
+    if (addresses6 !== undefined) {
+      retval.addresses.v6 = [... new Set([ ...retval.addresses.v6, ...addresses6 ])];
+    }
+
+    if (Array.isArray(value)) {
+      value.forEach(item => {
+        if (typeof item === 'object') {
+          if (item.addresses !== undefined) {
+            if (item.addresses.v4 !== undefined) {
+              retval.addresses.v4 = [... new Set([ ...retval.addresses.v4, ...item.addresses.v4 ])];
+            }
+            if (item.addresses.v6 !== undefined) {
+              retval.addresses.v6 = [... new Set([ ...retval.addresses.v6, ...item.addresses.v6 ])];
+            }
+          }
+        }
+      });
+    }
+
     return retval;
 
   }
@@ -50,6 +77,24 @@
   function repeat(count, item) {
     return new Array(count).fill(item);
   }
+
+
+
+  function unelide(lAddresses, rAddresses) {
+
+    const addrL = lAddresses.filter(p => p !== null),
+          addrR = rAddresses.filter(p => p !== null);
+
+    const missingCount = 8 - (addrL.length + addrR.length);
+
+    if (missingCount < 0) {
+      throw new Error('More than eight segments found; illegal v6 addr');
+    }
+
+    return [ ... addrL, ... new Array(missingCount).fill(0), ... addrR ];
+
+  }
+
 
 
 }
@@ -172,75 +217,39 @@ IP4
 
 
 
+
 IP6
-  = pre:(quadlet* ':')? post:quadlet* last:up_quad {
-    const lead   = pre? pre[0] : [],
-          follow = [... post, last],
-          gap    = 8 - (lead.length + follow.length);
-    if (gap < 0) { throw new Error('address may have at most 8 segments'); }
-    return (
-      [... lead, ...repeat(gap, 0), ...follow]
-        .map(n => n.toString(16))
-        .join(':')
-        .toLowerCase()
-    );
-  }
-
-quadlet
-  = q:up_quad ':' { return q; }
-
-up_quad
-  = Hex Hex? Hex? Hex? { return parseInt(text(), 16); }
+  = Addr:IP6N { return Addr.map(n => n.toString(16).toUpperCase().padStart(4, '0') ).join(':'); }
 
 
+IP6N
+  = IP6N_Full
+  / IP6N_Elided
+
+IP6N_Full
+  = A:NQ ':' B:NQ ':' C:NQ ':' D:NQ ':' E:NQ ':' F:NQ ':' G:NQ ':' H:NQ
+    { return [ Number(A), Number(B), Number(C), Number(D), Number(E), Number(F), Number(G), Number(H) ] }
+
+NQ
+  = a:[0-9a-zA-Z] b:[0-9a-zA-Z]? c:[0-9a-zA-Z]? d:[0-9a-zA-Z]?
+    { return parseInt(`${a}${b??''}${c??''}${d??''}`, 16); }
+
+NQW
+  = a:[0-9a-zA-Z] b:[0-9a-zA-Z]? c:[0-9a-zA-Z]? d:[0-9a-zA-Z]? ':'
+    { return parseInt(`${a}${b??''}${c??''}${d??''}`, 16); }
+
+IP6N_Elided
+  =                                                        '::' A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQW? G:NQW? H:NQ? { return unelide([], [A,B,C,D,E,F,G,H]); }
+  / A:NQ?                                                  '::' B:NQW? C:NQW? D:NQW? E:NQW? F:NQW? G:NQW? H:NQ?        { return unelide([A],  [B,C,D,E,F,G,H]); }
+  / A:NQW? B:NQ?                                           '::' C:NQW? D:NQW? E:NQW? F:NQW? G:NQW? H:NQ?               { return unelide([A,B],  [C,D,E,F,G,H]); }
+  / A:NQW? B:NQW? C:NQ?                                    '::' D:NQW? E:NQW? F:NQW? G:NQW? H:NQ?                      { return unelide([A,B,C],  [D,E,F,G,H]); }
+  / A:NQW? B:NQW? C:NQW? D:NQ?                             '::' E:NQW? F:NQW? G:NQW? H:NQ?                             { return unelide([A,B,C,D],  [E,F,G,H]); }
+  / A:NQW? B:NQW? C:NQW? D:NQW? E:NQ?                      '::' F:NQW? G:NQW? H:NQ?                                    { return unelide([A,B,C,D,E],  [F,G,H]); }
+  / A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQ?               '::' G:NQ?  H:NQ?                                           { return unelide([A,B,C,D,E,F],  [G,H]); }
+  / A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQW? G:NQ?        '::' H:NQ?                                                  { return unelide([A,B,C,D,E,F,G],  [H]); }
+  / A:NQW? B:NQW? C:NQW? D:NQW? E:NQW? F:NQW? G:NQW? H:NQ? '::'                                                        { return unelide([A,B,C,D,E,F,G,H], []); }
 
 
-M_h16
-  = d:(":" h16) { return `:${d[1]}`; }
-
-
-
-// cribbed from https://git.insoft.cz/insoft/modified-sip.js/-/blob/3081a21bd47215679f7f1dac8c771ae6f3d7193b/src/grammar/src/grammar.pegjs
-// IP6
-//   = a:h16 ":" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `${a}:${b}:${c}:${d}:${e}:${f}:${g}`; }
-//   /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `::${b}:${c}:${d}:${e}:${f}:${g}`; }
-//   /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:h16 ":" f:ls32           { return `::${b}:${c}:${d}:${e}:${f}`; }
-//   /      "::" b:h16 ":" c:h16 ":" d:h16 ":" e:ls32                     { return `::${b}:${c}:${d}:${e}`; }
-//   /      "::" b:h16 ":" c:h16 ":" d:ls32                               { return `::${b}:${c}:${d}`; }
-//   /      "::" b:h16 ":" c:ls32                                         { return `::${b}:${c}`; }
-//   /      "::" b:ls32                                                   { return `::${b}`; }
-//   /      "::" b:h16                                                    { return `::${b}`; }
-//   / a:h16                                           "::" c:h16 ":" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32 { return `${a}::${c}:${d}:${e}:${f}:${g}`; }
-//   / a:h16 b:h16?                                    "::" d:h16 ":" e:h16 ":" f:h16 ":" g:ls32           { return `${a}:${b}::${d}:${e}:${f}:${g}`; }
-//   / a:h16 b:h16? c:h16?                             "::" e:h16 ":" f:h16 ":" g:ls32                     { return `${a}:${b}:${c}::${e}:${f}:${g}`; }
-//   / a:h16 b:h16? c:h16? d:h16?                      "::" f:h16 ":" g:ls32                               { return `${a}:${b}:${c}:${d}::${f}:${g}`; }
-//   / a:h16 b:h16? c:h16? d:h16? e:h16?               "::" g:ls32                                         { return `${a}:${b}:${c}:${d}:${e}::${g}`; }
-//   / a:h16 b:h16? c:h16? d:h16? e:h16? f:h16?        "::" g:h16                                          { return `${a}:${b}:${c}:${d}:${e}::${g}`; }
-//   / a:h16 b:h16? c:h16? d:h16? e:h16? f:h16? g:h16? "::"                                                { return `${a}:${b}:${c}:${d}:${e}:${f}:${g}`; }
-
-
-h16
-  = a:Hex b:Hex? c:Hex? d:Hex? { return `${a}${not_null(b)}${not_null(c)}${not_null(d)}`; }
-
-
-
-ls32
-  = a:( h16 ":" h16 ) { return `${a[0]}:${a[2]}` }
-  / IPv4address
-
-
-
-IPv4address
-  = dec_octet "." dec_octet "." dec_octet "." dec_octet
-
-
-
-dec_octet
-  = "25"                    [\x30-\x35] // 250-255
-  / "2"         [\x30-\x34] Digit       // 200-249
-  / "1"         Digit       Digit       // 100-199
-  / [\x31-\x39] Digit                   //  10-99
-  / Digit                               //   0-9
 
 
 
@@ -405,7 +414,7 @@ MozVNum2
 // o=- 1199580080461629164 2 IN IP4 127.0.0.1
 StandardOrigin
   = 'o=- ' msess:Decimal ' ' d:Decimal ' IN IP4 ' i:IP4 CapAtSeparator
-  { return ast('standard_origin', [msess, d, i]); }
+  { return ast('standard_origin', [msess, d, i], [i]); }
 
 
 
@@ -455,7 +464,7 @@ CustomMaxMessageSize
 AStandardLocalCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i:IP4
     ' ' p:Decimal ' typ host generation 0 network-id ' d4:Decimal CapAtSeparator
-  { return ast('standard_local_candidate', [ d1, d2, d3, i, p, d4 ]); }
+  { return ast('standard_local_candidate', [ d1, d2, d3, i, p, d4 ], [i]); }
 
 
 
@@ -478,35 +487,35 @@ AStandardIp4RemoteCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP4
     ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal ' generation '
     d6:Decimal ' network-cost 999' CapAtSeparator
-  { return ast('standard_remote_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); }
+  { return ast('standard_remote_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ], [i1, i2]); }
 
 
 
 AStandardIp4RemoteCandidateFfUS
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' UDP ' d3:Decimal ' ' i1:IP4
     ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal CapAtSeparator
-  { return ast('standard_remote_candidate_ffus', [ d1, d2, d3, i1, d4, i2, d5 ]); }
+  { return ast('standard_remote_candidate_ffus', [ d1, d2, d3, i1, d4, i2, d5 ], [i1, i2]); }
 
 
 
 AStandardAGenTcpCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' tcp ' d3:Decimal ' ' i1:IP4
     ' ' d4:Decimal ' typ host tcptype active generation 0 network-id ' d5:Decimal CapAtSeparator
-  { return ast('standard_agen_tcp_candidate', [ d1, d2, d3, i1, d4, d5 ]); }
+  { return ast('standard_agen_tcp_candidate', [ d1, d2, d3, i1, d4, d5 ], [i1]); }
 
 
 
 AStandardAGenTcp6Candidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' tcp ' d3:Decimal ' ' i1:IP6
     ' ' d4:Decimal ' typ host tcptype active generation 0 network-id ' d5:Decimal CapAtSeparator
-  { return ast('standard_agen_tcp6_candidate', [ d1, d2, d3, i1, d4, d5 ]); }
+  { return ast('standard_agen_tcp6_candidate', [ d1, d2, d3, i1, d4, d5 ], undefined, [i1]); }
 
 
 
 AStandardAGenUdp4Candidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP4
     ' ' d4:Decimal ' typ srflx raddr ' i2:IP4 ' rport ' d5:Decimal ' generation 0 network-id ' d6:Decimal CapAtSeparator
-  { return ast('standard_agen_udp4_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ]); }
+  { return ast('standard_agen_udp4_candidate', [ d1, d2, d3, i1, d4, i2, d5, d6 ], [i1]); }
 
 
 
@@ -515,7 +524,7 @@ AStandardAGenUdp4Candidate
 AStandardAGenUdp6HostCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' i1:IP6
     ' ' d4:Decimal ' typ host generation 0 network-id ' d5:Decimal CapAtSeparator
-  { return ast('standard_agen_udp6_host_candidate', [ d1, d2, d3, i1, d4, d5 ]); }
+  { return ast('standard_agen_udp6_host_candidate', [ d1, d2, d3, i1, d4, d5 ], undefined, [i1]); }
 
 
 
@@ -563,7 +572,7 @@ AGroupBundle0
 
 CClaimIp4
   = 'c=IN IP4 ' data:IP4 CapAtSeparator
-  { return ast('c_claim_ip4', data); }
+  { return ast('c_claim_ip4', data, [data]); }
 
 
 

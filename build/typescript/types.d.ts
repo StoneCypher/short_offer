@@ -1,3 +1,5 @@
+type IPv4asDecimalAsString = string;
+type IPv6asCanonBytesAsString = string;
 type VersionZeroLine = {
     kind: 'version_zero_line';
     value: string;
@@ -97,7 +99,7 @@ type StandardOrigin = {
     kind: 'standard_origin';
     value: string;
     uses_short_nl: boolean;
-    items: [s: number, d: number, i: number];
+    items: [s: number, d: number, i: string];
 };
 type StandardMozOrigin = {
     kind: 'standard_moz_origin';
@@ -110,7 +112,7 @@ type StandardLocalCandidate = {
     kind: 'standard_local_candidate';
     value: string;
     uses_short_nl: boolean;
-    items: [d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number];
+    items: [d1: number, d2: number, d3: number, i1: string, p: number, d4: number];
 };
 type StandardGuidLocalCandidate = {
     kind: 'standard_guid_local_candidate';
@@ -128,37 +130,37 @@ type StandardRemoteCandidate = {
     kind: 'standard_remote_candidate';
     value: string;
     uses_short_nl: boolean;
-    items: [d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number];
+    items: [d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number, d6: number];
 };
 type StandardRemoteCandidateFfUS = {
     kind: 'standard_remote_candidate_ffus';
     value: string;
     uses_short_nl: boolean;
-    items: [d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number];
+    items: [d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number];
 };
 type StandardAGenTcpCandidate = {
     kind: 'standard_agen_tcp_candidate';
     value: string;
     uses_short_nl: boolean;
-    items: [d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number];
+    items: [d1: number, d2: number, d3: number, i1: string, d4: number, d5: number];
 };
 type StandardAGenTcp6Candidate = {
     kind: 'standard_agen_tcp6_candidate';
     value: string;
     uses_short_nl: boolean;
-    items: [d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number];
+    items: [d1: number, d2: number, d3: number, i1: string, d4: number, d5: number];
 };
 type StandardAGenUdp4Candidate = {
     kind: 'standard_agen_udp4_candidate';
     value: string;
     uses_short_nl: boolean;
-    items: [d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number];
+    items: [d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number, d6: number];
 };
 type StandardAGenUdp6HostCandidate = {
     kind: 'standard_agen_udp6_host_candidate';
     value: string;
     uses_short_nl: boolean;
-    items: [d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number];
+    items: [d1: number, d2: number, d3: number, i1: string, d4: number, d5: number];
 };
 type UnknownLine = {
     kind: 'unknown_line';
@@ -184,5 +186,9 @@ type ParsedSdp = {
     kind: 'offer' | 'answer' | 'unknown' | 'unknown_terminate' | 'version_line' | 'version_zero_line' | 'a_msid_semantic_ns' | 'a_msid_semantic_ws' | 'a_extmap_allow_mixed' | 'a_standard_sctp_port' | 'a_custom_sctp_port' | 'a_standard_max_message_size' | 'a_custom_max_message_size' | 'a_setup_actpass' | 'a_setup_active' | 'a_mid_zero' | 'a_group_bundle_0' | 'c_claim_ip4' | 'standard_m_application' | 'a_ice_options_trickle' | 's_dash' | 't_zero_zero' | 'b_as_30' | 'standard_origin' | 'standard_moz_origin' | 'standard_local_candidate' | 'standard_guid_local_candidate' | 'standard_guid_local_candidate_ffus' | 'standard_remote_candidate' | 'standard_remote_candidate_ffus' | 'standard_agen_tcp_candidate' | 'standard_agen_tcp6_candidate' | 'standard_agen_udp4_candidate' | 'standard_agen_udp6_host_candidate' | 'a_ice_pwd' | 'a_ice_pwd_l' | 'a_ice_ufrag_4' | 'a_ice_ufrag_8';
     value: ParsedLine[];
     loc: PegLocation;
+    addresses?: {
+        v4: IPv4asDecimalAsString[];
+        v6: IPv6asCanonBytesAsString[];
+    };
 };
-export { UnknownLine, VersionZeroLine, VersionLine, StandardOrigin, StandardMozOrigin, StandardLocalCandidate, StandardGuidLocalCandidate, StandardGuidLocalCandidateFfUS, StandardRemoteCandidate, StandardRemoteCandidateFfUS, StandardAGenTcpCandidate, StandardAGenTcp6Candidate, StandardAGenUdp4Candidate, StandardAGenUdp6HostCandidate, ParsedLine, PegCoord, PegLocation, ParsedSdp };
+export { UnknownLine, VersionZeroLine, VersionLine, StandardOrigin, StandardMozOrigin, StandardLocalCandidate, StandardGuidLocalCandidate, StandardGuidLocalCandidateFfUS, StandardRemoteCandidate, StandardRemoteCandidateFfUS, StandardAGenTcpCandidate, StandardAGenTcp6Candidate, StandardAGenUdp4Candidate, StandardAGenUdp6HostCandidate, CClaimIp4, ParsedLine, PegCoord, PegLocation, ParsedSdp };

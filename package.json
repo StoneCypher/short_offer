@@ -1,20 +1,20 @@
 {
   "name": "short_offer",
-  "version": "0.38.0",
+  "version": "0.41.0",
   "description": "Present a shortened WebRTC offer.  Fully tested, typescript double-parser.",
   "type": "module",
-  "module": "index.js",
-  "main": "index.cjs",
+  "module": "dist/index.js",
+  "main": "dist/index.cjs",
   "scripts": {
     "clean": "rimraf dist && mkdir dist && rimraf docs && mkdir docs && cd docs && mkdir docs && cd .. && rimraf build && mkdir build && cd build && mkdir pegjs && mkdir typescript && mkdir rollup && mkdir terser && cd ../src/ts && rimraf generated_code && mkdir generated_code && cd ../..",
-    "pegjs": "pegjs -o src/ts/generated_code/sdp_parser.js --format commonjs src/peg/sdp_parser.pegjs && pegjs -o src/ts/generated_code/decompiler.js --format commonjs src/peg/decompiler.pegjs",
+    "pegjs": "pegjs -o src/ts/generated_code/sdp_parser.js --format commonjs --allowed-start-rules RawDocument,IP6N src/peg/sdp_parser.pegjs",
     "typescript": "tsc --build tsconfig.json",
     "rollup": "rollup -c",
     "site": "cp ./src/html/* docs && cp ./build/rollup/viewer.* docs && cp ./src/maintained_artifacts/*.png docs/",
-    "report": "node ./src/build_js/record_stats_for_version.js && node ./src/build_js/record_stats_image_for_version.js",
+    "report": "node ./src/build_js/record_stats_for_version.js && node ./src/build_js/record_stats_image_for_version.js && rm docs/stats*.png && cp ./src/maintained_artifacts/stats*.png docs/",
     "test": "vitest run --coverage --mode development --reporter=verbose",
     "dist": "cp ./build/rollup/index.* ./dist",
-    "build": "npm run clean && npm run pegjs && npm run typescript && npm run rollup && npm run site && npm run test && npm run report && npm run dist"
+    "build": "npm run clean && npm run pegjs && npm run typescript && npm run rollup && npm run site && npm run dist && npm run test && npm run report"
   },
   "repository": {
     "type": "git",
@@ -38,7 +38,7 @@
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@vitest/coverage-v8": "^1.2.1",
     "chartjs-node-canvas": "^4.1.6",
-    "fast-check": "^3.15.0",
+    "fast-check": "^3.23.2",
     "lz-string": "^1.5.0",
     "pegjs": "^0.10.0",
     "rimraf": "^6.0.1",

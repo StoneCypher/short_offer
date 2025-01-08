@@ -1,5 +1,5 @@
-import { parse, deparse } from './parsers';
+import { parse } from './parsers';
 import { pack } from './pack';
 import { unpack } from './unpack';
 import { compress, decompress } from './compress';
-export { compress, decompress, pack, unpack, parse, deparse };
+export { compress, decompress, pack, unpack, parse };

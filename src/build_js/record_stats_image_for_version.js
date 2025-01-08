@@ -25,48 +25,63 @@ const fcolors =
 const rand = n =>
   Math.floor( Math.random() * n );
 
+// const point_fgs    = ["#619ED6", "#6BA547", "#772F67", "#E48F1B", "#B77EA3", "#E64345", "#60CEED", "#9CF168", "#323B81", "#FFC9ED", "#E6696E"],
+//       point_bgs    = ["#619ED6", "#6BA547", "#772F67", "#E48F1B", "#B77EA3", "#E64345", "#60CEED", "#9CF168", "#323B81", "#FFC9ED", "#E6696E", "#077368",  "#111539"],
+const point_fgs    = ["MediumVioletRed", "DarkRed", "Red", "DarkOrange", "Indigo", "MediumPurple", "DarkBlue", "Blue", "SandyBrown", "Teal", "DarkGreen", "LimeGreen", "MediumAquamarine", "Black"],
+      point_bgs    = ["MediumVioletRed", "DarkRed", "Red", "DarkOrange", "Indigo", "MediumPurple", "DarkBlue", "Blue", "SandyBrown", "Teal", "DarkGreen", "LimeGreen", "MediumAquamarine", "DarkTurquoise", "CornflowerBlue", "Purple"],
+      point_styles = ['rect', 'circle', 'triangle'];
+
 
 
 
 
 const toRowAbsolute = n =>
   ({
-    label           : styles[n],
-    borderColor     : fcolors[n],
-    backgroundColor : 'transparent',
-    data            : versions.map(
-                        v => log[v][styles[n]]?.final_length )
+    label                : styles[n],
+    borderColor          : point_fgs[n % point_fgs.length],
+    backgroundColor      : 'transparent',
+    pointStyle           : point_styles[(n) % point_styles.length],
+    pointBackgroundColor : point_fgs[n % point_fgs.length],
+    pointBorderColor     : point_bgs[(n+5) % point_bgs.length],
+    data                 : versions.map(
+                             v => log[v][styles[n]]?.final_length )
   });
 
 const toRowRelative = n =>
   ({
-    label           : styles[n],
-    borderColor     : fcolors[n],
-    backgroundColor : 'transparent',
-    data            : versions.map(
-                        v =>
-                          log[v][styles[n]]?.final_length
-                            ?
-                              100
-                              * (log[v][styles[n]].final_length
-                              / log[v][styles[n]].original_length)
-                            : undefined
-                      )
+    label                : styles[n],
+    borderColor          : point_fgs[n % point_fgs.length],
+    backgroundColor      : 'transparent',
+    pointStyle           : point_styles[(n) % point_styles.length],
+    pointBackgroundColor : point_fgs[n % point_fgs.length],
+    pointBorderColor     : point_bgs[(n+5) % point_bgs.length],
+    data                 : versions.map(
+                             v =>
+                               log[v][styles[n]]?.final_length
+                                 ?
+                                   100
+                                   * (log[v][styles[n]].final_length
+                                   / log[v][styles[n]].original_length)
+                                 : undefined
+                           )
   });
 
 const toRowUnhandled = n =>
   ({
-    label           : styles[n],
-    borderColor     : fcolors[n],
-    backgroundColor : 'transparent',
-    data            : versions.map(
-                        v =>
-                          log[v][styles[n]]?.failed_claims
-                            ?
-                              100
-                              * (log[v][styles[n]].failed_claims)
-                            : undefined
-                      )
+    label                : styles[n],
+    borderColor          : point_fgs[n % point_fgs.length],
+    backgroundColor      : 'transparent',
+    pointStyle           : point_styles[(n) % point_styles.length],
+    pointBackgroundColor : point_fgs[n % point_fgs.length],
+    pointBorderColor     : point_bgs[(n+5) % point_bgs.length],
+    data                 : versions.map(
+                             v =>
+                               log[v][styles[n]]?.failed_claims
+                                 ?
+                                   100
+                                   * (log[v][styles[n]].failed_claims)
+                                 : undefined
+                           )
   });
 
 
@@ -74,7 +89,7 @@ const toRowUnhandled = n =>
 
 async function to_image(fname, data, ylabel, title) {
 
-  const crs_conf            = { width: 1800, height: 1200, type: 'png' },
+  const crs_conf            = { width: 3600, height: 1800, type: 'png' },
         canvasRenderService = new ChartJSNodeCanvas(crs_conf);
 
   const chart_configuration = {
@@ -84,6 +99,20 @@ async function to_image(fname, data, ylabel, title) {
       "datasets": data
     },
     "options": {
+      "plugins": {
+        "legend": {
+          "display": true,
+          "labels": {
+            "usePointStyle": true
+          }
+        }
+      },
+      "elements": {
+        "point": {
+          "radius": 5,
+          "borderWidth": 2
+        }
+      },
       "title": { "display": true, "text": title },
       "scales": {
         "xAxis": {
