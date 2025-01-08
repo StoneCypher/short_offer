@@ -85,6 +85,38 @@ function pack_i8(i8: number | string): string {
 
 
 
+// function pack_i16(i16: number | string): string {
+
+//   let val: number;
+
+//   switch (typeof i16) {
+//     case 'number':
+//       val = i16;
+//       break;
+//     case 'string':
+//       val = Number(i16);
+//       break;
+//     case 'bigint':
+//       val = Number(i16);
+//       break;
+//   }
+
+//   const arr  = new ArrayBuffer(2),
+//         view = new DataView(arr);
+
+//   view.setUint16(0, val, false); // byteOffset = 0; litteEndian = false
+
+//   const A = String.fromCodePoint(view.getUint8(0)),
+//         B = String.fromCodePoint(view.getUint8(1));
+
+//   return `${A}${B}`;
+
+// }
+
+
+
+
+
 function pack_i32(i32: number | string): string {
 
   let val: number;
@@ -119,27 +151,27 @@ function pack_i32(i32: number | string): string {
 
 
 
-// function pack_i64(i64: bigint | string): string {
+function pack_i64(i64: bigint | string): string {
 
-//   let val = BigInt(i64);
+  let val = BigInt(i64);
 
-//   const arr  = new ArrayBuffer(8),
-//         view = new DataView(arr);
+  const arr  = new ArrayBuffer(8),
+        view = new DataView(arr);
 
-//   view.setBigUint64(0, val, false); // byteOffset = 0; litteEndian = false
+  view.setBigUint64(0, val, false); // byteOffset = 0; litteEndian = false
 
-//   const A = String.fromCodePoint(view.getUint8(0)),
-//         B = String.fromCodePoint(view.getUint8(1)),
-//         C = String.fromCodePoint(view.getUint8(2)),
-//         D = String.fromCodePoint(view.getUint8(3)),
-//         E = String.fromCodePoint(view.getUint8(4)),
-//         F = String.fromCodePoint(view.getUint8(5)),
-//         G = String.fromCodePoint(view.getUint8(6)),
-//         H = String.fromCodePoint(view.getUint8(7));
+  const A = String.fromCodePoint(view.getUint8(0)),
+        B = String.fromCodePoint(view.getUint8(1)),
+        C = String.fromCodePoint(view.getUint8(2)),
+        D = String.fromCodePoint(view.getUint8(3)),
+        E = String.fromCodePoint(view.getUint8(4)),
+        F = String.fromCodePoint(view.getUint8(5)),
+        G = String.fromCodePoint(view.getUint8(6)),
+        H = String.fromCodePoint(view.getUint8(7));
 
-//   return `${A}${B}${C}${D}${E}${F}${G}${H}`;
+  return `${A}${B}${C}${D}${E}${F}${G}${H}`;
 
-// }
+}
 
 
 
@@ -249,7 +281,7 @@ const parseable = {
     if (kind !== 'standard_origin') { throw 'impossible'; }
     let found = addresses4_dsa.indexOf(i);
     if (found === -1) { throw new Error(`FATAL: missing address ${i}`); }
-    return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${pack_i8(found)}`;
+    return `${symbols.standard_origin}${pack_i64(s)}${d}${symbols.c_terminal}${pack_i8(found)}`;
   },
 
   'standard_moz_origin': (v: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) => {
@@ -278,8 +310,7 @@ const parseable = {
     let found = addresses4_dsa.indexOf(i1);
     if (found === -1) { throw new Error(`FATAL: missing address ${i1}`); }
     if (kind !== 'standard_local_candidate') { throw 'impossible'; }
-//  return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${d3}${symbols.c_terminal}${pack_i32(i1)}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
-    return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${d3}${symbols.c_terminal}${pack_i8(found)}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+    return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${pack_i32(d3)}${pack_i8(found)}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
   },
 
   'standard_remote_candidate': (v: ParsedLine, addresses4_dsa: string[], _addresses6_csa: string[]) => {
@@ -310,7 +341,7 @@ const parseable = {
     let found = addresses4_dsa.indexOf(i1);
     if (found === -1) { throw new Error(`FATAL: missing address ${i1}`); }
     if (kind !== 'standard_agen_tcp_candidate') { throw 'impossible'; }
-    return `${symbols.standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+    return `${symbols.standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
   },
 
   'standard_agen_tcp6_candidate': (v: ParsedLine, _addresses4_dsa: string[], addresses6_csa: string[]) => {
@@ -319,7 +350,7 @@ const parseable = {
     let found = addresses6_csa.indexOf(i1);
     if (found === -1) { throw new Error(`FATAL: missing address ${i1}`); }
     if (kind !== 'standard_agen_tcp6_candidate') { throw 'impossible'; }
-    return `${symbols.standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+    return `${symbols.standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
   },
 
   'standard_agen_udp4_candidate': (v: ParsedLine, addresses4_dsa: string[], _addresses6_csa: string[]) => {
@@ -339,7 +370,7 @@ const parseable = {
     let found = addresses6_csa.indexOf(i1);
     if (found === -1) { throw new Error(`FATAL: missing address ${i1}`); }
     if (kind !== 'standard_agen_udp6_host_candidate') { throw 'impossible'; }
-    return `${symbols.standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+    return `${symbols.standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
   },
 
   'unknown_terminate': (v: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) =>

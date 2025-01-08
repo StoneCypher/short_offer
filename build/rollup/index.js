@@ -6945,6 +6945,13 @@ function pack_i32(i32) {
     const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1)), C = String.fromCodePoint(view.getUint8(2)), D = String.fromCodePoint(view.getUint8(3));
     return `${A}${B}${C}${D}`;
 }
+function pack_i64(i64) {
+    let val = BigInt(i64);
+    const arr = new ArrayBuffer(8), view = new DataView(arr);
+    view.setBigUint64(0, val, false);
+    const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1)), C = String.fromCodePoint(view.getUint8(2)), D = String.fromCodePoint(view.getUint8(3)), E = String.fromCodePoint(view.getUint8(4)), F = String.fromCodePoint(view.getUint8(5)), G = String.fromCodePoint(view.getUint8(6)), H = String.fromCodePoint(view.getUint8(7));
+    return `${A}${B}${C}${D}${E}${F}${G}${H}`;
+}
 const parseable = {
     'unknown_line': (v, _addresses4_dsa, _addresses6_csa) => `${unknown_line}${v.value}${c_terminal}`,
     'version_zero_line': (_, _addresses4_dsa, _addresses6_csa) => `${version_zero_line}`,
@@ -6992,7 +6999,7 @@ const parseable = {
         if (found === -1) {
             throw new Error(`FATAL: missing address ${i}`);
         }
-        return `${standard_origin}${s}${c_terminal}${d}${c_terminal}${pack_i8(found)}`;
+        return `${standard_origin}${pack_i64(s)}${d}${c_terminal}${pack_i8(found)}`;
     },
     'standard_moz_origin': (v, _addresses4_dsa, _addresses6_csa) => {
         const smo = v, mvs = moz_ver(smo.moz_ver);
@@ -7024,7 +7031,7 @@ const parseable = {
         if (kind !== 'standard_local_candidate') {
             throw 'impossible';
         }
-        return `${standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${d3}${c_terminal}${pack_i8(found)}${p}${c_terminal}${d4}${c_terminal}`;
+        return `${standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${pack_i32(d3)}${pack_i8(found)}${p}${c_terminal}${d4}${c_terminal}`;
     },
     'standard_remote_candidate': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -7068,7 +7075,7 @@ const parseable = {
         if (kind !== 'standard_agen_tcp_candidate') {
             throw 'impossible';
         }
-        return `${standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${c_terminal}${d5}${c_terminal}`;
+        return `${standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${d4}${c_terminal}${d5}${c_terminal}`;
     },
     'standard_agen_tcp6_candidate': (v, _addresses4_dsa, addresses6_csa) => {
         const { kind, items } = v;
@@ -7080,7 +7087,7 @@ const parseable = {
         if (kind !== 'standard_agen_tcp6_candidate') {
             throw 'impossible';
         }
-        return `${standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${c_terminal}${d5}${c_terminal}`;
+        return `${standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${d4}${c_terminal}${d5}${c_terminal}`;
     },
     'standard_agen_udp4_candidate': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -7108,7 +7115,7 @@ const parseable = {
         if (kind !== 'standard_agen_udp6_host_candidate') {
             throw 'impossible';
         }
-        return `${standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${c_terminal}${d5}${c_terminal}`;
+        return `${standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${d4}${c_terminal}${d5}${c_terminal}`;
     },
     'unknown_terminate': (v, _addresses4_dsa, _addresses6_csa) => `${unknown_terminate}${v.value}`
 };
@@ -7241,13 +7248,21 @@ function unpack_indexed_ipv6_waddr(addresses) {
         return addr;
     };
 }
+function unpack_i8(str) {
+    const d = str.codePointAt(0) ?? 0;
+    return (d).toString();
+}
 function unpack_i32(str) {
     const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0, c = str.codePointAt(2) ?? 0, d = str.codePointAt(3) ?? 0;
     return ((((((a * 256) + b) * 256) + c) * 256) + d).toString();
 }
-function unpack_i8(str) {
-    const d = str.codePointAt(0) ?? 0;
-    return (d).toString();
+function unpack_i64(str) {
+    let out = BigInt(0);
+    for (let i = 0; i < 8; ++i) {
+        out *= 256n;
+        out += BigInt(str.codePointAt(i) ?? 0);
+    }
+    return out;
 }
 function unpack_guid(guid) {
     return `${guid.substring(0, 8)}-${guid.substring(8, 12)}-${guid.substring(12, 16)}-${guid.substring(16, 20)}-${guid.substring(20, 32)}`;
@@ -7306,12 +7321,17 @@ function unpack(bytestring) {
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 1;
     }
+    function scan_forward_exactly_eight_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
+        const unpacked = unpacker(bytestring.substring(i + 1, i + 9));
+        work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+        i += 8;
+    }
     function scan_forward_one_byte(prefix, unpacker = unpack_none, skip_r_n = false) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 2));
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 2;
     }
-    function scan_forward_four_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
+    function scan_forward_exactly_four_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 5));
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 4;
@@ -7324,24 +7344,19 @@ function unpack(bytestring) {
     let ipv4_list = [];
     let ipv4_addr_count = bytestring.charCodeAt(0);
     ++stream_start;
-    console.log(`Parsing ${ipv4_addr_count} ipv4 addresses at ${stream_start}`);
     for (let i = 0; i < ipv4_addr_count; ++i) {
         ipv4_list[i] = four_bytes_to_decimal_ipv4_string(bytestring.substring(stream_start, stream_start + 4));
         stream_start += 4;
-        console.log(`  - at ${stream_start} - ${ipv4_list[i]}`);
     }
     const unpack_indexed_ipv4_l = unpack_indexed_ipv4_waddr(ipv4_list);
     let ipv6_list = [];
     let ipv6_addr_count = bytestring.charCodeAt(stream_start);
     ++stream_start;
-    console.log(`Parsing ${ipv6_addr_count} ipv6 addresses at ${stream_start}`);
     for (let i = 0; i < ipv6_addr_count; ++i) {
         ipv6_list[i] = sixteen_bytes_to_canon_ipv6_string(bytestring.substring(stream_start, stream_start + 16));
         stream_start += 16;
-        console.log(`  - at ${stream_start} - ${ipv6_list[i]}`);
     }
     const unpack_indexed_ipv6_l = unpack_indexed_ipv6_waddr(ipv6_list);
-    console.log(unpack_indexed_ipv6_l);
     for (i = stream_start, iC = bytestring.length; i < iC; ++i) {
         switch (bytestring.charAt(i)) {
             case offer:
@@ -7424,7 +7439,7 @@ function unpack(bytestring) {
                 work += 'a=ice-options:trickle\r\n';
                 break;
             case standard_origin:
-                scan_forward_to_null('o=- ', 'standard_moz_origin_1', undefined, true);
+                scan_forward_exactly_eight_bytes('o=- ', unpack_i64, true);
                 scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
                 scan_forward_exactly_one_byte(' IN IP4 ', unpack_indexed_ipv4_l, true);
                 work += '\r\n';
@@ -7455,33 +7470,33 @@ function unpack(bytestring) {
                 work += ' typ host\r\n';
                 break;
             case standard_local_candidate:
-                scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
-                scan_forward_four_bytes(' ', unpack_i32, true);
-                scan_forward_to_null(' udp ', 'standard_guid_candidate_3', undefined, true);
+                scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
+                scan_forward_exactly_four_bytes(' ', unpack_i32, true);
+                scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
                 scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                 break;
             case standard_agen_tcp_candidate:
-                scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
-                scan_forward_one_byte(' ', unpack_i8, true);
-                scan_forward_four_bytes(' tcp ', unpack_i32, true);
+                scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
+                scan_forward_exactly_one_byte(' ', unpack_i8, true);
+                scan_forward_exactly_four_bytes(' tcp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
                 scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                 break;
             case standard_agen_tcp6_candidate:
-                scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
-                scan_forward_one_byte(' ', unpack_i8, true);
-                scan_forward_four_bytes(' tcp ', unpack_i32, true);
+                scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
+                scan_forward_exactly_one_byte(' ', unpack_i8, true);
+                scan_forward_exactly_four_bytes(' tcp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv6_l, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
                 scan_forward_to_null(' typ host tcptype active generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                 break;
             case standard_agen_udp4_candidate:
-                scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
+                scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
                 scan_forward_one_byte(' ', unpack_i8, true);
-                scan_forward_four_bytes(' udp ', unpack_i32, true);
+                scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_5', undefined, true);
                 scan_forward_exactly_one_byte(' typ srflx raddr ', unpack_indexed_ipv4_l, true);
@@ -7489,9 +7504,9 @@ function unpack(bytestring) {
                 scan_forward_to_null(' generation 0 network-id ', 'standard_guid_candidate_8', undefined, false);
                 break;
             case standard_agen_udp6_host_candidate:
-                scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
-                scan_forward_one_byte(' ', unpack_i8, true);
-                scan_forward_four_bytes(' udp ', unpack_i32, true);
+                scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
+                scan_forward_exactly_one_byte(' ', unpack_i8, true);
+                scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv6_l, true);
                 scan_forward_to_null(' ', 'standard_guid_candidate_5', undefined, true);
                 scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_6', undefined, false);
@@ -7508,9 +7523,9 @@ function unpack(bytestring) {
                 work += ' network-cost 999\r\n';
                 break;
             case standard_remote_candidate_ffus:
-                scan_forward_four_bytes(`a=candidate:`, unpack_i32, true);
+                scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
                 scan_forward_one_byte(' ', unpack_i8, true);
-                scan_forward_four_bytes(' UDP ', unpack_i32, true);
+                scan_forward_exactly_four_bytes(' UDP ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
                 scan_forward_to_null(' ', 'standard_remote_candidate_5', undefined, true);
                 scan_forward_exactly_one_byte(' typ srflx raddr ', unpack_indexed_ipv4_l, true);

@@ -46,6 +46,13 @@ function pack_i32(i32) {
     const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1)), C = String.fromCodePoint(view.getUint8(2)), D = String.fromCodePoint(view.getUint8(3));
     return `${A}${B}${C}${D}`;
 }
+function pack_i64(i64) {
+    let val = BigInt(i64);
+    const arr = new ArrayBuffer(8), view = new DataView(arr);
+    view.setBigUint64(0, val, false);
+    const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1)), C = String.fromCodePoint(view.getUint8(2)), D = String.fromCodePoint(view.getUint8(3)), E = String.fromCodePoint(view.getUint8(4)), F = String.fromCodePoint(view.getUint8(5)), G = String.fromCodePoint(view.getUint8(6)), H = String.fromCodePoint(view.getUint8(7));
+    return `${A}${B}${C}${D}${E}${F}${G}${H}`;
+}
 const parseable = {
     'unknown_line': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.unknown_line}${v.value}${symbols.c_terminal}`,
     'version_zero_line': (_, _addresses4_dsa, _addresses6_csa) => `${symbols.version_zero_line}`,
@@ -93,7 +100,7 @@ const parseable = {
         if (found === -1) {
             throw new Error(`FATAL: missing address ${i}`);
         }
-        return `${symbols.standard_origin}${s}${symbols.c_terminal}${d}${symbols.c_terminal}${pack_i8(found)}`;
+        return `${symbols.standard_origin}${pack_i64(s)}${d}${symbols.c_terminal}${pack_i8(found)}`;
     },
     'standard_moz_origin': (v, _addresses4_dsa, _addresses6_csa) => {
         const smo = v, mvs = moz_ver(smo.moz_ver);
@@ -125,7 +132,7 @@ const parseable = {
         if (kind !== 'standard_local_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${d3}${symbols.c_terminal}${pack_i8(found)}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+        return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${pack_i32(d3)}${pack_i8(found)}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
     },
     'standard_remote_candidate': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -169,7 +176,7 @@ const parseable = {
         if (kind !== 'standard_agen_tcp_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_tcp_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
     'standard_agen_tcp6_candidate': (v, _addresses4_dsa, addresses6_csa) => {
         const { kind, items } = v;
@@ -181,7 +188,7 @@ const parseable = {
         if (kind !== 'standard_agen_tcp6_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_tcp6_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
     'standard_agen_udp4_candidate': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -209,7 +216,7 @@ const parseable = {
         if (kind !== 'standard_agen_udp6_host_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
     },
     'unknown_terminate': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.unknown_terminate}${v.value}`
 };
