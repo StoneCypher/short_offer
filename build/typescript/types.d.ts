@@ -148,7 +148,7 @@ type StandardAGenTcp6Candidate = {
     kind: 'standard_agen_tcp6_candidate';
     value: string;
     uses_short_nl: boolean;
-    items: [d1: number, d2: number, d3: number, i1: number, d4: number, i2: number, d5: number, d6: number];
+    items: [d1: number, d2: number, d3: number, i1: string, d4: number, d5: number];
 };
 type StandardAGenUdp4Candidate = {
     kind: 'standard_agen_udp4_candidate';

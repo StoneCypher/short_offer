@@ -75,8 +75,8 @@ test('can parse random ipv6 array', () => {
   fc.assert(
     fc.property(
       fc.record({
-        left  : fc.array(fc.nat({max: 65535}), { minLength: 0, maxLength: 8 } ),
-        right : fc.array(fc.nat({max: 65535}), { minLength: 0, maxLength: 8 } )
+        left  : fc.array(fc.nat( {max: 65535} ), { minLength: 0, maxLength: 8 } ),
+        right : fc.array(fc.nat( {max: 65535} ), { minLength: 0, maxLength: 8 } )
       }),
       // }).filter(
       //   ({ left, right }) => {
@@ -84,9 +84,6 @@ test('can parse random ipv6 array', () => {
       //   }
       // ),
       ({ left, right }: { left: number[], right: number[] }) => {
-        console.log(left);
-        console.log(right);
-        console.log('===========');
         expect(true).toBe(true);
       }
     )
