@@ -28,6 +28,24 @@ function pack_i8(i8) {
     view.setUint8(0, val);
     return String.fromCodePoint(view.getUint8(0));
 }
+function pack_i16(i16) {
+    let val;
+    switch (typeof i16) {
+        case 'number':
+            val = i16;
+            break;
+        case 'string':
+            val = Number(i16);
+            break;
+        case 'bigint':
+            val = Number(i16);
+            break;
+    }
+    const arr = new ArrayBuffer(2), view = new DataView(arr);
+    view.setUint16(0, val, false);
+    const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1));
+    return `${A}${B}`;
+}
 function pack_i32(i32) {
     let val;
     switch (typeof i32) {
@@ -88,7 +106,7 @@ const parseable = {
         }
         return `${symbols.c_claim_ip4}${pack_i8(found)}`;
     },
-    'standard_m_application': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.standard_m_application}${v.value}${symbols.c_terminal}`,
+    'standard_m_application': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.standard_m_application}${pack_i16(v.value)}`,
     'a_ice_options_trickle': (_, _addresses4_dsa, _addresses6_csa) => `${symbols.a_ice_options_trickle}`,
     'standard_origin': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -132,7 +150,7 @@ const parseable = {
         if (kind !== 'standard_local_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${pack_i32(d3)}${pack_i8(found)}${p}${symbols.c_terminal}${d4}${symbols.c_terminal}`;
+        return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${d4}${symbols.c_terminal}`;
     },
     'standard_remote_candidate': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -208,7 +226,7 @@ const parseable = {
     },
     'standard_agen_udp6_host_candidate': (v, _addresses4_dsa, addresses6_csa) => {
         const { kind, items } = v;
-        const [d1, d2, d3, i1, d4, d5] = items;
+        const [d1, d2, d3, i1, p, d5] = items;
         let found = addresses6_csa.indexOf(i1);
         if (found === -1) {
             throw new Error(`FATAL: missing address ${i1}`);
@@ -216,7 +234,7 @@ const parseable = {
         if (kind !== 'standard_agen_udp6_host_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${d4}${symbols.c_terminal}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${d5}${symbols.c_terminal}`;
     },
     'unknown_terminate': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.unknown_terminate}${v.value}`
 };

@@ -134,14 +134,14 @@ function unpack_i8(str: string) {
 
 
 
-// function unpack_i16(str: string) {
+function unpack_i16(str: string) {
 
-//   const a = str.codePointAt(0) ?? 0,
-//         b = str.codePointAt(1) ?? 0;
+  const a = str.codePointAt(0) ?? 0,
+        b = str.codePointAt(1) ?? 0;
 
-//   return (((a * 256) + b) * 256).toString();
+  return ((a * 256) + b).toString();
 
-// }
+}
 
 
 
@@ -296,14 +296,14 @@ function unpack(bytestring: string): string {
   }
 
 
-  // function scan_forward_exactly_two_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
+  function scan_forward_exactly_two_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
 
-  //   const unpacked = unpacker(bytestring.substring(i+1, i+3));
+    const unpacked = unpacker(bytestring.substring(i+1, i+3));
 
-  //   work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
-  //   i    += 2;
+    work += `${prefix}${unpacked}${skip_r_n? '' : '\r\n'}`;
+    i    += 2;
 
-  // }
+  }
 
 
   function scan_forward_exactly_eight_bytes(prefix: string, unpacker: Function = unpack_none, skip_r_n: boolean = false) {
@@ -495,7 +495,8 @@ function unpack(bytestring: string): string {
         break;
 
       case symbols.standard_m_application:
-        scan_forward_to_null('m=application ', 'standard_m_application', undefined, true);
+        scan_forward_exactly_two_bytes('m=application ', unpack_i16, true);
+//        scan_forward_to_null('m=application ', 'standard_m_application', undefined, true);
         work += ' UDP/DTLS/SCTP webrtc-datachannel\r\n';
         break;
 
@@ -505,7 +506,6 @@ function unpack(bytestring: string): string {
 
       case symbols.standard_origin:
         scan_forward_exactly_eight_bytes('o=- ', unpack_i64, true);
-//        scan_forward_to_null('o=- ',     'standard_moz_origin_1', undefined, true);
         scan_forward_to_null(' ',        'standard_moz_origin_2', undefined, true);
         scan_forward_exactly_one_byte(' IN IP4 ', unpack_indexed_ipv4_l, true);
         work += '\r\n';
@@ -543,10 +543,10 @@ function unpack(bytestring: string): string {
       case symbols.standard_local_candidate:
         scan_forward_exactly_four_bytes(`a=candidate:`,                                            unpack_i32,            true);
         scan_forward_exactly_four_bytes(' ',                                                       unpack_i32,            true);
-        scan_forward_exactly_four_bytes( ' udp ',                                                  unpack_i32,            true);
-//      scan_forward_to_null(   ' udp ',                              'standard_guid_candidate_3', undefined,             true);
+        scan_forward_exactly_four_bytes(' udp ',                                                   unpack_i32,            true);
         scan_forward_exactly_one_byte(  ' ',                                                       unpack_indexed_ipv4_l, true);
-        scan_forward_to_null(   ' ',                                  'standard_guid_candidate_4', undefined,             true);
+        scan_forward_exactly_two_bytes( ' ',                                                       unpack_i16,            true);
+        // scan_forward_to_null(   ' ',                                  'standard_guid_candidate_4', undefined,             true);
         scan_forward_to_null(   ' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined,             false);
         break;
 
@@ -584,7 +584,7 @@ function unpack(bytestring: string): string {
         scan_forward_exactly_one_byte(' ',                                                      unpack_i8,             true);
         scan_forward_exactly_four_bytes(' udp ',                                                unpack_i32,            true);
         scan_forward_exactly_one_byte( ' ',                                                     unpack_indexed_ipv6_l, true);
-        scan_forward_to_null(' ',                                  'standard_guid_candidate_5', undefined,             true);
+        scan_forward_exactly_two_bytes( ' ',                                                    unpack_i16,            true);
         scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_6', undefined,             false);
         break;
 

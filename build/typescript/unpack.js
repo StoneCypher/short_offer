@@ -49,6 +49,10 @@ function unpack_i8(str) {
     const d = str.codePointAt(0) ?? 0;
     return (d).toString();
 }
+function unpack_i16(str) {
+    const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0;
+    return ((a * 256) + b).toString();
+}
 function unpack_i32(str) {
     const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0, c = str.codePointAt(2) ?? 0, d = str.codePointAt(3) ?? 0;
     return ((((((a * 256) + b) * 256) + c) * 256) + d).toString();
@@ -117,6 +121,11 @@ function unpack(bytestring) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 2));
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 1;
+    }
+    function scan_forward_exactly_two_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
+        const unpacked = unpacker(bytestring.substring(i + 1, i + 3));
+        work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+        i += 2;
     }
     function scan_forward_exactly_eight_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 9));
@@ -229,7 +238,7 @@ function unpack(bytestring) {
                 work += '\r\n';
                 break;
             case symbols.standard_m_application:
-                scan_forward_to_null('m=application ', 'standard_m_application', undefined, true);
+                scan_forward_exactly_two_bytes('m=application ', unpack_i16, true);
                 work += ' UDP/DTLS/SCTP webrtc-datachannel\r\n';
                 break;
             case symbols.a_ice_options_trickle:
@@ -271,7 +280,7 @@ function unpack(bytestring) {
                 scan_forward_exactly_four_bytes(' ', unpack_i32, true);
                 scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
-                scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
+                scan_forward_exactly_two_bytes(' ', unpack_i16, true);
                 scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                 break;
             case symbols.standard_agen_tcp_candidate:
@@ -305,7 +314,7 @@ function unpack(bytestring) {
                 scan_forward_exactly_one_byte(' ', unpack_i8, true);
                 scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv6_l, true);
-                scan_forward_to_null(' ', 'standard_guid_candidate_5', undefined, true);
+                scan_forward_exactly_two_bytes(' ', unpack_i16, true);
                 scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_6', undefined, false);
                 break;
             case symbols.standard_remote_candidate:

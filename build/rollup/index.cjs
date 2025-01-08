@@ -6929,6 +6929,24 @@ function pack_i8(i8) {
     view.setUint8(0, val);
     return String.fromCodePoint(view.getUint8(0));
 }
+function pack_i16(i16) {
+    let val;
+    switch (typeof i16) {
+        case 'number':
+            val = i16;
+            break;
+        case 'string':
+            val = Number(i16);
+            break;
+        case 'bigint':
+            val = Number(i16);
+            break;
+    }
+    const arr = new ArrayBuffer(2), view = new DataView(arr);
+    view.setUint16(0, val, false);
+    const A = String.fromCodePoint(view.getUint8(0)), B = String.fromCodePoint(view.getUint8(1));
+    return `${A}${B}`;
+}
 function pack_i32(i32) {
     let val;
     switch (typeof i32) {
@@ -6989,7 +7007,7 @@ const parseable = {
         }
         return `${c_claim_ip4}${pack_i8(found)}`;
     },
-    'standard_m_application': (v, _addresses4_dsa, _addresses6_csa) => `${standard_m_application}${v.value}${c_terminal}`,
+    'standard_m_application': (v, _addresses4_dsa, _addresses6_csa) => `${standard_m_application}${pack_i16(v.value)}`,
     'a_ice_options_trickle': (_, _addresses4_dsa, _addresses6_csa) => `${a_ice_options_trickle}`,
     'standard_origin': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -7033,7 +7051,7 @@ const parseable = {
         if (kind !== 'standard_local_candidate') {
             throw 'impossible';
         }
-        return `${standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${pack_i32(d3)}${pack_i8(found)}${p}${c_terminal}${d4}${c_terminal}`;
+        return `${standard_local_candidate}${pack_i32(d1)}${pack_i32(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${d4}${c_terminal}`;
     },
     'standard_remote_candidate': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -7109,7 +7127,7 @@ const parseable = {
     },
     'standard_agen_udp6_host_candidate': (v, _addresses4_dsa, addresses6_csa) => {
         const { kind, items } = v;
-        const [d1, d2, d3, i1, d4, d5] = items;
+        const [d1, d2, d3, i1, p, d5] = items;
         let found = addresses6_csa.indexOf(i1);
         if (found === -1) {
             throw new Error(`FATAL: missing address ${i1}`);
@@ -7117,7 +7135,7 @@ const parseable = {
         if (kind !== 'standard_agen_udp6_host_candidate') {
             throw 'impossible';
         }
-        return `${standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${d4}${c_terminal}${d5}${c_terminal}`;
+        return `${standard_agen_udp6_host_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${d5}${c_terminal}`;
     },
     'unknown_terminate': (v, _addresses4_dsa, _addresses6_csa) => `${unknown_terminate}${v.value}`
 };
@@ -7254,6 +7272,10 @@ function unpack_i8(str) {
     const d = str.codePointAt(0) ?? 0;
     return (d).toString();
 }
+function unpack_i16(str) {
+    const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0;
+    return ((a * 256) + b).toString();
+}
 function unpack_i32(str) {
     const a = str.codePointAt(0) ?? 0, b = str.codePointAt(1) ?? 0, c = str.codePointAt(2) ?? 0, d = str.codePointAt(3) ?? 0;
     return ((((((a * 256) + b) * 256) + c) * 256) + d).toString();
@@ -7322,6 +7344,11 @@ function unpack(bytestring) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 2));
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 1;
+    }
+    function scan_forward_exactly_two_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
+        const unpacked = unpacker(bytestring.substring(i + 1, i + 3));
+        work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
+        i += 2;
     }
     function scan_forward_exactly_eight_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 9));
@@ -7434,7 +7461,7 @@ function unpack(bytestring) {
                 work += '\r\n';
                 break;
             case standard_m_application:
-                scan_forward_to_null('m=application ', 'standard_m_application', undefined, true);
+                scan_forward_exactly_two_bytes('m=application ', unpack_i16, true);
                 work += ' UDP/DTLS/SCTP webrtc-datachannel\r\n';
                 break;
             case a_ice_options_trickle:
@@ -7476,7 +7503,7 @@ function unpack(bytestring) {
                 scan_forward_exactly_four_bytes(' ', unpack_i32, true);
                 scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
-                scan_forward_to_null(' ', 'standard_guid_candidate_4', undefined, true);
+                scan_forward_exactly_two_bytes(' ', unpack_i16, true);
                 scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
                 break;
             case standard_agen_tcp_candidate:
@@ -7510,7 +7537,7 @@ function unpack(bytestring) {
                 scan_forward_exactly_one_byte(' ', unpack_i8, true);
                 scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv6_l, true);
-                scan_forward_to_null(' ', 'standard_guid_candidate_5', undefined, true);
+                scan_forward_exactly_two_bytes(' ', unpack_i16, true);
                 scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_6', undefined, false);
                 break;
             case standard_remote_candidate:
