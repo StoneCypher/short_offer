@@ -7812,6 +7812,10 @@ var so_viewer = (function (exports) {
     	                }
     	            });
     	        }
+    	        retval.addresses.v4 = retval.addresses.v4.filter(r => r !== '0');
+    	        retval.addresses.v4 = retval.addresses.v4.filter(r => r !== '2130706433');
+    	        retval.addresses.v4.unshift('2130706433');
+    	        retval.addresses.v4.unshift('0');
     	        return retval;
     	    }
     	    function unelide(lAddresses, rAddresses) {
@@ -7946,7 +7950,7 @@ var so_viewer = (function (exports) {
         'falkon_a_ice_ufrag_4': (v, _addresses4_dsa, _addresses6_csa) => `${falkon_a_ice_ufrag_4}${v.value}${c_terminal}`,
         'a_ice_ufrag_4': (v, _addresses4_dsa, _addresses6_csa) => `${a_ice_ufrag_4}${v.value}${c_terminal}`,
         'a_ice_ufrag_8': (v, _addresses4_dsa, _addresses6_csa) => `${a_ice_ufrag_8}${v.value}${c_terminal}`,
-        'a_fingerprint_sha1_256': (v, _addresses4_dsa, _addresses6_csa) => `${a_fingerprint_sha1_256}${pack_sha256(v.value)}${c_terminal}`,
+        'a_fingerprint_sha1_256': (v, _addresses4_dsa, _addresses6_csa) => `${a_fingerprint_sha1_256}${pack_sha256(v.value)}`,
         'a_send_recv': (_, _addresses4_dsa, _addresses6_csa) => `${a_send_recv}`,
         'a_end_of_candidates': (_, _addresses4_dsa, _addresses6_csa) => `${a_end_of_candidates}`,
         's_dash': (_, _addresses4_dsa, _addresses6_csa) => `${s_dash}`,
@@ -7972,7 +7976,7 @@ var so_viewer = (function (exports) {
             if (found === -1) {
                 throw new Error(`FATAL: missing address ${i}`);
             }
-            return `${standard_origin}${pack_i64(s)}${d}${c_terminal}${pack_i8(found)}`;
+            return `${standard_origin}${pack_i64(s)}${pack_i8(d)}${pack_i8(found)}`;
         },
         'standard_moz_origin': (v, _addresses4_dsa, _addresses6_csa) => {
             const smo = v, mvs = moz_ver(smo.moz_ver);
@@ -8072,7 +8076,7 @@ var so_viewer = (function (exports) {
             if (kind !== 'standard_local_candidate') {
                 throw 'impossible';
             }
-            return `${standard_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${d4}${c_terminal}`;
+            return `${standard_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${pack_i8(d4)}`;
         },
         'standard_remote_candidate': (v, addresses4_dsa, _addresses6_csa) => {
             const { kind, items } = v;
@@ -8203,8 +8207,8 @@ var so_viewer = (function (exports) {
             if (parsed.addresses.v4.length > 255) {
                 throw new Error('Encoding is limited to 255 ipv4 addresses');
             }
-            work += String.fromCodePoint(parsed.addresses.v4.length);
-            for (let i = 0; i < parsed.addresses.v4.length; ++i) {
+            work += String.fromCodePoint(parsed.addresses.v4.length - 2);
+            for (let i = 2; i < parsed.addresses.v4.length; ++i) {
                 work += addr4_as_decimal_as_string_to_bytes(parsed.addresses.v4[i]);
             }
         }
@@ -8810,7 +8814,6 @@ var so_viewer = (function (exports) {
     function unpack_indexed_ipv6_waddr(addresses) {
         return function unpack_indexed_ipv6(str) {
             const idx = str.codePointAt(0);
-            console.log(`Unpacking ipv6 at index ${idx}`);
             if (idx === undefined) {
                 throw new Error('Index string was empty');
             }
@@ -8824,7 +8827,6 @@ var so_viewer = (function (exports) {
     function unpack_indexed_guid_waddr(addresses) {
         return function unpack_indexed_guid(str) {
             const idx = str.codePointAt(0);
-            console.log(`Unpacking guid at index ${idx}`);
             if (idx === undefined) {
                 throw new Error('Index string was empty');
             }
@@ -8930,16 +8932,16 @@ var so_viewer = (function (exports) {
             work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
             i += 4;
         }
-        function scan_forward_32_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
+        function scan_forward_exactly_32_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
             const unpacked = unpacker(bytestring.substring(i + 1, i + 33));
             work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
-            i += 33;
+            i += 32;
         }
-        let ipv4_list = [];
+        let ipv4_list = ['0', '2130706433'];
         let ipv4_addr_count = bytestring.charCodeAt(0);
         ++stream_start;
         for (let i = 0; i < ipv4_addr_count; ++i) {
-            ipv4_list[i] = four_bytes_to_decimal_ipv4_string(bytestring.substring(stream_start, stream_start + 4));
+            ipv4_list[i + 2] = four_bytes_to_decimal_ipv4_string(bytestring.substring(stream_start, stream_start + 4));
             stream_start += 4;
         }
         const unpack_indexed_ipv4_l = unpack_indexed_ipv4_waddr(ipv4_list);
@@ -9035,7 +9037,7 @@ var so_viewer = (function (exports) {
                     break;
                 case standard_origin:
                     scan_forward_exactly_eight_bytes('o=- ', unpack_i64, true);
-                    scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
+                    scan_forward_exactly_one_byte(' ', unpack_i8, true);
                     scan_forward_exactly_one_byte(' IN IP4 ', unpack_indexed_ipv4_l, true);
                     work += '\r\n';
                     break;
@@ -9110,7 +9112,7 @@ var so_viewer = (function (exports) {
                     scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                     scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
                     scan_forward_exactly_two_bytes(' ', unpack_i16, true);
-                    scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
+                    scan_forward_exactly_one_byte(' typ host generation 0 network-id ', unpack_i8, false);
                     break;
                 case standard_agen_tcp_candidate:
                     scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
@@ -9185,7 +9187,7 @@ var so_viewer = (function (exports) {
                     scan_forward_to_null(`a=ice-ufrag:`, 'a_ice_ufrag_8', undefined, false);
                     break;
                 case a_fingerprint_sha1_256:
-                    scan_forward_32_bytes(`a=fingerprint:sha-256 `, unpack_sha_colons, false);
+                    scan_forward_exactly_32_bytes(`a=fingerprint:sha-256 `, unpack_sha_colons, false);
                     break;
                 default:
                     throw new TypeError(`[unpack] Unknown symbol at ${i} '${bytestring.charAt(i)}' [${bytestring.charCodeAt(i)}], corrupt encoding or unhandled symbol'`);

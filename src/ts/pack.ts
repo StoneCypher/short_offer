@@ -252,7 +252,7 @@ const parseable = {
     `${symbols.a_ice_ufrag_8}${v.value}${symbols.c_terminal}`,
 
   'a_fingerprint_sha1_256': (v: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) =>
-    `${symbols.a_fingerprint_sha1_256}${pack_sha256(v.value)}${symbols.c_terminal}`,
+    `${symbols.a_fingerprint_sha1_256}${pack_sha256(v.value)}`,
 
   'a_send_recv': (_: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) =>
     `${symbols.a_send_recv}`,
@@ -289,7 +289,7 @@ const parseable = {
     if (kind !== 'standard_origin') { throw 'impossible'; }
     let found = addresses4_dsa.indexOf(i);
     if (found === -1) { throw new Error(`FATAL: missing address ${i}`); }
-    return `${symbols.standard_origin}${pack_i64(s)}${d}${symbols.c_terminal}${pack_i8(found)}`;
+    return `${symbols.standard_origin}${pack_i64(s)}${pack_i8(d)}${pack_i8(found)}`;
   },
 
   'standard_moz_origin': (v: ParsedLine, _addresses4_dsa: string[], _addresses6_csa: string[]) => {
@@ -367,7 +367,7 @@ const parseable = {
     let found = addresses4_dsa.indexOf(i1);
     if (found === -1) { throw new Error(`FATAL: missing address ${i1}`); }
     if (kind !== 'standard_local_candidate') { throw 'impossible'; }
-    return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${d4}${symbols.c_terminal}`;
+    return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${pack_i8(d4)}`;
   },
 
   'standard_remote_candidate': (v: ParsedLine, addresses4_dsa: string[], _addresses6_csa: string[]) => {
@@ -569,10 +569,15 @@ function parsed_to_bytestring( parsed: ParsedSdp ): string {
     if (parsed.addresses.v4.length > 255) {
       throw new Error('Encoding is limited to 255 ipv4 addresses');
     }
-    work += String.fromCodePoint(parsed.addresses.v4.length);
-    for (let i=0; i<parsed.addresses.v4.length; ++i) {
+
+    // two fewer than length because we'll be skipping 0 and 127.0.0.1
+    work += String.fromCodePoint(parsed.addresses.v4.length - 2);
+
+    // start at 2 to skip 0.0.0.0 and 127.0.0.1, which are implied
+    for (let i=2; i<parsed.addresses.v4.length; ++i) {
       work += addr4_as_decimal_as_string_to_bytes(parsed.addresses.v4[i]!);
     }
+
   }
 
 

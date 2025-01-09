@@ -7664,6 +7664,10 @@ function peg$parse(input, options) {
                 }
             });
         }
+        retval.addresses.v4 = retval.addresses.v4.filter(r => r !== '0');
+        retval.addresses.v4 = retval.addresses.v4.filter(r => r !== '2130706433');
+        retval.addresses.v4.unshift('2130706433');
+        retval.addresses.v4.unshift('0');
         return retval;
     }
     function repeat(count, item) {

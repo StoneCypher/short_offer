@@ -6919,6 +6919,13 @@ function peg$parse(input, options) {
         });
       }
 
+      // make sure 0.0.0.0 and 127.0.0.1 are the first two entries in v4 table
+      retval.addresses.v4 = retval.addresses.v4.filter(r => r !== '0');
+      retval.addresses.v4 = retval.addresses.v4.filter(r => r !== '2130706433');  // 127.0.0.1 is 2130706433
+
+      retval.addresses.v4.unshift('2130706433');
+      retval.addresses.v4.unshift('0');
+
       return retval;
 
     }

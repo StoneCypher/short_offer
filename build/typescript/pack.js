@@ -93,7 +93,7 @@ const parseable = {
     'falkon_a_ice_ufrag_4': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.falkon_a_ice_ufrag_4}${v.value}${symbols.c_terminal}`,
     'a_ice_ufrag_4': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.a_ice_ufrag_4}${v.value}${symbols.c_terminal}`,
     'a_ice_ufrag_8': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.a_ice_ufrag_8}${v.value}${symbols.c_terminal}`,
-    'a_fingerprint_sha1_256': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.a_fingerprint_sha1_256}${pack_sha256(v.value)}${symbols.c_terminal}`,
+    'a_fingerprint_sha1_256': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.a_fingerprint_sha1_256}${pack_sha256(v.value)}`,
     'a_send_recv': (_, _addresses4_dsa, _addresses6_csa) => `${symbols.a_send_recv}`,
     'a_end_of_candidates': (_, _addresses4_dsa, _addresses6_csa) => `${symbols.a_end_of_candidates}`,
     's_dash': (_, _addresses4_dsa, _addresses6_csa) => `${symbols.s_dash}`,
@@ -119,7 +119,7 @@ const parseable = {
         if (found === -1) {
             throw new Error(`FATAL: missing address ${i}`);
         }
-        return `${symbols.standard_origin}${pack_i64(s)}${d}${symbols.c_terminal}${pack_i8(found)}`;
+        return `${symbols.standard_origin}${pack_i64(s)}${pack_i8(d)}${pack_i8(found)}`;
     },
     'standard_moz_origin': (v, _addresses4_dsa, _addresses6_csa) => {
         const smo = v, mvs = moz_ver(smo.moz_ver);
@@ -219,7 +219,7 @@ const parseable = {
         if (kind !== 'standard_local_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${d4}${symbols.c_terminal}`;
+        return `${symbols.standard_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found)}${pack_i16(p)}${pack_i8(d4)}`;
     },
     'standard_remote_candidate': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -350,8 +350,8 @@ function parsed_to_bytestring(parsed) {
         if (parsed.addresses.v4.length > 255) {
             throw new Error('Encoding is limited to 255 ipv4 addresses');
         }
-        work += String.fromCodePoint(parsed.addresses.v4.length);
-        for (let i = 0; i < parsed.addresses.v4.length; ++i) {
+        work += String.fromCodePoint(parsed.addresses.v4.length - 2);
+        for (let i = 2; i < parsed.addresses.v4.length; ++i) {
             work += addr4_as_decimal_as_string_to_bytes(parsed.addresses.v4[i]);
         }
     }

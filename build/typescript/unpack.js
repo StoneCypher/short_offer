@@ -35,7 +35,6 @@ function unpack_indexed_ipv4_waddr(addresses) {
 function unpack_indexed_ipv6_waddr(addresses) {
     return function unpack_indexed_ipv6(str) {
         const idx = str.codePointAt(0);
-        console.log(`Unpacking ipv6 at index ${idx}`);
         if (idx === undefined) {
             throw new Error('Index string was empty');
         }
@@ -49,7 +48,6 @@ function unpack_indexed_ipv6_waddr(addresses) {
 function unpack_indexed_guid_waddr(addresses) {
     return function unpack_indexed_guid(str) {
         const idx = str.codePointAt(0);
-        console.log(`Unpacking guid at index ${idx}`);
         if (idx === undefined) {
             throw new Error('Index string was empty');
         }
@@ -155,16 +153,16 @@ function unpack(bytestring) {
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
         i += 4;
     }
-    function scan_forward_32_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
+    function scan_forward_exactly_32_bytes(prefix, unpacker = unpack_none, skip_r_n = false) {
         const unpacked = unpacker(bytestring.substring(i + 1, i + 33));
         work += `${prefix}${unpacked}${skip_r_n ? '' : '\r\n'}`;
-        i += 33;
+        i += 32;
     }
-    let ipv4_list = [];
+    let ipv4_list = ['0', '2130706433'];
     let ipv4_addr_count = bytestring.charCodeAt(0);
     ++stream_start;
     for (let i = 0; i < ipv4_addr_count; ++i) {
-        ipv4_list[i] = four_bytes_to_decimal_ipv4_string(bytestring.substring(stream_start, stream_start + 4));
+        ipv4_list[i + 2] = four_bytes_to_decimal_ipv4_string(bytestring.substring(stream_start, stream_start + 4));
         stream_start += 4;
     }
     const unpack_indexed_ipv4_l = unpack_indexed_ipv4_waddr(ipv4_list);
@@ -260,7 +258,7 @@ function unpack(bytestring) {
                 break;
             case symbols.standard_origin:
                 scan_forward_exactly_eight_bytes('o=- ', unpack_i64, true);
-                scan_forward_to_null(' ', 'standard_moz_origin_2', undefined, true);
+                scan_forward_exactly_one_byte(' ', unpack_i8, true);
                 scan_forward_exactly_one_byte(' IN IP4 ', unpack_indexed_ipv4_l, true);
                 work += '\r\n';
                 break;
@@ -335,7 +333,7 @@ function unpack(bytestring) {
                 scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
                 scan_forward_exactly_two_bytes(' ', unpack_i16, true);
-                scan_forward_to_null(' typ host generation 0 network-id ', 'standard_guid_candidate_5', undefined, false);
+                scan_forward_exactly_one_byte(' typ host generation 0 network-id ', unpack_i8, false);
                 break;
             case symbols.standard_agen_tcp_candidate:
                 scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
@@ -410,7 +408,7 @@ function unpack(bytestring) {
                 scan_forward_to_null(`a=ice-ufrag:`, 'a_ice_ufrag_8', undefined, false);
                 break;
             case symbols.a_fingerprint_sha1_256:
-                scan_forward_32_bytes(`a=fingerprint:sha-256 `, unpack_sha_colons, false);
+                scan_forward_exactly_32_bytes(`a=fingerprint:sha-256 `, unpack_sha_colons, false);
                 break;
             default:
                 throw new TypeError(`[unpack] Unknown symbol at ${i} '${bytestring.charAt(i)}' [${bytestring.charCodeAt(i)}], corrupt encoding or unhandled symbol'`);
