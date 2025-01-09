@@ -35,6 +35,8 @@
          'standard_guid_local_candidate',
          'standard_ip4_local_candidate_ffus_active',
          'standard_ip4_local_candidate_ffus',
+         'standard_ip6_local_candidate_ffus_active',
+         'standard_ip6_local_candidate_ffus',
          'standard_tcp_guid_local_candidate_ffus_active',
          'standard_guid_local_candidate_ffus',
          'standard_remote_candidate',
@@ -302,6 +304,8 @@ Rule
   / AStandardTcpGuidLocalCandidateFfUSActive
   / AStandardIp4LocalCandidateFfUSActive
   / AStandardIp4LocalCandidateFfUS
+  / AStandardIp6LocalCandidateFfUS
+  / AStandardIp6LocalCandidateFfUSActive
   / AStandardIp4RemoteCandidateFfUS
   / AStandardIp4RemoteCandidate
   / AStandardAGenTcpCandidate
@@ -478,7 +482,21 @@ AStandardLocalCandidate
 AStandardGuidLocalCandidate
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' udp ' d3:Decimal ' ' g:GUID
     '.local ' d4:Decimal ' typ host generation 0 network-cost 999' CapAtSeparator
-  { return ast('standard_guid_local_candidate', [ d1, d2, d3, g, d4 ]); }
+  { return ast('standard_guid_local_candidate', [ d1, d2, d3, g, d4 ], undefined, [g]); }
+
+
+
+// a=candidate:3 1 UDP 2122252543 fd00::1198:ca8:1810:db3d 40173 typ host
+AStandardIp6LocalCandidateFfUS
+  = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' UDP ' d3:Decimal ' ' i:IP6 ' ' d4:Decimal ' typ host' CapAtSeparator
+  { return ast('standard_ip6_local_candidate_ffus', [ d1, d2, d3, i, d4 ], undefined, [i]); }
+
+
+
+//  a=candidate:7 1 TCP 2105524479 fd00::1198:ca8:1810:db3d 9 typ host tcptype active
+AStandardIp6LocalCandidateFfUSActive
+  = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' TCP ' d3:Decimal ' ' i:IP6 ' ' d4:Decimal ' typ host tcptype active' CapAtSeparator
+  { return ast('standard_ip6_local_candidate_ffus_active', [ d1, d2, d3, i, d4 ], undefined, [i]); }
 
 
 
@@ -500,7 +518,7 @@ AStandardIp4LocalCandidateFfUSActive
 AStandardTcpGuidLocalCandidateFfUSActive
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' TCP ' d3:Decimal ' ' g:GUID
     '.local ' d4:Decimal ' typ host tcptype active' CapAtSeparator
-  { return ast('standard_tcp_guid_local_candidate_ffus_active', [ d1, d2, d3, g, d4 ]); }
+  { return ast('standard_tcp_guid_local_candidate_ffus_active', [ d1, d2, d3, g, d4 ], undefined, [g]); }
 
 
 
@@ -508,7 +526,7 @@ AStandardTcpGuidLocalCandidateFfUSActive
 AStandardGuidLocalCandidateFfUS
   = 'a=candidate:' d1:Decimal ' ' d2:Decimal ' UDP ' d3:Decimal ' ' g:GUID
     '.local ' d4:Decimal ' typ host' CapAtSeparator
-  { return ast('standard_guid_local_candidate_ffus', [ d1, d2, d3, g, d4 ]); }
+  { return ast('standard_guid_local_candidate_ffus', [ d1, d2, d3, g, d4 ], undefined, [g]); }
 
 
 

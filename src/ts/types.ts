@@ -30,11 +30,13 @@ type BAs30                                   = { kind: 'b_as_30',               
 type StandardOrigin                          = { kind: 'standard_origin',                          value: string, uses_short_nl: boolean, items: [ s: bigint, d: number, i: string ] };
 type StandardMozOrigin                       = { kind: 'standard_moz_origin',                      value: string, uses_short_nl: boolean, moz_ver: [number, number, number], sess: bigint };
 type StandardLocalCandidate                  = { kind: 'standard_local_candidate',                 value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, p: number,  d4: number ] };
-type StandardGuidLocalCandidate              = { kind: 'standard_guid_local_candidate',            value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
+type StandardGuidLocalCandidate              = { kind: 'standard_guid_local_candidate',            value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: string,  d4: number ] };
+type StandardIp6LocalCandidateFfUSActive     = { kind: 'standard_ip6_local_candidate_ffus_active', value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: string,  d4: number ] };
+type StandardIp6LocalCandidateFfUS           = { kind: 'standard_ip6_local_candidate_ffus',        value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: string,  d4: number ] };
 type StandardIp4LocalCandidateFfUSActive     = { kind: 'standard_ip4_local_candidate_ffus_active', value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: string,  d4: number ] };
 type StandardIp4LocalCandidateFfUS           = { kind: 'standard_ip4_local_candidate_ffus',        value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: string,  d4: number ] };
-type StandardTcpGuidLocalCandidateFfUSActive = { kind: 'standard_tcp_guid_local_candidate_ffus_active',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
-type StandardGuidLocalCandidateFfUS          = { kind: 'standard_guid_local_candidate_ffus',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: number,  p: number,  i4: number ] };
+type StandardTcpGuidLocalCandidateFfUSActive = { kind: 'standard_tcp_guid_local_candidate_ffus_active',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: string, d4: number ] };
+type StandardGuidLocalCandidateFfUS          = { kind: 'standard_guid_local_candidate_ffus',       value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i: string,  d4: number ] };
 type StandardRemoteCandidate                 = { kind: 'standard_remote_candidate',                value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number, d6: number ] };
 type StandardRemoteCandidateFfUS             = { kind: 'standard_remote_candidate_ffus',           value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, i2: string, d5: number ] };
 type StandardAGenTcpCandidate                = { kind: 'standard_agen_tcp_candidate',              value: string, uses_short_nl: boolean, items: [ d1: number, d2: number, d3: number, i1: string, d4: number, d5: number ] };
@@ -65,6 +67,7 @@ type ParsedLine
   | StandardOrigin | StandardMozOrigin
   | StandardLocalCandidate | StandardGuidLocalCandidate
   | StandardGuidLocalCandidateFfUS | StandardTcpGuidLocalCandidateFfUSActive
+  | StandardIp6LocalCandidateFfUSActive | StandardIp6LocalCandidateFfUS
   | StandardIp4LocalCandidateFfUSActive | StandardIp4LocalCandidateFfUS
   | StandardRemoteCandidate | StandardRemoteCandidateFfUS
   | StandardAGenTcpCandidate | StandardAGenTcp6Candidate
@@ -88,6 +91,7 @@ type ParsedSdp = {
         | 'standard_origin'
         | 'standard_moz_origin'
         | 'standard_local_candidate' | 'standard_guid_local_candidate'
+        | 'standard_ip6_local_candidate_ffus' | 'standard_ip6_local_candidate_ffus_active'
         | 'standard_ip4_local_candidate_ffus' | 'standard_ip4_local_candidate_ffus_active'
         | 'standard_guid_local_candidate_ffus' | 'standard_tcp_guid_local_candidate_ffus_active'
         | 'standard_remote_candidate' | 'standard_remote_candidate_ffus'
@@ -115,6 +119,7 @@ export {
   VersionZeroLine, VersionLine,
   StandardOrigin, StandardMozOrigin,
   StandardLocalCandidate, StandardGuidLocalCandidate,
+  StandardIp6LocalCandidateFfUSActive, StandardIp6LocalCandidateFfUS,
   StandardIp4LocalCandidateFfUSActive, StandardIp4LocalCandidateFfUS,
   StandardGuidLocalCandidateFfUS, StandardTcpGuidLocalCandidateFfUSActive,
   StandardRemoteCandidate, StandardRemoteCandidateFfUS,

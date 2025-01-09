@@ -12,18 +12,26 @@ export namespace full_set {
     namespace win_10_edge_92_client {
         const beacon_2: string;
         export { beacon_2 as beacon };
+        const replacements_2: string[][];
+        export { replacements_2 as replacements };
     }
     namespace win_10_edge_92_host {
         const beacon_3: string;
         export { beacon_3 as beacon };
+        const replacements_3: string[][];
+        export { replacements_3 as replacements };
     }
     namespace win_10_ff_90_client {
         const beacon_4: string;
         export { beacon_4 as beacon };
+        const replacements_4: string[][];
+        export { replacements_4 as replacements };
     }
     namespace win_10_ff_90_host {
         const beacon_5: string;
         export { beacon_5 as beacon };
+        const replacements_5: string[][];
+        export { replacements_5 as replacements };
     }
     namespace win_11_chrome_120_client {
         const beacon_6: string;
@@ -76,26 +84,38 @@ export namespace full_set {
     namespace lin_chr_92_client {
         const beacon_18: string;
         export { beacon_18 as beacon };
+        const replacements_6: string[][];
+        export { replacements_6 as replacements };
     }
     namespace lin_chr_92_host {
         const beacon_19: string;
         export { beacon_19 as beacon };
+        const replacements_7: string[][];
+        export { replacements_7 as replacements };
     }
     namespace mac_saf_14_host {
         const beacon_20: string;
         export { beacon_20 as beacon };
+        const replacements_8: string[][];
+        export { replacements_8 as replacements };
     }
     namespace mac_saf_14_client {
         const beacon_21: string;
         export { beacon_21 as beacon };
+        const replacements_9: string[][];
+        export { replacements_9 as replacements };
     }
     namespace mac_chrome_92_host {
         const beacon_22: string;
         export { beacon_22 as beacon };
+        const replacements_10: string[][];
+        export { replacements_10 as replacements };
     }
     namespace mac_chrome_92_client {
         const beacon_23: string;
         export { beacon_23 as beacon };
+        const replacements_11: string[][];
+        export { replacements_11 as replacements };
     }
     namespace mac_10_15_arc_1_26_client {
         const beacon_24: string;
@@ -156,22 +176,32 @@ export namespace full_set {
     namespace mac_ff_90_host {
         const beacon_38: string;
         export { beacon_38 as beacon };
+        const replacements_12: string[][];
+        export { replacements_12 as replacements };
     }
     namespace mac_ff_90_client {
         const beacon_39: string;
         export { beacon_39 as beacon };
+        const replacements_13: string[][];
+        export { replacements_13 as replacements };
     }
     namespace lin_ff_90_host {
         const beacon_40: string;
         export { beacon_40 as beacon };
+        const replacements_14: string[][];
+        export { replacements_14 as replacements };
     }
     namespace lin_ff_90_client {
         const beacon_41: string;
         export { beacon_41 as beacon };
+        const replacements_15: string[][];
+        export { replacements_15 as replacements };
     }
     namespace and_chr_92_host {
         const beacon_42: string;
         export { beacon_42 as beacon };
+        const replacements_16: string[][];
+        export { replacements_16 as replacements };
     }
     namespace and_chr_92_client {
         const beacon_43: string;
@@ -180,9 +210,13 @@ export namespace full_set {
     namespace ubu_ff_90_host {
         const beacon_44: string;
         export { beacon_44 as beacon };
+        const replacements_17: string[][];
+        export { replacements_17 as replacements };
     }
     namespace ubu_ff_90_client {
         const beacon_45: string;
         export { beacon_45 as beacon };
+        const replacements_18: string[][];
+        export { replacements_18 as replacements };
     }
 }

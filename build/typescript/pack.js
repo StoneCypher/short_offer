@@ -82,7 +82,7 @@ const parseable = {
     'a_standard_sctp_port': (_, _addresses4_dsa, _addresses6_csa) => `${symbols.a_standard_sctp_port}`,
     'a_custom_sctp_port': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.a_custom_sctp_port}${v.value}${symbols.c_terminal}`,
     'a_standard_max_message_size': (_, _addresses4_dsa, _addresses6_csa) => `${symbols.a_standard_max_message_size}`,
-    'a_custom_max_message_size': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.a_custom_max_message_size}${v.value}${symbols.c_terminal}`,
+    'a_custom_max_message_size': (v, _addresses4_dsa, _addresses6_csa) => `${symbols.a_custom_max_message_size}${pack_i64(v.value)}`,
     'a_setup_actpass': (_, _addresses4_dsa, _addresses6_csa) => `${symbols.a_setup_actpass}`,
     'a_setup_active': (_, _addresses4_dsa, _addresses6_csa) => `${symbols.a_setup_active}`,
     'a_mid_zero': (_, _addresses4_dsa, _addresses6_csa) => `${symbols.a_mid_zero}`,
@@ -125,13 +125,41 @@ const parseable = {
         const smo = v, mvs = moz_ver(smo.moz_ver);
         return `${symbols.standard_moz_origin}${mvs}${pack_i64(smo.sess)}`;
     },
-    'standard_guid_local_candidate': (v, _addresses4_dsa, _addresses6_csa) => {
+    'standard_guid_local_candidate': (v, _addresses4_dsa, addresses6_csa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i, d4] = items;
+        let found1 = addresses6_csa.indexOf(i);
+        if (found1 === -1) {
+            throw new Error(`FATAL: missing address 1 ${i}`);
+        }
         if (kind !== 'standard_guid_local_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_guid_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${i}${symbols.c_terminal}${pack_i16(d4)}`;
+        return `${symbols.standard_guid_local_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}`;
+    },
+    'standard_ip6_local_candidate_ffus': (v, _addresses4_dsa, addresses6_csa) => {
+        const { kind, items } = v;
+        const [d1, d2, d3, i, d4] = items;
+        let found1 = addresses6_csa.indexOf(i);
+        if (found1 === -1) {
+            throw new Error(`FATAL: missing address 1 ${i}`);
+        }
+        if (kind !== 'standard_ip6_local_candidate_ffus') {
+            throw 'impossible';
+        }
+        return `${symbols.standard_ip6_local_candidate_ffus}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}`;
+    },
+    'standard_ip6_local_candidate_ffus_active': (v, _addresses4_dsa, addresses6_csa) => {
+        const { kind, items } = v;
+        const [d1, d2, d3, i, d4] = items;
+        let found1 = addresses6_csa.indexOf(i);
+        if (found1 === -1) {
+            throw new Error(`FATAL: missing address 1 ${i}`);
+        }
+        if (kind !== 'standard_ip6_local_candidate_ffus_active') {
+            throw 'impossible';
+        }
+        return `${symbols.standard_ip6_local_candidate_ffus_active}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}`;
     },
     'standard_ip4_local_candidate_ffus': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -157,21 +185,29 @@ const parseable = {
         }
         return `${symbols.standard_ip4_local_candidate_ffus_active}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}`;
     },
-    'standard_guid_local_candidate_ffus': (v, _addresses4_dsa, _addresses6_csa) => {
+    'standard_guid_local_candidate_ffus': (v, _addresses4_dsa, addresses6_csa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i, d4] = items;
+        let found1 = addresses6_csa.indexOf(i);
+        if (found1 === -1) {
+            throw new Error(`FATAL: missing address 1 ${i}`);
+        }
         if (kind !== 'standard_guid_local_candidate_ffus') {
             throw 'impossible';
         }
-        return `${symbols.standard_guid_local_candidate_ffus}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${i}${symbols.c_terminal}${pack_i16(d4)}`;
+        return `${symbols.standard_guid_local_candidate_ffus}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}`;
     },
-    'standard_tcp_guid_local_candidate_ffus_active': (v, _addresses4_dsa, _addresses6_csa) => {
+    'standard_tcp_guid_local_candidate_ffus_active': (v, _addresses4_dsa, addresses6_csa) => {
         const { kind, items } = v;
         const [d1, d2, d3, i, d4] = items;
+        let found1 = addresses6_csa.indexOf(i);
+        if (found1 === -1) {
+            throw new Error(`FATAL: missing address 1 ${i}`);
+        }
         if (kind !== 'standard_tcp_guid_local_candidate_ffus_active') {
             throw 'impossible';
         }
-        return `${symbols.standard_tcp_guid_local_candidate_ffus_active}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${i}${symbols.c_terminal}${pack_i16(d4)}`;
+        return `${symbols.standard_tcp_guid_local_candidate_ffus_active}${pack_i8(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}`;
     },
     'standard_local_candidate': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -199,7 +235,7 @@ const parseable = {
         if (kind !== 'standard_remote_candidate') {
             throw 'impossible';
         }
-        return `${symbols.standard_remote_candidate}${d1}${symbols.c_terminal}${d2}${symbols.c_terminal}${d3}${symbols.c_terminal}${pack_i8(found1)}${d4}${symbols.c_terminal}${pack_i8(found2)}${d5}${symbols.c_terminal}${d6}${symbols.c_terminal}`;
+        return `${symbols.standard_remote_candidate}${pack_i32(d1)}${pack_i8(d2)}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}${pack_i8(found2)}${pack_i16(d5)}${pack_i16(d6)}`;
     },
     'standard_remote_candidate_ffus': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -215,7 +251,7 @@ const parseable = {
         if (kind !== 'standard_remote_candidate_ffus') {
             throw 'impossible';
         }
-        return `${symbols.standard_remote_candidate_ffus}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i8(found1)}${d4}${symbols.c_terminal}${pack_i8(found2)}${d5}${symbols.c_terminal}`;
+        return `${symbols.standard_remote_candidate_ffus}${pack_i32(d1)}${pack_i8(d2)}${symbols.c_terminal}${pack_i32(d3)}${pack_i8(found1)}${pack_i16(d4)}${pack_i8(found2)}${pack_i16(d5)}`;
     },
     'standard_agen_tcp_candidate': (v, addresses4_dsa, _addresses6_csa) => {
         const { kind, items } = v;
@@ -283,15 +319,27 @@ function biltch(bi) {
     return `${String.fromCharCode((Number(bi) >> 8) % 256)}${String.fromCharCode(Number(bi) % 256)}`;
 }
 function addr6_as_canon_string_to_bytes(addr_as_canon_string) {
-    const addr = addr_as_canon_string.split(':').map(aai16 => BigInt(parseInt(aai16, 16))).filter(a => a !== undefined);
-    if (addr.length !== 8) {
-        throw new Error('invalid address!');
+    const addr = addr_as_canon_string.split(':');
+    if (addr.length === 1) {
+        let guid = BigInt('0x' + addr_as_canon_string.trim().split('-').join(''));
+        const queue = [];
+        for (let i = 0; i < 16; ++i) {
+            queue.push(bitch(guid % 256n));
+            guid >>= 8n;
+        }
+        queue.reverse();
+        return queue.join('');
     }
-    const queue = [];
-    for (let i = 0; i < 8; ++i) {
-        queue.push(biltch(addr[i]));
+    else if (addr.length === 8) {
+        const queue = [];
+        for (let i = 0; i < 8; ++i) {
+            queue.push(biltch(BigInt('0x' + addr[i])));
+        }
+        return queue.join('');
     }
-    return queue.join('');
+    else {
+        throw new Error(`invalid address!\nin:\n  ${addr_as_canon_string}\nout:\n  ${addr.length}: ${addr}`);
+    }
 }
 function parsed_to_bytestring(parsed) {
     let work = '', ending = '', skip_iter = false;

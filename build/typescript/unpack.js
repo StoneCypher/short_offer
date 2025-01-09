@@ -35,6 +35,7 @@ function unpack_indexed_ipv4_waddr(addresses) {
 function unpack_indexed_ipv6_waddr(addresses) {
     return function unpack_indexed_ipv6(str) {
         const idx = str.codePointAt(0);
+        console.log(`Unpacking ipv6 at index ${idx}`);
         if (idx === undefined) {
             throw new Error('Index string was empty');
         }
@@ -43,6 +44,21 @@ function unpack_indexed_ipv6_waddr(addresses) {
             throw new Error(`Referenced index ${idx} for ipv6 addresses doesn't exist`);
         }
         return addr;
+    };
+}
+function unpack_indexed_guid_waddr(addresses) {
+    return function unpack_indexed_guid(str) {
+        const idx = str.codePointAt(0);
+        console.log(`Unpacking guid at index ${idx}`);
+        if (idx === undefined) {
+            throw new Error('Index string was empty');
+        }
+        const addr = addresses[idx];
+        if (addr === undefined) {
+            throw new Error(`Referenced index ${idx} for ipv6 addresses doesn't exist`);
+        }
+        const ret = addr.trim().split(':').join('');
+        return `${ret.substring(0, 8)}-${ret.substring(8, 12)}-${ret.substring(12, 16)}-${ret.substring(16, 20)}-${ret.substring(20, 32)}`;
     };
 }
 function unpack_i8(str) {
@@ -64,9 +80,6 @@ function unpack_i64(str) {
         out += BigInt(str.codePointAt(i) ?? 0);
     }
     return out;
-}
-function unpack_guid(guid) {
-    return `${guid.substring(0, 8)}-${guid.substring(8, 12)}-${guid.substring(12, 16)}-${guid.substring(16, 20)}-${guid.substring(20, 32)}`;
 }
 function four_bytes_to_decimal_ipv4_string(bytes) {
     const a = bytes.charCodeAt(0), b = bytes.charCodeAt(1), c = bytes.charCodeAt(2), d = bytes.charCodeAt(3);
@@ -163,6 +176,7 @@ function unpack(bytestring) {
         stream_start += 16;
     }
     const unpack_indexed_ipv6_l = unpack_indexed_ipv6_waddr(ipv6_list);
+    const unpack_indexed_guid_l = unpack_indexed_guid_waddr(ipv6_list);
     for (i = stream_start, iC = bytestring.length; i < iC; ++i) {
         switch (bytestring.charAt(i)) {
             case symbols.offer:
@@ -198,7 +212,7 @@ function unpack(bytestring) {
                 work += 'a=max-message-size:262144\r\n';
                 break;
             case symbols.a_custom_max_message_size:
-                scan_forward_to_null('a=max-message-size:', 'a_custom_max_message_size', unpack_decimal);
+                scan_forward_exactly_eight_bytes('a=max-message-size:', unpack_i64, false);
                 break;
             case symbols.a_setup_actpass:
                 work += 'a=setup:actpass\r\n';
@@ -263,7 +277,7 @@ function unpack(bytestring) {
                 scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_i8, true);
                 scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
-                scan_forward_to_null(' ', 'standard_local_candidate_4', unpack_guid, true);
+                scan_forward_exactly_one_byte(' ', unpack_indexed_guid_l, true);
                 scan_forward_exactly_two_bytes('.local ', unpack_i16, true);
                 work += ' typ host generation 0 network-cost 999\r\n';
                 break;
@@ -271,7 +285,7 @@ function unpack(bytestring) {
                 scan_forward_exactly_one_byte(`a=candidate:`, unpack_i8, true);
                 scan_forward_exactly_one_byte(' ', unpack_i8, true);
                 scan_forward_exactly_four_bytes(' TCP ', unpack_i32, true);
-                scan_forward_to_null(' ', 'standard_local_candidate_4', unpack_guid, true);
+                scan_forward_exactly_one_byte(' ', unpack_indexed_guid_l, true);
                 scan_forward_exactly_two_bytes('.local ', unpack_i16, true);
                 work += ' typ host tcptype active\r\n';
                 break;
@@ -279,9 +293,25 @@ function unpack(bytestring) {
                 scan_forward_exactly_one_byte(`a=candidate:`, unpack_i8, true);
                 scan_forward_exactly_one_byte(' ', unpack_i8, true);
                 scan_forward_exactly_four_bytes(' UDP ', unpack_i32, true);
-                scan_forward_to_null(' ', 'standard_local_candidate_4', unpack_guid, true);
+                scan_forward_exactly_one_byte(' ', unpack_indexed_guid_l, true);
                 scan_forward_exactly_two_bytes('.local ', unpack_i16, true);
                 work += ' typ host\r\n';
+                break;
+            case symbols.standard_ip6_local_candidate_ffus:
+                scan_forward_exactly_one_byte(`a=candidate:`, unpack_i8, true);
+                scan_forward_exactly_one_byte(' ', unpack_i8, true);
+                scan_forward_exactly_four_bytes(' UDP ', unpack_i32, true);
+                scan_forward_exactly_one_byte(' ', unpack_indexed_ipv6_l, true);
+                scan_forward_exactly_two_bytes(' ', unpack_i16, true);
+                work += ' typ host\r\n';
+                break;
+            case symbols.standard_ip6_local_candidate_ffus_active:
+                scan_forward_exactly_one_byte(`a=candidate:`, unpack_i8, true);
+                scan_forward_exactly_one_byte(' ', unpack_i8, true);
+                scan_forward_exactly_four_bytes(' TCP ', unpack_i32, true);
+                scan_forward_exactly_one_byte(' ', unpack_indexed_ipv6_l, true);
+                scan_forward_exactly_two_bytes(' ', unpack_i16, true);
+                work += ' typ host tcptype active\r\n';
                 break;
             case symbols.standard_ip4_local_candidate_ffus:
                 scan_forward_exactly_one_byte(`a=candidate:`, unpack_i8, true);
@@ -342,14 +372,14 @@ function unpack(bytestring) {
                 scan_forward_exactly_one_byte(' typ host generation 0 network-id ', unpack_i8, false);
                 break;
             case symbols.standard_remote_candidate:
-                scan_forward_to_null(`a=candidate:`, 'standard_remote_candidate_1', undefined, true);
-                scan_forward_to_null(' ', 'standard_remote_candidate_2', undefined, true);
-                scan_forward_to_null(' udp ', 'standard_remote_candidate_3', undefined, true);
+                scan_forward_exactly_four_bytes(`a=candidate:`, unpack_i32, true);
+                scan_forward_exactly_one_byte(' ', unpack_i8, true);
+                scan_forward_exactly_four_bytes(' udp ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
-                scan_forward_to_null(' ', 'standard_remote_candidate_5', undefined, true);
+                scan_forward_exactly_two_bytes(' ', unpack_i16, true);
                 scan_forward_exactly_one_byte(' typ srflx raddr ', unpack_indexed_ipv4_l, true);
-                scan_forward_to_null(' rport ', 'standard_remote_candidate_7', undefined, true);
-                scan_forward_to_null(' generation ', 'standard_remote_candidate_8', undefined, true);
+                scan_forward_exactly_two_bytes(' rport ', unpack_i16, true);
+                scan_forward_exactly_two_bytes(' generation ', unpack_i16, true);
                 work += ' network-cost 999\r\n';
                 break;
             case symbols.standard_remote_candidate_ffus:
@@ -357,9 +387,9 @@ function unpack(bytestring) {
                 scan_forward_one_byte(' ', unpack_i8, true);
                 scan_forward_exactly_four_bytes(' UDP ', unpack_i32, true);
                 scan_forward_exactly_one_byte(' ', unpack_indexed_ipv4_l, true);
-                scan_forward_to_null(' ', 'standard_remote_candidate_5', undefined, true);
+                scan_forward_exactly_two_bytes(' ', unpack_i16, true);
                 scan_forward_exactly_one_byte(' typ srflx raddr ', unpack_indexed_ipv4_l, true);
-                scan_forward_to_null(' rport ', 'standard_remote_candidate_7', undefined, false);
+                scan_forward_exactly_two_bytes(' rport ', unpack_i16, false);
                 break;
             case symbols.a_ice_pwd:
                 scan_forward_to_null(`a=ice-pwd:`, 'a_ice_pwd', undefined, false);
@@ -383,7 +413,7 @@ function unpack(bytestring) {
                 scan_forward_32_bytes(`a=fingerprint:sha-256 `, unpack_sha_colons, false);
                 break;
             default:
-                throw new TypeError(`[unpack] Unknown symbol at ${i} '${bytestring.charAt(i)}' [${bytestring.charCodeAt(i)}], corrupt encoding'`);
+                throw new TypeError(`[unpack] Unknown symbol at ${i} '${bytestring.charAt(i)}' [${bytestring.charCodeAt(i)}], corrupt encoding or unhandled symbol'`);
         }
     }
     return `${work}${at_end}`;
